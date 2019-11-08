@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Big/ZU/07/Common.xsl"?>
+
+<KVZU xmlns:adrs="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-output/4.0.1" 
+    xmlns:spa="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/5.0.1" 
+    xmlns:cer="urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0" 
+    xmlns:doc="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-output/4.0.1" 
+    xmlns="urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1">
+    <Parcels>
+        <Parcel CadastralNumber="21:01:010206:115" State="01" DateCreated="2007-05-10" DateCreatedDoc="2007-05-10">
+            <CadastralBlock>21:01:010206</CadastralBlock>
+            <Name>01</Name>
+            <PrevCadastralNumbers>
+                <CadastralNumber>21:01:010206:1</CadastralNumber>
+                <CadastralNumber>21:01:010206:108</CadastralNumber>
+                <CadastralNumber>21:01:010206:111</CadastralNumber>
+            </PrevCadastralNumbers>
+            <Area>
+                <Area>3423</Area>
+                <Unit>055</Unit>
+                <Inaccuracy>20</Inaccuracy>
+            </Area>
+            <Location>
+                <Address>
+                    <adrs:OKATO>97401000000</adrs:OKATO>
+                    <adrs:KLADR>21000001000026200</adrs:KLADR>
+                    <adrs:Region>21</adrs:Region>
+                    <adrs:City Name="Чебоксары" Type="г" />
+                    <adrs:Street Name="Нижегородская" Type="ул" />
+                    <adrs:Level1 Type="д" Value="2" />
+                    <adrs:Level2 Type="корп" Value="1" />
+                    <adrs:Note>Чувашская Республика - Чувашия, г Чебоксары, ул Нижегородская, д 2, корп 1</adrs:Note>
+                </Address>
+            </Location>
+            <Category>003002000000</Category>
+            <Utilization Utilization="142007000000" ByDoc="Для строительства и эксплуатации административного здания" />
+            <Rights>
+                <Right>
+                    <Name>Собственность</Name>
+                    <Type>001001000000</Type>
+                    <Owners>
+                        <Owner>
+                            <Governance>
+                                <Name>Российская Федерация</Name>
+                            </Governance>
+                        </Owner>
+                    </Owners>
+                    <Registration>
+                        <RegNumber>21-21-01/023/2007-315</RegNumber>
+                        <RegDate>2007-06-15</RegDate>
+                    </Registration>
+                </Right>
+                <Right>
+                    <Name>Постоянное (бессрочное) пользование</Name>
+                    <Type>001007000000</Type>
+                    <Owners>
+                        <Owner>
+                            <Organization>
+                                <Name>Управление Федерального казначейства по Чувашской Республике</Name>
+                            </Organization>
+                        </Owner>
+                    </Owners>
+                    <Registration>
+                        <RegNumber>21-21-01/023/2007-276</RegNumber>
+                        <RegDate>2007-06-15</RegDate>
+                    </Registration>
+                </Right>
+            </Rights>
+            <SubParcels>
+                <SubParcel NumberRecord="1" Full="0" State="05" DateExpiry="2015-11-19">
+                    <Area>
+                        <Area>521</Area>
+                        <Unit>055</Unit>
+                    </Area>
+                    <Encumbrance>
+                        <Type>022004000000</Type>
+                    </Encumbrance>
+                    <EntitySpatial EntSys="ID0">
+                        <spa:SpatialElement >
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="9">
+                                <spa:Ordinate X="410359.92" Y="1230523.79" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="10">
+                                <spa:Ordinate X="410363.86" Y="1230529.53" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="11">
+                                <spa:Ordinate X="410392.34" Y="1230570.95" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="14">
+                                <spa:Ordinate X="410392.88" Y="1230577.92" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="15">
+                                <spa:Ordinate X="410359.06" Y="1230528.72" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="16">
+                                <spa:Ordinate X="410332.47" Y="1230547.9" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="17">
+                                <spa:Ordinate X="410328.96" Y="1230548.8" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="18">
+                                <spa:Ordinate X="410324.41" Y="1230551.21" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="19">
+                                <spa:Ordinate X="410328.31" Y="1230577.33" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="20">
+                                <spa:Ordinate X="410331.14" Y="1230595.54" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="3">
+                                <spa:Ordinate X="410327.67" Y="1230596.02" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="4">
+                                <spa:Ordinate X="410324.85" Y="1230577.86" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="5">
+                                <spa:Ordinate X="410320.58" Y="1230549.28" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="6">
+                                <spa:Ordinate X="410327.69" Y="1230545.51" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="7">
+                                <spa:Ordinate X="410330.96" Y="1230544.67" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="8">
+                                <spa:Ordinate X="410349.6" Y="1230531.23" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="9">
+                                <spa:Ordinate X="410359.92" Y="1230523.79" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                        </spa:SpatialElement>
+                    </EntitySpatial>
+                </SubParcel>
+                <SubParcel NumberRecord="2" Full="0" State="06">
+                    <Area>
+                        <Area>45</Area>
+                        <Unit>055</Unit>
+                    </Area>
+                    <Encumbrance>
+                        <Type>022004000000</Type>
+                        <AccountNumber>21.01.2.1856</AccountNumber>
+                        <Registration>
+                            <RegDate>2018-06-21</RegDate>
+                        </Registration>
+                        <Document>
+                            <doc:CodeDocument>008002099000</doc:CodeDocument>
+                            <doc:Name>Инвестиционный договор в сфере оказания коммунальных услуг - передаче электрической энергии</doc:Name>
+                            <doc:Number>б/н</doc:Number>
+                            <doc:Date>2006-01-01</doc:Date>
+                            <doc:IssueOrgan>Чебоксарский городской комитет по управлению имуществом</doc:IssueOrgan>
+                        </Document>
+                    </Encumbrance>
+                    <EntitySpatial EntSys="ID0">
+                        <spa:SpatialElement >
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="11">
+                                <spa:Ordinate X="410392.34" Y="1230570.95" OrdNmb="1" DeltaGeopoint="0.1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="21">
+                                <spa:Ordinate X="410389.26" Y="1230566.47" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="22">
+                                <spa:Ordinate X="410389.8" Y="1230571.31" OrdNmb="1" DeltaGeopoint="0.1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="23">
+                                <spa:Ordinate X="410391.26" Y="1230587.19" OrdNmb="1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="12">
+                                <spa:Ordinate X="410393.59" Y="1230586.92" OrdNmb="1" DeltaGeopoint="0.1" />
+                            </spa:SpelementUnit>
+                            <spa:SpelementUnit TypeUnit="Точка" SuNmb="11">
+                                <spa:Ordinate X="410392.34" Y="1230570.95" OrdNmb="1" DeltaGeopoint="0.1" />
+                            </spa:SpelementUnit>
+                        </spa:SpatialElement>
+                    </EntitySpatial>
+                </SubParcel>
+            </SubParcels>
+            <EntitySpatial EntSys="ID0">
+                <spa:SpatialElement >
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="1">
+                        <spa:Ordinate X="410368.77" Y="1230589.83" OrdNmb="1" DeltaGeopoint="0.1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="2">
+                        <spa:Ordinate X="410341.09" Y="1230594.17" OrdNmb="1" DeltaGeopoint="0.1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="3">
+                        <spa:Ordinate X="410327.67" Y="1230596.02" OrdNmb="1" DeltaGeopoint="0.3" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="4">
+                        <spa:Ordinate X="410324.85" Y="1230577.86" OrdNmb="1" DeltaGeopoint="0.3" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="5">
+                        <spa:Ordinate X="410320.58" Y="1230549.28" OrdNmb="1" DeltaGeopoint="0.3" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="6">
+                        <spa:Ordinate X="410327.69" Y="1230545.51" OrdNmb="1" DeltaGeopoint="0.1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="7">
+                        <spa:Ordinate X="410330.96" Y="1230544.67" OrdNmb="1" DeltaGeopoint="0.1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="8">
+                        <spa:Ordinate X="410349.6" Y="1230531.23" OrdNmb="1" DeltaGeopoint="0.3" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="9">
+                        <spa:Ordinate X="410359.92" Y="1230523.79" OrdNmb="1" DeltaGeopoint="0.1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="10">
+                        <spa:Ordinate X="410363.86" Y="1230529.53" OrdNmb="1" DeltaGeopoint="0.3" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="11">
+                        <spa:Ordinate X="410392.34" Y="1230570.95" OrdNmb="1" DeltaGeopoint="0.1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="12">
+                        <spa:Ordinate X="410393.59" Y="1230586.92" OrdNmb="1" DeltaGeopoint="0.1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="13">
+                        <spa:Ordinate X="410371.54" Y="1230589.5" OrdNmb="1" DeltaGeopoint="0.3" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="1">
+                        <spa:Ordinate X="410368.77" Y="1230589.83" OrdNmb="1" DeltaGeopoint="0.1" />
+                    </spa:SpelementUnit>
+                </spa:SpatialElement>
+            </EntitySpatial>
+            <CadastralCost Value="2972772.81" Unit="383" />
+            <SpecialNote> Сведения о видах разрешенного использовании имеют статус «Актуальные незасвидетельствованные». Право (ограничение права, обременение объекта недвижимости) зарегистрировано на данный объект недвижимости с видами разрешенного использования «Для иных видов жилой застройки».</SpecialNote>
+        </Parcel>
+    </Parcels>
+    <CertificationDoc>
+        <cer:Organization>ФГИС ЕГРН</cer:Organization>
+        <cer:Date>2018-11-21</cer:Date>
+        <cer:Number>99/2018/218177591</cer:Number>
+    </CertificationDoc>
+    <CoordSystems>
+        <spa:CoordSystem Name="СК кадастрового округа" CsId="ID0" />
+    </CoordSystems>
+    <eDocument CodeType="112" Version="07" Scope="GKN">
+        <Sender Kod="00.0.4.195" Name="ФГИС ЕГРН" Region="99" Date_Upload="2018-11-21" Appointment="Государственный регистратор" />
+        <Recipient Kod="00.0.4.111" Name="Насретдинов Ирек Минзагитович" />
+    </eDocument>
+    <ReestrExtract>
+        <DeclarAttribute ID_KUVI="0" ExtractTypeCode="012000" ExtractTypeText="Выписка из Единого государственного реестра недвижимости об объекте недвижимости" ExtractNumber="99/2018/218177591" ExtractDate="21.11.2018" RequeryNumber="80-62772951" RequeryDate="20.11.2018" ExtractCount="1" NoticeCount="0" RefuseCount="0" Registrator="ФГИС ЕГРН">
+            <ReceivName>Насретдинов Ирек Минзагитович</ReceivName>
+            <ReceivAdress>не указан</ReceivAdress>
+        </DeclarAttribute>
+        <ExtractObjectRight>
+            <HeadContent>
+                <ID_REC_KUVI>0</ID_REC_KUVI>
+                <Title>ФЕДЕРАЛЬНАЯ СЛУЖБА ГОСУДАРСТВЕННОЙ РЕГИСТРАЦИИ, КАДАСТРА И КАРТОГРАФИИ</Title>
+                <DeptName>ФГИС ЕГРН</DeptName>
+                <ExtractTitle>Выписка из Единого государственного реестра недвижимости об объекте недвижимости</ExtractTitle>
+                <Content>На основании запроса от 20.11.2018 г., поступившего на рассмотрение 21.11.2018 г., сообщаем, что согласно записям Единого государственного реестра недвижимости:</Content>
+            </HeadContent>
+            <ExtractObject>
+                <ObjectRight>
+                    <Right RightNumber="1">
+                        <Owner >
+                            <ID_Subject>200473012421</ID_Subject>
+                            <Organization>
+                                <Code_SP>007002000000</Code_SP>
+                                <Content>Управление Федерального казначейства по Чувашской Республике, ИНН: 2128018171</Content>
+                                <Name>Управление Федерального казначейства по Чувашской Республике</Name>
+                                <INN>2128018171</INN>
+                            </Organization>
+                        </Owner>
+                        <Registration >
+                            <ID_Record>269099150821</ID_Record>
+                            <RegNumber>21-21-01/023/2007-276</RegNumber>
+                            <Type>001007000000</Type>
+                            <Name>Постоянное (бессрочное) пользование, № 21-21-01/023/2007-276 от 15.06.2007</Name>
+                            <RegDate>15.06.2007</RegDate>
+                        </Registration>
+                        <NoEncumbrance>не зарегистрировано</NoEncumbrance>
+                    </Right>
+                    <Right RightNumber="2">
+                        <Owner >
+                            <ID_Subject>264710007021</ID_Subject>
+                            <Governance>
+                                <Code_SP>007001000000</Code_SP>
+                                <Content>Российская Федерация</Content>
+                                <Name>Российская Федерация</Name>
+                                <Country>Российская Федерация</Country>
+                            </Governance>
+                        </Owner>
+                        <Registration >
+                            <ID_Record>269099150221</ID_Record>
+                            <RegNumber>21-21-01/023/2007-315</RegNumber>
+                            <Type>001001000000</Type>
+                            <Name>Собственность, № 21-21-01/023/2007-315 от 15.06.2007</Name>
+                            <RegDate>15.06.2007</RegDate>
+                        </Registration>
+                        <NoEncumbrance>не зарегистрировано</NoEncumbrance>
+                    </Right>
+                    <NoShareHolding>не зарегистрировано</NoShareHolding>
+                </ObjectRight>
+                <RightAssert>данные отсутствуют</RightAssert>
+                <RightClaim>данные отсутствуют</RightClaim>
+                <RightAgainst>данные отсутствуют</RightAgainst>
+                <RightSteal>данные отсутствуют</RightSteal>
+                <WithoutThirdParty>данные отсутствуют</WithoutThirdParty>
+                <InabilityRegWithoutOwner></InabilityRegWithoutOwner>
+                <InabilityRegZU></InabilityRegZU>
+            </ExtractObject>
+            <InfoENK/>
+            <InfoPIK/>
+            <FootContent>
+                <Recipient>Насретдинов Ирек Минзагитович</Recipient>
+                <ExtractDate>21.11.2018</ExtractDate>
+                <Content></Content>
+            </FootContent>
+        </ExtractObjectRight>
+    </ReestrExtract>
+</KVZU>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Big/OKS/07/Common.xsl"?>
+
+<KVOKS xmlns="urn://x-artefacts-rosreestr-ru/outgoing/kvoks/3.0.1" 
+    xmlns:smev="urn://x-artefacts-smev-gov-ru/supplementary/commons/1.0.1" 
+    xmlns:num="urn://x-artefacts-rosreestr-ru/commons/complex-types/numbers/1.0" 
+    xmlns:adrs="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-output/4.0.1" 
+    xmlns:spa="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/5.0.1" 
+    xmlns:param="urn://x-artefacts-rosreestr-ru/commons/complex-types/parameters-oks/2.0.1" 
+    xmlns:cer="urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0" 
+    xmlns:doc="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-output/4.0.1" 
+    xmlns:ch="urn://x-artefacts-rosreestr-ru/commons/complex-types/cultural-heritage/2.0.1">
+    <Realty>
+        <Construction CadastralNumber="21:01:011102:234" State="06" DateCreated="2013-04-25">
+            <CadastralBlocks>
+                <CadastralBlock>21:01:011102</CadastralBlock>
+            </CadastralBlocks>
+            <ObjectType>002001004000</ObjectType>
+            <ParentCadastralNumbers>
+                <CadastralNumber>21:01:011102:542</CadastralNumber>
+            </ParentCadastralNumbers>
+            <Name>Газоснабжение загородного коттеджного поселка &quot;Чандрово&quot; в г. Чебоксары ЧР - подземный газопровод (4-ая очередь ул. Весенняя от коттеджа №29 (участок №137а/136б))</Name>
+            <AssignationName>9) Иные сооружения производственного назначения (газовое хозяйство)</AssignationName>
+            <ExploitationChar YearUsed="2012" />
+            <KeyParameters>
+                <param:KeyParameter Type="01" Value="114" />
+            </KeyParameters>
+            <Address>
+                <adrs:OKATO>97401935001</adrs:OKATO>
+                <adrs:KLADR>2100000100300</adrs:KLADR>
+                <adrs:Region>21</adrs:Region>
+                <adrs:City Name="Чебоксары" Type="г" />
+                <adrs:Locality Name="Чандрово" Type="д" />
+                <adrs:Note>Чувашская Республика - Чувашия, Чебоксарский городской округ, д Чандрово, начало трассы Г14: точка врезки в существующий газопровод около дома №29 по улице Весенняя; далее трасса проходит в юго-западном направлении; окончание трассы Г14: заглушка примерно в 150 м к югу от дома №29 по улице Весенняя</adrs:Note>
+            </Address>
+            <EntitySpatial EntSys="ID1">
+                <spa:SpatialElement >
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="1">
+                        <spa:Ordinate X="408073.78" Y="1220407.39" OrdNmb="1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="2">
+                        <spa:Ordinate X="408073.47" Y="1220407.31" OrdNmb="1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="3">
+                        <spa:Ordinate X="408065.93" Y="1220405.08" OrdNmb="1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="4">
+                        <spa:Ordinate X="408060.06" Y="1220403.24" OrdNmb="1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="5">
+                        <spa:Ordinate X="408042.68" Y="1220399.01" OrdNmb="1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="6">
+                        <spa:Ordinate X="408022.52" Y="1220394.65" OrdNmb="1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="7">
+                        <spa:Ordinate X="407993.38" Y="1220389.06" OrdNmb="1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="8">
+                        <spa:Ordinate X="407981.09" Y="1220387.28" OrdNmb="1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="9">
+                        <spa:Ordinate X="407960.91" Y="1220385.9" OrdNmb="1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="10">
+                        <spa:Ordinate X="407940.48" Y="1220384.2" OrdNmb="1" />
+                    </spa:SpelementUnit>
+                    <spa:SpelementUnit TypeUnit="Точка" SuNmb="11">
+                        <spa:Ordinate X="407934.18" Y="1220383.96" OrdNmb="1" />
+                    </spa:SpelementUnit>
+                </spa:SpatialElement>
+            </EntitySpatial>
+            <Notes> Сведения о назначении имеют статус «Актуальные незасвидетельствованные». Право (ограничение права, обременение объекта недвижимости) зарегистрировано на данный объект недвижимости с назначениием отсутствует.</Notes>
+        </Construction>
+    </Realty>
+    <CertificationDoc>
+        <cer:Organization>ФГИС ЕГРН</cer:Organization>
+        <cer:Date>2019-11-07</cer:Date>
+        <cer:Number>99/2019/293512723</cer:Number>
+    </CertificationDoc>
+    <CoordSystems>
+        <spa:CoordSystem Name="СК кадастрового округа" CsId="ID0" />
+        <spa:CoordSystem Name="СК 1963 г." CsId="ID1" />
+    </CoordSystems>
+    <eDocument CodeType="112" Version="07" Scope="GKN">
+        <Sender Kod="00.0.4.195" Name="ФГИС ЕГРН" Region="99" Date_Upload="2019-11-07" Appointment="Государственный регистратор" />
+        <Recipient Kod="00.0.4.111" Name="Насретдинов Ирек Минзагитович" />
+    </eDocument>
+    <ReestrExtract>
+        <DeclarAttribute ID_KUVI="0" ExtractTypeCode="012000" ExtractTypeText="Выписка из Единого государственного реестра недвижимости об объекте недвижимости" ExtractNumber="99/2019/293512723" ExtractDate="07.11.2019" RequeryNumber="80-112430561" RequeryDate="05.11.2019" ExtractCount="1" NoticeCount="0" RefuseCount="0" Registrator="ФГИС ЕГРН">
+            <ReceivName>Насретдинов Ирек Минзагитович</ReceivName>
+            <ReceivAdress>не указан</ReceivAdress>
+        </DeclarAttribute>
+        <ExtractObjectRight>
+            <HeadContent>
+                <ID_REC_KUVI>0</ID_REC_KUVI>
+                <Title>ФЕДЕРАЛЬНАЯ СЛУЖБА ГОСУДАРСТВЕННОЙ РЕГИСТРАЦИИ, КАДАСТРА И КАРТОГРАФИИ</Title>
+                <DeptName>ФГИС ЕГРН</DeptName>
+                <ExtractTitle>Выписка из Единого государственного реестра недвижимости об объекте недвижимости</ExtractTitle>
+                <Content>На основании запроса от 05.11.2019 г., поступившего на рассмотрение 07.11.2019 г., сообщаем, что согласно записям Единого государственного реестра недвижимости:</Content>
+            </HeadContent>
+            <ExtractObject>
+                <ObjectRight>
+                    <Right RightNumber="1">
+                        <Owner >
+                            <ID_Subject>431298415421</ID_Subject>
+                            <Organization>
+                                <Code_SP>007002000000</Code_SP>
+                                <Content>Общество с ограниченной ответсвенностью &quot;Отделфинстрой&quot;, ИНН: 2128023414</Content>
+                                <Name>Общество с ограниченной ответсвенностью &quot;Отделфинстрой&quot;</Name>
+                                <INN>2128023414</INN>
+                            </Organization>
+                        </Owner>
+                        <Registration >
+                            <ID_Record>431298409521</ID_Record>
+                            <RegNumber>21:01:011102:234-21/042/2018-1</RegNumber>
+                            <Type>001001000000</Type>
+                            <Name>Собственность, № 21:01:011102:234-21/042/2018-1 от 20.10.2018</Name>
+                            <RegDate>20.10.2018</RegDate>
+                        </Registration>
+                        <NoEncumbrance>не зарегистрировано</NoEncumbrance>
+                    </Right>
+                    <NoShareHolding>не зарегистрировано</NoShareHolding>
+                </ObjectRight>
+                <RightAssert>данные отсутствуют</RightAssert>
+                <RightClaim>данные отсутствуют</RightClaim>
+                <RightAgainst>данные отсутствуют</RightAgainst>
+                <RightSteal>данные отсутствуют</RightSteal>
+                <WithoutThirdParty>данные отсутствуют</WithoutThirdParty>
+                <InabilityRegWithoutOwner></InabilityRegWithoutOwner>
+                <InabilityRegZU></InabilityRegZU>
+            </ExtractObject>
+            <InfoENK/>
+            <InfoPIK/>
+            <FootContent>
+                <Recipient>Насретдинов Ирек Минзагитович</Recipient>
+                <ExtractDate>07.11.2019</ExtractDate>
+                <Content></Content>
+            </FootContent>
+        </ExtractObjectRight>
+    </ReestrExtract>
+</KVOKS>
