@@ -506,7 +506,7 @@
                                 <ns3:Ordinate X="8920.32" Y="23440.8" OrdNmb="1" DeltaGeopoint="0.1" GeopointZacrep="Закрепление отсутствует" />
                             </ns3:SpelementUnit>
                             <ns3:SpelementUnit TypeUnit="Точка" SuNmb="3">
-                                <ns3:Ordinate X="88702.82948.61" Y="23519.47" OrdNmb="1" DeltaGeopoint="0.1" GeopointZacrep="Закрепление отсутствует" />
+                                <ns3:Ordinate X="8948.61" Y="23519.47" OrdNmb="1" DeltaGeopoint="0.1" GeopointZacrep="Закрепление отсутствует" />
                             </ns3:SpelementUnit>
                             <ns3:SpelementUnit TypeUnit="Точка" SuNmb="4">
                                 <ns3:Ordinate X="8948.67" Y="23524.77" OrdNmb="1" DeltaGeopoint="0.1" GeopointZacrep="Закрепление отсутствует" />

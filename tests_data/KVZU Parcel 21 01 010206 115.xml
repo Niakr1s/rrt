@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?xml-stylesheet type="text/xsl" href="https://portal.rosreestr.ru/xsl/EGRP/Reestr_Extract_Big/ZU/07/Common.xsl"?>
 
-<KVZU xmlns:adrs="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-output/4.0.1" 
-    xmlns:spa="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/5.0.1" 
-    xmlns:cer="urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0" 
-    xmlns:doc="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-output/4.0.1" 
-    xmlns="urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1">
+<KVZU xmlns:adrs="urn://x-artefacts-rosreestr-ru/commons/complex-types/address-output/4.0.1"
+      xmlns:spa="urn://x-artefacts-rosreestr-ru/commons/complex-types/entity-spatial/5.0.1"
+      xmlns:cer="urn://x-artefacts-rosreestr-ru/commons/complex-types/certification-doc/1.0"
+      xmlns:doc="urn://x-artefacts-rosreestr-ru/commons/complex-types/document-output/4.0.1"
+      xmlns="urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1"
+>
     <Parcels>
         <Parcel CadastralNumber="21:01:010206:115" State="01" DateCreated="2007-05-10" DateCreatedDoc="2007-05-10">
             <CadastralBlock>21:01:010206</CadastralBlock>
