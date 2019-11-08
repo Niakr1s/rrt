@@ -36,6 +36,12 @@ TEST(xml, intersects) {
       {8667.7, 23485.53},
   };
 
+  linestring_t line3{
+      {8891.8963, 23480.9723},
+      {8894.9634, 23480.9723},
+      {8890.3796, 23483.3805},
+  };
+
   ASSERT_TRUE(cns[0].intersects(line1));
   ASSERT_FALSE(cns[0].intersects(line2));
 
@@ -44,6 +50,13 @@ TEST(xml, intersects) {
       cns.begin(), cns.end(), std::back_inserter(res),
       [&](const rrt::XMLCadastralNumber& it) { return it.intersects(line1); });
   ASSERT_EQ(res.size(), 2);
+
+  res.clear();
+  std::copy_if(
+      cns.begin(), cns.end(), std::back_inserter(res),
+      [&](const rrt::XMLCadastralNumber& it) { return it.intersects(line3); });
+  ASSERT_EQ(res.size(), 1);
+  ASSERT_EQ(res[0].info().cadastralNumber(), "77:03:0009007");
 }
 
 #endif  // XML_TESTS_H
