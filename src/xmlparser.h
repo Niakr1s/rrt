@@ -13,7 +13,7 @@ class XMLParser {
   typedef std::vector<XMLSpatial> xmlSpatials_t;
 
   XMLParser(pugi::xml_document& root);
-  virtual ~XMLParser() {}
+  virtual ~XMLParser() = default;
 
   virtual xmlSpatials_t getXMLSpatials() = 0;
 
