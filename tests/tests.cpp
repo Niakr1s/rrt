@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "boost_tests.h"
+#include "rect_tests.h"
 #include "xml_tests.h"
 
 int main(int argc, char* argv[]) {

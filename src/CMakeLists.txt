@@ -21,6 +21,7 @@ add_library(rrt_lib
     standardparser.cpp
     point.cpp
     spatial.cpp
+    rect.cpp
 )
 
 include_directories(rrt_lib

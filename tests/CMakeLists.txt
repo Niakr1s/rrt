@@ -36,6 +36,7 @@ add_executable(tests
     tests.cpp
     boost_tests.h
     xml_tests.h
+    rect_tests.h
 )
 
 include_directories(tests
