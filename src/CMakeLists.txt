@@ -9,31 +9,41 @@ add_executable(rrt
 )
 
 target_link_libraries(rrt
-    rrt_lib
 )
 
-add_library(rrt_lib
+add_library(xml
     xml.cpp
     xmlspatial.cpp
     xmlspatialinfo.cpp
     xmlparser.cpp
     standardparser.cpp
+)
+
+add_library(spatial
     point.cpp
     spatial.cpp
     rect.cpp
     compare.cpp
 )
 
-include_directories(rrt_lib
+include_directories(xml
     ${Boost_INCLUDE_DIRS}
     pugixml_INCLUDE_DIRS
 )
 
-target_link_libraries(rrt_lib
+target_link_libraries(xml
     fmt::fmt
     pugixml
-    Qt5::Widgets
-    Qt5::Core
     Boost::log
     Boost::filesystem
+    spatial
+)
+
+include_directories(spatial
+    ${Boost_INCLUDE_DIRS}
+)
+
+target_link_libraries(spatial
+    fmt::fmt
+    Boost::log
 )

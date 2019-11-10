@@ -45,5 +45,6 @@ include_directories(tests
 
 target_link_libraries(tests
     gtest_main
-    rrt_lib
+    xml
+    spatial
 )
