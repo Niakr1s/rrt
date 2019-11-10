@@ -5,14 +5,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(rrt CXX)
 
+set(BUILD_SHARED_LIBS TRUE)
+
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
 include(cotire)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-
-set(BUILD_SHARED_LIBS TRUE)
 
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
@@ -29,7 +29,6 @@ find_package(Boost REQUIRED COMPONENTS
 )
 
 add_subdirectory(libs/pugixml)
-
 add_subdirectory(libs/fmt)
 
 add_subdirectory(src)
