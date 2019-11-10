@@ -12,7 +12,8 @@ class XML {
   using xmlSpatials_t = XMLParser::xmlSpatials_t;
 
   XML(const char* path);
-  xmlSpatials_t xmlSpatials() const;
+  const xmlSpatials_t& xmlSpatials() const;
+  xmlSpatials_t& xmlSpatials();
 
  private:
   boost::filesystem::path path_;

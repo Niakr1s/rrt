@@ -25,7 +25,11 @@ XML::XML(const char* path) : path_(path) {
   spatials_ = parser_->getXMLSpatials();
 }
 
-XML::xmlSpatials_t XML::xmlSpatials() const {
+const XML::xmlSpatials_t& XML::xmlSpatials() const {
+  return spatials_;
+}
+
+XML::xmlSpatials_t& XML::xmlSpatials() {
   return spatials_;
 }
 
