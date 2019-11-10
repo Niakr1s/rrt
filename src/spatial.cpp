@@ -39,8 +39,8 @@ void Spatial::append(std::vector<std::vector<std::vector<Point>>>& points) {
           bg::buffer(circle.point(), mPolygonToPush, distance_strategy,
                      side_strategy, join_strategy, end_strategy,
                      point_strategy);
-          polygons_.push_back(mPolygonToPush[0]);
-          bg::append(circles_, circle.point());
+          circles_.push_back(circle);
+          circlePolygons_.push_back(mPolygonToPush[0]);
         } else {
           linestring_t polygonToPush;
           for (auto& p : polygon[i]) {

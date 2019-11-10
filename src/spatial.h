@@ -31,11 +31,12 @@ class Spatial {
   template <typename Geometry>
   bool intersects(const Geometry& geometry) const {
     if (bg::intersects(polygons_, geometry)) {
-      BOOST_LOG_TRIVIAL(debug) << "Intersects polygons";
       return true;
     }
     if (bg::intersects(linestrings_, geometry)) {
-      BOOST_LOG_TRIVIAL(debug) << "Intersects linestrings";
+      return true;
+    }
+    if (bg::intersects(circlePolygons_, geometry)) {
       return true;
     }
     return false;
@@ -48,8 +49,11 @@ class Spatial {
 
  private:
   mpolygon_t polygons_;
+  mpolygon_t circlePolygons_;
   mlinestring_t linestrings_;
-  mpoint_t circles_;
+  // member circles_ is just for printing to dxf etc,
+  // actually circles are stored in circlePolygons_
+  std::vector<Point> circles_;
 };
 
 }  // namespace rrt
