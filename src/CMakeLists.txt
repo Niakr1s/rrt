@@ -8,7 +8,8 @@ add_executable(rrt
     main.cpp
 )
 
-target_link_libraries(rrt
+add_library(dxf SHARED
+    dxf.cpp
 )
 
 add_library(xml SHARED
@@ -24,6 +25,14 @@ add_library(spatial SHARED
     spatial.cpp
     rect.cpp
     compare.cpp
+)
+
+include_directories(dxf
+    ../libs/libdxfrw/include
+)
+
+target_link_libraries(dxf
+    dxfrw
 )
 
 include_directories(xml
