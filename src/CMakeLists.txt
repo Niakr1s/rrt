@@ -13,7 +13,6 @@ target_link_libraries(rrt
 )
 
 add_library(rrt_lib
-    common.h
     xml.cpp
     xmlspatial.cpp
     xmlspatialinfo.cpp
@@ -22,6 +21,7 @@ add_library(rrt_lib
     point.cpp
     spatial.cpp
     rect.cpp
+    compare.cpp
 )
 
 include_directories(rrt_lib

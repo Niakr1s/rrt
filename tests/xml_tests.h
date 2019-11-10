@@ -7,7 +7,6 @@
 #include <vector>
 
 #include <gtest/gtest.h>
-#include "../src/common.h"
 #include "../src/xml.h"
 #include "../src/xmlspatial.h"
 

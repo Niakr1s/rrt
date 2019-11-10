@@ -6,7 +6,6 @@
 #include <gtest/gtest.h>
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/geometries.hpp>
-#include "../src/common.h"
 
 /*
 TEST(boost, polygonIntersection1) {

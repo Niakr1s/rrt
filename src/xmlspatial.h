@@ -3,7 +3,6 @@
 
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/geometries.hpp>
-#include "common.h"
 #include "spatial.h"
 #include "xmlspatialinfo.h"
 

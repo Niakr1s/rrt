@@ -5,7 +5,6 @@
 #include <pugixml.hpp>
 #include <stdexcept>
 #include <string>
-#include "common.h"
 
 namespace rrt {
 
