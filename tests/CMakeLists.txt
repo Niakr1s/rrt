@@ -51,3 +51,5 @@ target_link_libraries(tests
     xml
     spatial
 )
+
+cotire(tests)

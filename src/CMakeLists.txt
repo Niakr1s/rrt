@@ -47,3 +47,7 @@ target_link_libraries(spatial
     fmt::fmt
     Boost::log
 )
+
+cotire(xml)
+cotire(spatial)
+cotire(rrt)
