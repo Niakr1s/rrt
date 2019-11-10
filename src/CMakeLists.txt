@@ -11,7 +11,7 @@ add_executable(rrt
 target_link_libraries(rrt
 )
 
-add_library(xml
+add_library(xml SHARED
     xml.cpp
     xmlspatial.cpp
     xmlspatialinfo.cpp
@@ -19,7 +19,7 @@ add_library(xml
     standardparser.cpp
 )
 
-add_library(spatial
+add_library(spatial SHARED
     point.cpp
     spatial.cpp
     rect.cpp
