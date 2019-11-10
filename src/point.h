@@ -15,6 +15,8 @@ class Point {
   typedef bg::model::point<double, 2, bg::cs::cartesian> point_t;
 
   Point(double x, double y, std::optional<double> r);
+  Point(double x, double y, double r);
+  Point(double x, double y);
 
   double x() const;
   double y() const;

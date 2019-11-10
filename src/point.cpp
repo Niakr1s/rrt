@@ -7,6 +7,14 @@ namespace rrt {
 Point::Point(double x, double y, std::optional<double> r)
     : point_(x, y), r_(r) {}
 
+Point::Point(double x, double y, double r) : point_(x, y), r_(r) {
+  if (r == 0.) {
+    r_ = std::nullopt;
+  }
+}
+
+Point::Point(double x, double y) : point_(x, y) {}
+
 double Point::x() const {
   return point_.get<0>();
 }
