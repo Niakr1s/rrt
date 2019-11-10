@@ -1,8 +1,6 @@
 #ifndef XMLSPATIAL_H
 #define XMLSPATIAL_H
 
-#include <boost/geometry.hpp>
-#include <boost/geometry/geometries/geometries.hpp>
 #include "spatial.h"
 #include "xmlspatialinfo.h"
 
@@ -14,8 +12,8 @@ class XMLSpatial {
 
   XMLSpatialInfo info() const;
 
-  Spatial &spatial();
-  const Spatial &spatial() const;
+  Spatial& spatial();
+  const Spatial& spatial() const;
 
  private:
   XMLSpatialInfo info_;
