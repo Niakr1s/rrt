@@ -2,6 +2,7 @@
 
 #include <fmt/core.h>
 #include <boost/log/trivial.hpp>
+#include <pugixml.hpp>
 #include <stdexcept>
 #include <string>
 #include "common.h"
@@ -21,11 +22,11 @@ XML::XML(const char* path) : path_(path) {
     throw(std::runtime_error(
         fmt::format("Couldn't choose parser for {}", path_.string())));
   }
-  cadastralNumbers_ = parser_->getCadastralNumbers();
+  spatials_ = parser_->getXMLSpatials();
 }
 
-XML::cadastralNumbers_t XML::cadastralNumbers() const {
-  return cadastralNumbers_;
+XML::xmlSpatials_t XML::xmlSpatials() const {
+  return spatials_;
 }
 
 }  // namespace rrt

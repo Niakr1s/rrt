@@ -1,17 +1,11 @@
-#include "xmlcadastralnumber.h"
+#include "spatial.h"
 
 namespace rrt {
 
-XMLCadastralNumber::XMLCadastralNumber(const XMLCadastralNumberInfo& info)
-    : info_(info) {}
+Spatial::Spatial() {}
 
-XMLCadastralNumberInfo XMLCadastralNumber::info() const {
-  return info_;
-}
-
-void XMLCadastralNumber::append(
-    std::vector<std::vector<std::vector<XMLPoint>>>& xmlPoints) {
-  for (auto& polygon : xmlPoints) {
+void Spatial::append(std::vector<std::vector<std::vector<Point>>>& points) {
+  for (auto& polygon : points) {
     if (isClosed(polygon)) {
       polygon_t polygonToPush;
       for (size_t i = 0; i != polygon.size(); ++i) {
@@ -45,8 +39,8 @@ void XMLCadastralNumber::append(
           bg::buffer(circle.point(), mPolygonToPush, distance_strategy,
                      side_strategy, join_strategy, end_strategy,
                      point_strategy);
-          circles_.push_back(mPolygonToPush);
-          bg::append(circlePoints_, circle.point());
+          polygons_.push_back(mPolygonToPush[0]);
+          bg::append(circles_, circle.point());
         } else {
           linestring_t polygonToPush;
           for (auto& p : polygon[i]) {
@@ -59,15 +53,15 @@ void XMLCadastralNumber::append(
   }
 }
 
-bool XMLCadastralNumber::isClosed(std::vector<XMLPoint>& contour) {
+bool Spatial::isClosed(std::vector<Point>& contour) {
   return contour.size() > 1 && (contour.front() == contour.back());
 }
 
-bool XMLCadastralNumber::isCircle(std::vector<XMLPoint>& contour) {
+bool Spatial::isCircle(std::vector<Point>& contour) {
   return contour.size() == 1 && contour[0].r().has_value();
 }
 
-bool XMLCadastralNumber::isClosed(std::vector<std::vector<XMLPoint>>& polygon) {
+bool Spatial::isClosed(std::vector<std::vector<Point>>& polygon) {
   for (auto& contour : polygon) {
     if (!isClosed(contour)) {
       return false;
@@ -76,9 +70,9 @@ bool XMLCadastralNumber::isClosed(std::vector<std::vector<XMLPoint>>& polygon) {
   return true;
 };
 
-bg::strategy::buffer::point_circle XMLCadastralNumber::point_strategy(90);
-bg::strategy::buffer::side_straight XMLCadastralNumber::side_strategy;
-bg::strategy::buffer::join_round XMLCadastralNumber::join_strategy;
-bg::strategy::buffer::end_round XMLCadastralNumber::end_strategy;
+bg::strategy::buffer::point_circle Spatial::point_strategy(90);
+bg::strategy::buffer::side_straight Spatial::side_strategy;
+bg::strategy::buffer::join_round Spatial::join_strategy;
+bg::strategy::buffer::end_round Spatial::end_strategy;
 
 }  // namespace rrt

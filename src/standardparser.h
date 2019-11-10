@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 #include "xmlparser.h"
-#include "xmlpoint.h"
-#include "xmlcadastralnumberinfo.h"
+#include "point.h"
+#include "xmlspatialinfo.h"
 
 namespace rrt {
 
@@ -15,7 +15,7 @@ class StandardParser : public XMLParser {
  public:
   StandardParser(pugi::xml_document& root);
 
-  cadastralNumbers_t getCadastralNumbers() override;
+  xmlSpatials_t getXMLSpatials() override;
 
   pugi::xpath_node_set getCadastralNumberNodes();
   pugi::xpath_node_set getEntitySpatialNodes(
@@ -24,18 +24,18 @@ class StandardParser : public XMLParser {
       const pugi::xml_node& entitySpatialNode);
   pugi::xpath_node_set getOrdinateNodes(
       const pugi::xml_node& spatialElementNode);
-  XMLCadastralNumberInfo getSpatialInfo(const pugi::xml_node& cadastralNumberNode);
+  XMLSpatialInfo getSpatialInfo(const pugi::xml_node& cadastralNumberNode);
 
   std::pair<double, double> getCoordinates(const pugi::xml_node& ordinateNode);
   std::optional<double> getRadius(const pugi::xml_node& ordinateNode);
 
-  std::vector<std::vector<std::vector<XMLPoint>>> getCadastralItems(
+  std::vector<std::vector<std::vector<Point>>> getCadastralItems(
       const pugi::xml_node& cadastralNumberNode);
-  std::vector<std::vector<XMLPoint>> getEntitySpatialItems(
+  std::vector<std::vector<Point>> getEntitySpatialItems(
       const pugi::xml_node& entitySpatialNode);
-  std::vector<XMLPoint> getSpatialElementItems(
+  std::vector<Point> getSpatialElementItems(
       const pugi::xml_node& spatialElementNode);
-  XMLPoint getXmlPoint(const pugi::xml_node& ordinateNode);
+  Point getXmlPoint(const pugi::xml_node& ordinateNode);
 };
 
 }  // namespace rrt

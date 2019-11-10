@@ -4,7 +4,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/log/trivial.hpp>
 #include <cstring>
-#include "xmlpoint.h"
+#include "point.h"
 
 namespace rrt {
 
@@ -42,18 +42,17 @@ pugi::xpath_node_set StandardParser::getOrdinateNodes(
   return spatialElementNode.select_nodes(selector.c_str());
 }
 
-XMLCadastralNumberInfo StandardParser::getSpatialInfo(
+XMLSpatialInfo StandardParser::getSpatialInfo(
     const pugi::xml_node& cadastralNumberNode) {
-  XMLCadastralNumberInfo res(
-      cadastralNumberNode.name(),
-      cadastralNumberNode.attribute("CadastralNumber").value());
+  XMLSpatialInfo res(cadastralNumberNode.name(),
+                     cadastralNumberNode.attribute("CadastralNumber").value());
   return res;
 }
 
-XMLPoint StandardParser::getXmlPoint(const pugi::xml_node& ordinateNode) {
+Point StandardParser::getXmlPoint(const pugi::xml_node& ordinateNode) {
   auto coords = getCoordinates(ordinateNode);
   auto radius = getRadius(ordinateNode);
-  return XMLPoint(coords.first, coords.second, radius);
+  return Point(coords.first, coords.second, radius);
 }
 
 std::pair<double, double> StandardParser::getCoordinates(
@@ -71,9 +70,9 @@ std::optional<double> StandardParser::getRadius(
   return std::nullopt;
 }
 
-std::vector<std::vector<std::vector<XMLPoint>>>
-StandardParser::getCadastralItems(const pugi::xml_node& cadastralNumberNode) {
-  std::vector<std::vector<std::vector<XMLPoint>>> res;
+std::vector<std::vector<std::vector<Point>>> StandardParser::getCadastralItems(
+    const pugi::xml_node& cadastralNumberNode) {
+  std::vector<std::vector<std::vector<Point>>> res;
   for (auto& entitySpatial : getEntitySpatialNodes(cadastralNumberNode)) {
     auto entitySpatialItems = getEntitySpatialItems(entitySpatial.node());
     res.push_back(entitySpatialItems);
@@ -82,9 +81,9 @@ StandardParser::getCadastralItems(const pugi::xml_node& cadastralNumberNode) {
   return res;
 }
 
-std::vector<std::vector<XMLPoint>> StandardParser::getEntitySpatialItems(
+std::vector<std::vector<Point>> StandardParser::getEntitySpatialItems(
     const pugi::xml_node& entitySpatialNode) {
-  std::vector<std::vector<XMLPoint>> res;
+  std::vector<std::vector<Point>> res;
   for (auto& spatialElement : getSpatialElementNodes(entitySpatialNode)) {
     auto spatialElementItems = getSpatialElementItems(spatialElement.node());
     res.push_back(spatialElementItems);
@@ -93,11 +92,11 @@ std::vector<std::vector<XMLPoint>> StandardParser::getEntitySpatialItems(
   return res;
 }
 
-std::vector<XMLPoint> StandardParser::getSpatialElementItems(
+std::vector<Point> StandardParser::getSpatialElementItems(
     const pugi::xml_node& spatialElementNode) {
-  std::vector<XMLPoint> res;
+  std::vector<Point> res;
   for (auto& ordinate : getOrdinateNodes(spatialElementNode)) {
-    XMLPoint p = getXmlPoint(ordinate.node());
+    Point p = getXmlPoint(ordinate.node());
     res.push_back(p);
     BOOST_LOG_TRIVIAL(debug) << p;
   }
@@ -105,17 +104,17 @@ std::vector<XMLPoint> StandardParser::getSpatialElementItems(
   return res;
 }
 
-XMLParser::cadastralNumbers_t StandardParser::getCadastralNumbers() {
-  cadastralNumbers_t res;
+XMLParser::xmlSpatials_t StandardParser::getXMLSpatials() {
+  xmlSpatials_t res;
   for (auto& cadastral : getCadastralNumberNodes()) {
     auto spatialInfo = getSpatialInfo(cadastral.node());
     BOOST_LOG_TRIVIAL(debug) << spatialInfo;
-    XMLCadastralNumber spatial(spatialInfo);
+    XMLSpatial xmlSpatial(spatialInfo);
     auto cadastralItems = getCadastralItems(cadastral.node());
     BOOST_LOG_TRIVIAL(debug)
         << "Got " << cadastralItems.size() << " CadastralItems";
-    spatial.append(cadastralItems);
-    res.push_back(spatial);
+    xmlSpatial.spatial().append(cadastralItems);
+    res.push_back(xmlSpatial);
   }
   return res;
 }

@@ -12,14 +12,15 @@ target_link_libraries(rrt
     rrt_lib
 )
 
-
 add_library(rrt_lib
+    common.h
     xml.cpp
-    xmlcadastralnumber.cpp
-    xmlcadastralnumberinfo.cpp
+    xmlspatial.cpp
+    xmlspatialinfo.cpp
     xmlparser.cpp
     standardparser.cpp
-    xmlpoint.cpp
+    point.cpp
+    spatial.cpp
 )
 
 include_directories(rrt_lib

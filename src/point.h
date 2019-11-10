@@ -6,19 +6,23 @@
 #include <optional>
 #include "common.h"
 
+namespace bg = boost::geometry;
+
 namespace rrt {
 
-class XMLPoint {
+class Point {
  public:
-  XMLPoint(double x, double y, std::optional<double> r);
+  typedef bg::model::point<double, 2, bg::cs::cartesian> point_t;
+
+  Point(double x, double y, std::optional<double> r);
 
   double x() const;
   double y() const;
   point_t point() const;
   std::optional<double> r() const;
 
-  friend std::ostream& operator<<(std::ostream& out, const XMLPoint& rhs);
-  bool operator==(const XMLPoint& rhs) {
+  friend std::ostream& operator<<(std::ostream& out, const Point& rhs);
+  bool operator==(const Point& rhs) {
     return x() == rhs.x() && y() == rhs.y() && r_ == rhs.r_;
   }
 
@@ -27,7 +31,7 @@ class XMLPoint {
   std::optional<double> r_;
 };
 
-std::ostream& operator<<(std::ostream& out, const XMLPoint& rhs);
+std::ostream& operator<<(std::ostream& out, const Point& rhs);
 
 }  // namespace rrt
 

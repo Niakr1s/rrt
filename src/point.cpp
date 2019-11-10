@@ -1,29 +1,29 @@
-#include "xmlpoint.h"
+#include "point.h"
 
 #include <fmt/core.h>
 
 namespace rrt {
 
-XMLPoint::XMLPoint(double x, double y, std::optional<double> r)
+Point::Point(double x, double y, std::optional<double> r)
     : point_(x, y), r_(r) {}
 
-double XMLPoint::x() const {
+double Point::x() const {
   return point_.get<0>();
 }
 
-double XMLPoint::y() const {
+double Point::y() const {
   return point_.get<1>();
 }
 
-std::optional<double> XMLPoint::r() const {
+std::optional<double> Point::r() const {
   return r_;
 }
 
-point_t XMLPoint::point() const {
+Point::point_t Point::point() const {
   return point_;
 }
 
-std::ostream& operator<<(std::ostream& out, const XMLPoint& rhs) {
+std::ostream& operator<<(std::ostream& out, const Point& rhs) {
   auto str = fmt::format("X={:.2f}, Y={:.2f}", rhs.x(), rhs.y());
   if (rhs.r_.has_value()) {
     str.append(fmt::format(", R={:.2f}", rhs.r_.value()));

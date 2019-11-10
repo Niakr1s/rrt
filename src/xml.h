@@ -3,28 +3,22 @@
 
 #include <boost/filesystem/path.hpp>
 #include <memory>
-#include <pugixml.hpp>
-#include <string>
 #include "xmlparser.h"
 
 namespace rrt {
 
 class XML {
  public:
-  using cadastralNumbers_t = XMLParser::cadastralNumbers_t;
+  using xmlSpatials_t = XMLParser::xmlSpatials_t;
 
   XML(const char* path);
-  cadastralNumbers_t cadastralNumbers() const;
+  xmlSpatials_t xmlSpatials() const;
 
  private:
   boost::filesystem::path path_;
   std::shared_ptr<XMLParser> parser_;
-  cadastralNumbers_t cadastralNumbers_;
+  xmlSpatials_t spatials_;
 };
-
-pugi::xpath_node_set getCadastralNumberNodes(pugi::xml_document& root);
-pugi::xpath_node_set getSpatialNodes(const pugi::xml_node& doc);
-std::string localSelector(const char* input);
 
 }  // namespace rrt
 
