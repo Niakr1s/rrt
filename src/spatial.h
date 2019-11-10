@@ -4,8 +4,8 @@
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/geometries.hpp>
 #include <boost/log/trivial.hpp>
-#include "common.h"
 #include "point.h"
+#include "rect.h"
 
 namespace bg = boost::geometry;
 
@@ -30,6 +30,9 @@ class Spatial {
 
   template <typename Geometry>
   bool intersects(const Geometry& geometry) const {
+    if (!bg::intersects(rect_.box(), geometry)) {
+      return false;
+    }
     if (bg::intersects(polygons_, geometry)) {
       return true;
     }
@@ -47,10 +50,14 @@ class Spatial {
   static bool isCircle(std::vector<Point>& contour);
   static bool isClosed(std::vector<std::vector<Point>>& polygon);
 
+  void updateRect(std::vector<std::vector<std::vector<Point>>>& polygons);
+
  private:
+  Rect rect_;
   mpolygon_t polygons_;
   mpolygon_t circlePolygons_;
   mlinestring_t linestrings_;
+
   // member circles_ is just for printing to dxf etc,
   // actually circles are stored in circlePolygons_
   std::vector<Point> circles_;

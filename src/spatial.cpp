@@ -4,8 +4,8 @@ namespace rrt {
 
 Spatial::Spatial() {}
 
-void Spatial::append(std::vector<std::vector<std::vector<Point>>>& points) {
-  for (auto& polygon : points) {
+void Spatial::append(std::vector<std::vector<std::vector<Point>>>& polygons) {
+  for (auto& polygon : polygons) {
     if (isClosed(polygon)) {
       polygon_t polygonToPush;
       for (size_t i = 0; i != polygon.size(); ++i) {
@@ -51,6 +51,7 @@ void Spatial::append(std::vector<std::vector<std::vector<Point>>>& points) {
       }
     }
   }
+  updateRect(polygons);
 }
 
 bool Spatial::isClosed(std::vector<Point>& contour) {
@@ -68,6 +69,17 @@ bool Spatial::isClosed(std::vector<std::vector<Point>>& polygon) {
     }
   }
   return true;
+}
+
+void Spatial::updateRect(
+    std::vector<std::vector<std::vector<Point>>>& polygons) {
+  for (auto& polygon : polygons) {
+    for (auto& contour : polygon) {
+      for (auto& p : contour) {
+        rect_.append(p);
+      }
+    }
+  }
 };
 
 bg::strategy::buffer::point_circle Spatial::point_strategy(90);
