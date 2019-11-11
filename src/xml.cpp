@@ -8,20 +8,20 @@
 
 namespace rrt {
 
-XML::XML(const char* path) : path_(path) {
+XML::XML(const std::string& path) : path_(path) {
   pugi::xml_document root;
-  auto res = root.load_file(path_.c_str());
-  if (res.status != pugi::status_ok) {
-    throw(std::invalid_argument(
-        fmt::format("{}: {}", res.description(), path_.string())));
+  if (auto res = root.load_file(path_.c_str()); res.status != pugi::status_ok) {
+    throw(std::invalid_argument(fmt::format(
+        "XML: wrong input file: {}. {}", path_.string(), res.description())));
   }
-  BOOST_LOG_TRIVIAL(info) << "Succesfully opened: " << path_;
+  BOOST_LOG_TRIVIAL(info) << "XML: succesfully opened: " << path_;
   parser_ = XMLParser::chooseParser(root);
   if (parser_ == nullptr) {
     throw(std::runtime_error(
-        fmt::format("Couldn't choose parser for {}", path_.string())));
+        fmt::format("XML: couldn't choose parser for {}", path_.string())));
   }
   spatials_ = parser_->getXMLSpatials();
+  BOOST_LOG_TRIVIAL(info) << "XML: succesfully parsed: " << path_;
 }
 
 const XML::xmlSpatials_t& XML::xmlSpatials() const {

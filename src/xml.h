@@ -3,7 +3,10 @@
 
 #include <boost/filesystem/path.hpp>
 #include <memory>
+#include <string>
 #include "xmlparser.h"
+
+namespace bf = boost::filesystem;
 
 namespace rrt {
 
@@ -11,12 +14,12 @@ class XML {
  public:
   using xmlSpatials_t = XMLParser::xmlSpatials_t;
 
-  XML(const char* path);
+  XML(const std::string& path);
   const xmlSpatials_t& xmlSpatials() const;
   xmlSpatials_t& xmlSpatials();
 
  private:
-  boost::filesystem::path path_;
+  bf::path path_;
   std::shared_ptr<XMLParser> parser_;
   xmlSpatials_t spatials_;
 };
