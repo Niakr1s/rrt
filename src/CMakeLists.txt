@@ -9,21 +9,31 @@ add_executable(rrt
 )
 
 add_library(dxf SHARED
+    dxf.h
     dxf.cpp
 )
 
 add_library(xml SHARED
+    xml.h
     xml.cpp
+    xmlspatial.h
     xmlspatial.cpp
+    xmlspatialinfo.h
     xmlspatialinfo.cpp
+    xmlparser.h
     xmlparser.cpp
+    standardparser.h
     standardparser.cpp
 )
 
 add_library(spatial SHARED
+    point.h
     point.cpp
+    spatial.h
     spatial.cpp
+    rect.h
     rect.cpp
+    compare.h
     compare.cpp
 )
 

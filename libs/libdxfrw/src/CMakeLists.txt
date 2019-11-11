@@ -1,5 +1,7 @@
 file(GLOB src
+    "*.h"
     "*.cpp"
+    "intern/*.h"
     "intern/*.cpp"
 )
 
