@@ -11,6 +11,8 @@ namespace bf = boost::filesystem;
 namespace rrt {
 
 class DXF {
+  static const char* IGNORED;  // layer with this name will be ignored
+
  public:
   DXF(const std::string& path);
 

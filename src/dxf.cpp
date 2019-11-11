@@ -27,6 +27,9 @@ const Spatial& DXF::spatial() const {
 
 void DXF::parse() {
   for (auto e : dxData_.mBlock->ent) {
+    if (e->layer == IGNORED) {
+      continue;
+    }
     switch (e->eType) {
       case DRW::CIRCLE:
         appendDRWCircle(static_cast<DRW_Circle*>(e));
@@ -88,5 +91,7 @@ Point DXF::toPoint(const DRW_Point& p) {
 Point DXF::toPoint(const DRW_Circle& p) {
   return Point(p.basePoint.y, p.basePoint.x, p.radious);
 }
+
+const char* DXF::IGNORED = "ignored";
 
 }  // namespace rrt
