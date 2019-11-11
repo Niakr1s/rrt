@@ -1,6 +1,8 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
-*.dw*
+*.dwl
+*.dwl2
+*.bak
 CMakeLists.txt.user
 bin/*
 *~
