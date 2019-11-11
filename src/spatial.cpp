@@ -4,7 +4,8 @@ namespace rrt {
 
 Spatial::Spatial() {}
 
-void Spatial::append(std::vector<std::vector<std::vector<Point>>>& polygons) {
+void Spatial::append(
+    const std::vector<std::vector<std::vector<Point>>>& polygons) {
   for (auto& polygon : polygons) {
     if (isClosed(polygon)) {
       polygon_t polygonToPush;
@@ -54,15 +55,33 @@ void Spatial::append(std::vector<std::vector<std::vector<Point>>>& polygons) {
   updateRect(polygons);
 }
 
-bool Spatial::isClosed(std::vector<Point>& contour) {
+void Spatial::append(const std::vector<std::vector<Point>>& points) {
+  std::vector<std::vector<std::vector<Point>>> toAppend;
+  toAppend.push_back(points);
+  append(toAppend);
+}
+
+void Spatial::append(const std::vector<Point>& points) {
+  std::vector<std::vector<Point>> toAppend;
+  toAppend.push_back(points);
+  append(toAppend);
+}
+
+void Spatial::append(const Point& points) {
+  std::vector<Point> toAppend;
+  toAppend.push_back(points);
+  append(toAppend);
+}
+
+bool Spatial::isClosed(const std::vector<Point>& contour) {
   return contour.size() > 1 && (contour.front() == contour.back());
 }
 
-bool Spatial::isCircle(std::vector<Point>& contour) {
+bool Spatial::isCircle(const std::vector<Point>& contour) {
   return contour.size() == 1 && contour[0].r().has_value();
 }
 
-bool Spatial::isClosed(std::vector<std::vector<Point>>& polygon) {
+bool Spatial::isClosed(const std::vector<std::vector<Point>>& polygon) {
   for (auto& contour : polygon) {
     if (!isClosed(contour)) {
       return false;
@@ -72,7 +91,7 @@ bool Spatial::isClosed(std::vector<std::vector<Point>>& polygon) {
 }
 
 void Spatial::updateRect(
-    std::vector<std::vector<std::vector<Point>>>& polygons) {
+    const std::vector<std::vector<std::vector<Point>>>& polygons) {
   for (auto& polygon : polygons) {
     for (auto& contour : polygon) {
       for (auto& p : contour) {

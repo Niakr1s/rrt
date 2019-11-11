@@ -27,6 +27,11 @@ std::optional<double> Point::r() const {
   return r_;
 }
 
+bool Point::operator==(const Point& rhs) const {
+  return compare(x(), rhs.x()) && compare(y(), rhs.y()) &&
+         compare(r_.value_or(0.), rhs.r_.value_or(0.));
+}
+
 Point::point_t Point::point() const {
   return point_;
 }

@@ -45,12 +45,15 @@ class Spatial {
     return false;
   }
 
-  void append(std::vector<std::vector<std::vector<Point>>>& points);
-  static bool isClosed(std::vector<Point>& contour);
-  static bool isCircle(std::vector<Point>& contour);
-  static bool isClosed(std::vector<std::vector<Point>>& polygon);
+  void append(const std::vector<std::vector<std::vector<Point>>>& points);
+  void append(const std::vector<std::vector<Point>>& points);
+  void append(const std::vector<Point>& points);
+  void append(const Point& points);
+  static bool isClosed(const std::vector<Point>& contour);
+  static bool isCircle(const std::vector<Point>& contour);
+  static bool isClosed(const std::vector<std::vector<Point>>& polygon);
 
-  void updateRect(std::vector<std::vector<std::vector<Point>>>& polygons);
+  void updateRect(const std::vector<std::vector<std::vector<Point>>>& polygons);
 
  private:
   Rect rect_;

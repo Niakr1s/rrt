@@ -4,6 +4,7 @@
 #include <boost/geometry.hpp>
 #include <iostream>
 #include <optional>
+#include <vector>
 #include "compare.h"
 
 namespace bg = boost::geometry;
@@ -24,10 +25,8 @@ class Point {
   std::optional<double> r() const;
 
   friend std::ostream& operator<<(std::ostream& out, const Point& rhs);
-  bool operator==(const Point& rhs) {
-    return compare(x(), rhs.x()) && compare(y(), rhs.y()) &&
-           compare(r_.value_or(0.), rhs.r_.value_or(0.));
-  }
+
+  bool operator==(const Point& rhs) const;
 
  private:
   point_t point_;
