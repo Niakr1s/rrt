@@ -37,7 +37,7 @@ add_library(spatial SHARED
     compare.cpp
 )
 
-include_directories(dxf
+target_include_directories(dxf PUBLIC
     ../libs/libdxfrw/include
 )
 

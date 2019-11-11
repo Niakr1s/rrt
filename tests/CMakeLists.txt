@@ -51,6 +51,7 @@ include_directories(tests
 target_link_libraries(tests
     gtest_main
     xml
+    dxf
     spatial
 )
 
