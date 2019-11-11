@@ -42,7 +42,11 @@ include_directories(dxf
 )
 
 target_link_libraries(dxf
+    Boost::log
+    Boost::filesystem
+    fmt::fmt
     dxfrw
+    spatial
 )
 
 include_directories(xml
