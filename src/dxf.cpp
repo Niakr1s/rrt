@@ -17,6 +17,14 @@ DXF::DXF(const std::string& path) : path_(path) {
   BOOST_LOG_TRIVIAL(info) << "DXF: succesfully opened and parsed: " << path_;
 }
 
+Spatial& DXF::spatial() {
+  return spatial_;
+}
+
+const Spatial& DXF::spatial() const {
+  return spatial_;
+}
+
 void DXF::parse() {
   for (auto e : dxData_.mBlock->ent) {
     switch (e->eType) {
@@ -51,7 +59,6 @@ void DXF::appendDRWLine(DRW_Line* e) {
 
 void DXF::appendDRWPolyline(DRW_Polyline* e) {
   std::vector<Point> toAppend;
-  //  toAppend.push_back(toPoint(e->basePoint));  TODO: Check
   for (auto vert : e->vertlist) {
     toAppend.push_back(toPoint(vert->basePoint));
   }
@@ -60,15 +67,18 @@ void DXF::appendDRWPolyline(DRW_Polyline* e) {
 
 void DXF::appendDRWLWPolyline(DRW_LWPolyline* e) {
   std::vector<Point> toAppend;
-  //  toAppend.push_back(toPoint(e->basePoint));  TODO: Check
   for (auto vert : e->vertlist) {
-    toAppend.push_back(Point(vert->x, vert->y));
+    toAppend.push_back(toPoint(*vert));
   }
   spatial_.append(toAppend);
 }
 
+Point DXF::toPoint(const DRW_Vertex2D& p) {
+  return Point(p.y, p.x);
+}
+
 Point DXF::toPoint(const DRW_Coord& p) {
-  return Point(p.x, p.y);
+  return Point(p.y, p.x);
 }
 
 Point DXF::toPoint(const DRW_Point& p) {
@@ -76,7 +86,7 @@ Point DXF::toPoint(const DRW_Point& p) {
 }
 
 Point DXF::toPoint(const DRW_Circle& p) {
-  return Point(p.basePoint.x, p.basePoint.y, p.radious);
+  return Point(p.basePoint.y, p.basePoint.x, p.radious);
 }
 
 }  // namespace rrt

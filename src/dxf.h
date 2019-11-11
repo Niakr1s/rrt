@@ -14,6 +14,9 @@ class DXF {
  public:
   DXF(const std::string& path);
 
+  Spatial& spatial();
+  const Spatial& spatial() const;
+
  private:
   bf::path path_;
   dx_iface dxIface_;
@@ -27,6 +30,8 @@ class DXF {
   void appendDRWPolyline(DRW_Polyline* e);
   void appendDRWLWPolyline(DRW_LWPolyline* e);
 
+  // NOTE: all toPoint must implicially changes x and y
+  static Point toPoint(const DRW_Vertex2D& p);
   static Point toPoint(const DRW_Coord& p);
   static Point toPoint(const DRW_Point& p);
   static Point toPoint(const DRW_Circle& p);
