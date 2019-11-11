@@ -7,8 +7,8 @@
 #include <vector>
 
 #include <gtest/gtest.h>
-#include "../src/xml.h"
-#include "../src/xmlspatial.h"
+#include "xml.h"
+#include "xmlspatial.h"
 
 static const std::string PATH = "../../tests_data/";
 static const std::string BLOCK = PATH + "KPT CadastralBlock 77 03 0009007.xml";

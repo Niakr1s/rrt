@@ -40,10 +40,12 @@ add_executable(tests
     boost_tests.h
     xml_tests.h
     rect_tests.h
+    dxf_tests.h
 )
 
 include_directories(tests
     ${Boost_INCLUDE_DIRS}
+    ../src
 )
 
 target_link_libraries(tests
