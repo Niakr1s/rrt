@@ -10,7 +10,7 @@
 #include "xml.h"
 #include "xmlspatial.h"
 
-static const std::string PATH = "../../tests_data/";
+extern std::string PATH;
 static const std::string BLOCK = PATH + "KPT CadastralBlock 77 03 0009007.xml";
 
 TEST(xml, constructor) {
