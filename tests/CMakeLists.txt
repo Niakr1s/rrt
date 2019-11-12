@@ -55,5 +55,3 @@ target_link_libraries(tests
     dxf
     spatial
 )
-
-cotire(tests)

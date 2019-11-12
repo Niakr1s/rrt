@@ -119,6 +119,27 @@ XMLParser::xmlSpatials_t StandardParser::getXMLSpatials() {
   return res;
 }
 
-XMLInfo StandardParser::getXMLInfo() {}
+XMLInfo StandardParser::getXMLInfo() {
+  auto firstChild = *root_.children().begin();
+  std::string type(firstChild.name());
+
+  auto certDocNode = root_.select_node(".//CertificationDoc").node();
+  auto dateNode = certDocNode.select_node(localSelector("Date").c_str()).node();
+  auto numberNode =
+      certDocNode.select_node(localSelector("Number").c_str()).node();
+
+  if (type.empty() || certDocNode.empty() || dateNode.empty() ||
+      numberNode.empty()) {
+    throw(std::runtime_error("StandardParser::getXMLInfo: bad XML file"));
+  }
+
+  std::string date(dateNode.child_value());
+  std::string number(numberNode.child_value());
+
+  BOOST_LOG_TRIVIAL(debug) << "StandardParser::getXMLInfo: got type: " << type
+                           << ", date: " << date << ", number: " << number;
+
+  return XMLInfo(type, date, number);
+}
 
 }  // namespace rrt

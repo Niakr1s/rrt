@@ -25,6 +25,7 @@ XML::XML(const std::string& path) : path_(path) {
     throw(std::runtime_error(
         fmt::format("XML: empty spatials after parsing {}", path_.string())));
   }
+  xmlInfo_ = parser_->getXMLInfo();
   BOOST_LOG_TRIVIAL(info) << "XML: succesfully parsed: " << path_;
 }
 
