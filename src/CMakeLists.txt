@@ -24,6 +24,10 @@ add_library(xml SHARED
     xmlparser.cpp
     standardparser.h
     standardparser.cpp
+    xmlinfo.h
+    xmlinfo.cpp
+    cadastralnumber.h
+    cadastralnumber.cpp
 )
 
 add_library(spatial SHARED

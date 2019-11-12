@@ -41,6 +41,7 @@ add_executable(tests
     xml_tests.h
     rect_tests.h
     dxf_tests.h
+    cadastralnumber_tests.h
 )
 
 include_directories(tests

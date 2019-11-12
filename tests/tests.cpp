@@ -3,6 +3,7 @@
 static std::string PATH = "../../tests_data/";
 
 #include "boost_tests.h"
+#include "cadastralnumber_tests.h"
 #include "dxf_tests.h"
 #include "rect_tests.h"
 #include "xml_tests.h"
