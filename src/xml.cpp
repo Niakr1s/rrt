@@ -21,6 +21,10 @@ XML::XML(const std::string& path) : path_(path) {
         fmt::format("XML: couldn't choose parser for {}", path_.string())));
   }
   spatials_ = parser_->getXMLSpatials();
+  if (spatials_.empty()) {
+    throw(std::runtime_error(
+        fmt::format("XML: empty spatials after parsing {}", path_.string())));
+  }
   BOOST_LOG_TRIVIAL(info) << "XML: succesfully parsed: " << path_;
 }
 

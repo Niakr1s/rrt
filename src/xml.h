@@ -4,6 +4,7 @@
 #include <boost/filesystem/path.hpp>
 #include <memory>
 #include <string>
+#include "xmlinfo.h"
 #include "xmlparser.h"
 
 namespace bf = boost::filesystem;
@@ -20,6 +21,7 @@ class XML {
 
  private:
   bf::path path_;
+  XMLInfo xmlInfo_;
   std::shared_ptr<XMLParser> parser_;
   xmlSpatials_t spatials_;
 };

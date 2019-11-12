@@ -119,4 +119,6 @@ XMLParser::xmlSpatials_t StandardParser::getXMLSpatials() {
   return res;
 }
 
+XMLInfo StandardParser::getXMLInfo() {}
+
 }  // namespace rrt

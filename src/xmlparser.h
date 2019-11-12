@@ -4,6 +4,7 @@
 #include <memory>
 #include <pugixml.hpp>
 #include <vector>
+#include "xmlinfo.h"
 #include "xmlspatial.h"
 
 namespace rrt {
@@ -16,6 +17,7 @@ class XMLParser {
   virtual ~XMLParser() = default;
 
   virtual xmlSpatials_t getXMLSpatials() = 0;
+  virtual XMLInfo getXMLInfo() = 0;
 
   static std::shared_ptr<XMLParser> chooseParser(pugi::xml_document& root);
   static std::string localSelector(const char* input);

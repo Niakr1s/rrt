@@ -5,8 +5,9 @@
 #include <pugixml.hpp>
 #include <string>
 #include <vector>
-#include "xmlparser.h"
 #include "point.h"
+#include "xmlinfo.h"
+#include "xmlparser.h"
 #include "xmlspatialinfo.h"
 
 namespace rrt {
@@ -16,7 +17,9 @@ class StandardParser : public XMLParser {
   StandardParser(pugi::xml_document& root);
 
   xmlSpatials_t getXMLSpatials() override;
+  XMLInfo getXMLInfo() override;
 
+ private:
   pugi::xpath_node_set getCadastralNumberNodes();
   pugi::xpath_node_set getEntitySpatialNodes(
       const pugi::xml_node& cadastralNumberNode);
