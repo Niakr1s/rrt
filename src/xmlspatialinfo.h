@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 
+#include "cadastralnumber.h"
+
 namespace rrt {
 
 class XMLSpatialInfo {
@@ -17,7 +19,7 @@ class XMLSpatialInfo {
 
  private:
   std::string type_;
-  std::string cadastralNumber_;
+  CadastralNumber cadastralNumber_;
 };
 
 std::ostream& operator<<(std::ostream& out, const XMLSpatialInfo& rhs);
