@@ -21,7 +21,7 @@ TEST(xml, constructor) {
 
 TEST(xml, intersects) {
   auto xml = rrt::XML(BLOCK.c_str());
-  const auto& cns = xml.xmlSpatials();
+  auto& cns = xml.xmlSpatials();
 
   rrt::Spatial::linestring_t line1{
       {8854.7, 23408.53},
@@ -41,21 +41,19 @@ TEST(xml, intersects) {
       {8890.3796, 23483.3805},
   };
 
-  ASSERT_TRUE(cns[0].spatial().intersects(line1));
-  ASSERT_FALSE(cns[0].spatial().intersects(line2));
+  ASSERT_TRUE(cns[0].spatial()->intersects(line1));
+  ASSERT_FALSE(cns[0].spatial()->intersects(line2));
 
   std::vector<rrt::XMLSpatial> res;
-  std::copy_if(cns.begin(), cns.end(), std::back_inserter(res),
-               [&](const rrt::XMLSpatial& it) {
-                 return it.spatial().intersects(line1);
-               });
+  std::copy_if(
+      cns.begin(), cns.end(), std::back_inserter(res),
+      [&](rrt::XMLSpatial& it) { return it.spatial()->intersects(line1); });
   ASSERT_EQ(res.size(), 2);
 
   res.clear();
-  std::copy_if(cns.begin(), cns.end(), std::back_inserter(res),
-               [&](const rrt::XMLSpatial& it) {
-                 return it.spatial().intersects(line3);
-               });
+  std::copy_if(
+      cns.begin(), cns.end(), std::back_inserter(res),
+      [&](rrt::XMLSpatial& it) { return it.spatial()->intersects(line3); });
   ASSERT_EQ(res.size(), 1);
   ASSERT_EQ(res[0].info().cadastralNumber(), "77:03:0009007");
 }

@@ -1,6 +1,7 @@
 #ifndef XMLSPATIAL_H
 #define XMLSPATIAL_H
 
+#include <memory>
 #include "spatial.h"
 #include "xmlspatialinfo.h"
 
@@ -12,12 +13,11 @@ class XMLSpatial {
 
   XMLSpatialInfo info() const;
 
-  Spatial& spatial();
-  const Spatial& spatial() const;
+  std::shared_ptr<Spatial> spatial();
 
  private:
   XMLSpatialInfo info_;
-  Spatial spatial_;
+  std::shared_ptr<Spatial> spatial_;
 };
 
 }  // namespace rrt

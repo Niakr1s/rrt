@@ -2,6 +2,7 @@
 #define DXF_H
 
 #include <boost/filesystem/path.hpp>
+#include <memory>
 #include "dx_data.h"
 #include "dx_iface.h"
 #include "spatial.h"
@@ -16,14 +17,13 @@ class DXF {
  public:
   DXF(const std::string& path);
 
-  Spatial& spatial();
-  const Spatial& spatial() const;
+  std::shared_ptr<Spatial> spatial();
 
  private:
   bf::path path_;
   dx_iface dxIface_;
   dx_data dxData_;
-  Spatial spatial_;
+  std::shared_ptr<Spatial> spatial_;
 
  private:
   void parse();

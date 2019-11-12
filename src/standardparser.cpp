@@ -113,7 +113,7 @@ XMLParser::xmlSpatials_t StandardParser::getXMLSpatials() {
     auto cadastralItems = getCadastralItems(cadastral.node());
     BOOST_LOG_TRIVIAL(debug)
         << "Got " << cadastralItems.size() << " CadastralItems";
-    xmlSpatial.spatial().append(cadastralItems);
+    xmlSpatial.spatial()->append(cadastralItems);
     res.push_back(xmlSpatial);
   }
   return res;

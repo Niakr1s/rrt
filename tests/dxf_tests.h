@@ -27,9 +27,9 @@ TEST(dxf, constructor) {
       {1728.0, 2587.0},
   };
 
-  ASSERT_TRUE(dxf.spatial().intersects(line1));
-  ASSERT_TRUE(dxf.spatial().intersects(line2));
-  ASSERT_TRUE(dxf.spatial().intersects(line3));
+  ASSERT_TRUE(dxf.spatial()->intersects(line1));
+  ASSERT_TRUE(dxf.spatial()->intersects(line2));
+  ASSERT_TRUE(dxf.spatial()->intersects(line3));
 
   rrt::Spatial::linestring_t line4{
       {2300.0, 1476.0},
@@ -41,8 +41,8 @@ TEST(dxf, constructor) {
       {2265.0, 1672.0},
   };
 
-  ASSERT_FALSE(dxf.spatial().intersects(line4));
-  ASSERT_FALSE(dxf.spatial().intersects(line5));
+  ASSERT_FALSE(dxf.spatial()->intersects(line4));
+  ASSERT_FALSE(dxf.spatial()->intersects(line5));
 }
 
 #endif  // DXF_TESTS_H

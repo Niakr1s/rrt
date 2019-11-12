@@ -8,7 +8,8 @@
 
 namespace rrt {
 
-DXF::DXF(const std::string& path) : path_(path) {
+DXF::DXF(const std::string& path)
+    : path_(path), spatial_(std::make_shared<Spatial>()) {
   if (auto ok = dxIface_.fileImport(path.c_str(), &dxData_); !ok) {
     throw std::invalid_argument(
         fmt::format("DXF: wrong input file: {}", path_.string()));
@@ -17,11 +18,7 @@ DXF::DXF(const std::string& path) : path_(path) {
   BOOST_LOG_TRIVIAL(info) << "DXF: succesfully opened and parsed: " << path_;
 }
 
-Spatial& DXF::spatial() {
-  return spatial_;
-}
-
-const Spatial& DXF::spatial() const {
+std::shared_ptr<Spatial> DXF::spatial() {
   return spatial_;
 }
 
@@ -50,14 +47,14 @@ void DXF::parse() {
 }
 
 void DXF::appendDRWCircle(DRW_Circle* e) {
-  spatial_.append(toPoint(*e));
+  spatial_->append(toPoint(*e));
 }
 
 void DXF::appendDRWLine(DRW_Line* e) {
   std::vector<Point> toAppend;
   toAppend.push_back(toPoint(e->basePoint));
   toAppend.push_back(toPoint(e->secPoint));
-  spatial_.append(toAppend);
+  spatial_->append(toAppend);
 }
 
 void DXF::appendDRWPolyline(DRW_Polyline* e) {
@@ -65,7 +62,7 @@ void DXF::appendDRWPolyline(DRW_Polyline* e) {
   for (auto vert : e->vertlist) {
     toAppend.push_back(toPoint(vert->basePoint));
   }
-  spatial_.append(toAppend);
+  spatial_->append(toAppend);
 }
 
 void DXF::appendDRWLWPolyline(DRW_LWPolyline* e) {
@@ -73,7 +70,7 @@ void DXF::appendDRWLWPolyline(DRW_LWPolyline* e) {
   for (auto vert : e->vertlist) {
     toAppend.push_back(toPoint(*vert));
   }
-  spatial_.append(toAppend);
+  spatial_->append(toAppend);
 }
 
 Point DXF::toPoint(const DRW_Vertex2D& p) {
