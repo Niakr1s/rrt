@@ -12,6 +12,8 @@ namespace bg = boost::geometry;
 namespace rrt {
 
 class Spatial {
+  friend class DXF;
+
  public:
   typedef Point::point_t point_t;
   typedef bg::model::multi_point<point_t> mpoint_t;

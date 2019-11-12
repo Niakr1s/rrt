@@ -8,6 +8,11 @@ add_executable(rrt
     main.cpp
 )
 
+target_link_libraries(rrt
+    dxf
+    xml
+)
+
 add_library(dxf SHARED
     dxf.h
     dxf.cpp
@@ -64,6 +69,7 @@ target_link_libraries(xml
     Boost::log
     Boost::filesystem
     spatial
+    dxf
 )
 
 include_directories(spatial

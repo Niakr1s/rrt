@@ -19,6 +19,8 @@ class XML {
   const xmlSpatials_t& xmlSpatials() const;
   xmlSpatials_t& xmlSpatials();
 
+  void saveToDXF(std::string path = "");
+
  private:
   bf::path path_;
   XMLInfo xmlInfo_;

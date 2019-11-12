@@ -5,6 +5,7 @@
 #include <pugixml.hpp>
 #include <stdexcept>
 #include <string>
+#include "dxf.h"
 
 namespace rrt {
 
@@ -35,6 +36,19 @@ const XML::xmlSpatials_t& XML::xmlSpatials() const {
 
 XML::xmlSpatials_t& XML::xmlSpatials() {
   return spatials_;
+}
+
+void XML::saveToDXF(std::string path /*= ""*/) {
+  if (path.empty()) {
+    auto exportPath(path_);
+    exportPath.replace_extension("dxf");
+    path = exportPath.string();
+  }
+  DXF dxf;
+  for (auto& xmlSpatial : spatials_) {
+    dxf.drawSpatial(xmlSpatial.info().cadastralNumber(), xmlSpatial.spatial());
+  }
+  dxf.fileExport(path);
 }
 
 }  // namespace rrt

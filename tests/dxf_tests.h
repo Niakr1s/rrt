@@ -10,7 +10,8 @@ extern std::string PATH;
 static const std::string POLY = PATH + "poly.dwg";
 
 TEST(dxf, constructor) {
-  rrt::DXF dxf(POLY);
+  rrt::DXF dxf;
+  dxf.fileImport(POLY);
 
   rrt::Spatial::linestring_t line1{
       {1076.0, 1347.0},

@@ -1,13 +1,11 @@
 #ifndef DXF_H
 #define DXF_H
 
-#include <boost/filesystem/path.hpp>
 #include <memory>
+#include <string>
 #include "dx_data.h"
 #include "dx_iface.h"
 #include "spatial.h"
-
-namespace bf = boost::filesystem;
 
 namespace rrt {
 
@@ -15,18 +13,22 @@ class DXF {
   static const char* IGNORED;  // layer with this name will be ignored
 
  public:
-  DXF(const std::string& path);
+  DXF();
 
   std::shared_ptr<Spatial> spatial();
+  void drawSpatial(std::string cadastralNumber,
+                   std::shared_ptr<Spatial> spatial);
+
+  void fileImport(const std::string& path);
+  void fileExport(const std::string& path);
 
  private:
-  bf::path path_;
   dx_iface dxIface_;
   dx_data dxData_;
   std::shared_ptr<Spatial> spatial_;
 
  private:
-  void parse();
+  void dataToSpatial();
   void appendDRWCircle(DRW_Circle* e);
   void appendDRWLine(DRW_Line* e);
   void appendDRWPolyline(DRW_Polyline* e);
@@ -37,6 +39,12 @@ class DXF {
   static Point toPoint(const DRW_Coord& p);
   static Point toPoint(const DRW_Point& p);
   static Point toPoint(const DRW_Circle& p);
+
+  // for drawSpatial
+  void draw(std::vector<Spatial::point_t>::const_iterator begin,
+            std::vector<Spatial::point_t>::const_iterator end,
+            const std::string& layer);
+  void draw(Point circle, const std::string& layer);
 };
 
 }  // namespace rrt
