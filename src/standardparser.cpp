@@ -77,6 +77,7 @@ std::vector<std::vector<std::vector<Point>>> StandardParser::getCadastralItems(
     auto entitySpatialItems = getEntitySpatialItems(entitySpatial.node());
     res.push_back(entitySpatialItems);
   }
+  BOOST_LOG_TRIVIAL(debug) << "Got " << res.size() << " CadastralItems";
   return res;
 }
 
@@ -87,6 +88,7 @@ std::vector<std::vector<Point>> StandardParser::getEntitySpatialItems(
     auto spatialElementItems = getSpatialElementItems(spatialElement.node());
     res.push_back(spatialElementItems);
   }
+  BOOST_LOG_TRIVIAL(debug) << "Got " << res.size() << " EntitySpatialItems";
   return res;
 }
 
@@ -98,6 +100,7 @@ std::vector<Point> StandardParser::getSpatialElementItems(
     res.push_back(p);
     BOOST_LOG_TRIVIAL(debug) << p;
   }
+  BOOST_LOG_TRIVIAL(debug) << "Got " << res.size() << " SpatialElementItems";
   return res;
 }
 
@@ -105,12 +108,13 @@ XMLParser::xmlSpatials_t StandardParser::getXMLSpatials() {
   xmlSpatials_t res;
   for (auto& cadastral : getCadastralNumberNodes()) {
     auto spatialInfo = getSpatialInfo(cadastral.node());
+    BOOST_LOG_TRIVIAL(debug) << spatialInfo;
     XMLSpatial xmlSpatial(spatialInfo);
     auto cadastralItems = getCadastralItems(cadastral.node());
+    BOOST_LOG_TRIVIAL(debug)
+        << "Got " << cadastralItems.size() << " CadastralItems";
     xmlSpatial.spatial()->append(cadastralItems);
     res.push_back(xmlSpatial);
-    BOOST_LOG_TRIVIAL(debug)
-        << "StandardParser::getXMLSpatials: got: " << spatialInfo;
   }
   return res;
 }
