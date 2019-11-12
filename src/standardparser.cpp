@@ -77,7 +77,8 @@ std::vector<std::vector<std::vector<Point>>> StandardParser::getCadastralItems(
     auto entitySpatialItems = getEntitySpatialItems(entitySpatial.node());
     res.push_back(entitySpatialItems);
   }
-  BOOST_LOG_TRIVIAL(debug) << "Got " << res.size() << " CadastralItems";
+  BOOST_LOG_TRIVIAL(debug) << "StandardParser::getCadastralItems: got "
+                           << res.size() << " CadastralItems";
   return res;
 }
 
@@ -88,7 +89,8 @@ std::vector<std::vector<Point>> StandardParser::getEntitySpatialItems(
     auto spatialElementItems = getSpatialElementItems(spatialElement.node());
     res.push_back(spatialElementItems);
   }
-  BOOST_LOG_TRIVIAL(debug) << "Got " << res.size() << " EntitySpatialItems";
+  BOOST_LOG_TRIVIAL(debug) << "StandardParser::getEntitySpatialItems: got "
+                           << res.size() << " EntitySpatialItems";
   return res;
 }
 
@@ -100,7 +102,8 @@ std::vector<Point> StandardParser::getSpatialElementItems(
     res.push_back(p);
     BOOST_LOG_TRIVIAL(debug) << p;
   }
-  BOOST_LOG_TRIVIAL(debug) << "Got " << res.size() << " SpatialElementItems";
+  BOOST_LOG_TRIVIAL(debug) << "StandardParser::getSpatialElementItems: got "
+                           << res.size() << " SpatialElementItems";
   return res;
 }
 
@@ -108,13 +111,14 @@ XMLParser::xmlSpatials_t StandardParser::getXMLSpatials() {
   xmlSpatials_t res;
   for (auto& cadastral : getCadastralNumberNodes()) {
     auto spatialInfo = getSpatialInfo(cadastral.node());
-    BOOST_LOG_TRIVIAL(debug) << spatialInfo;
     XMLSpatial xmlSpatial(spatialInfo);
     auto cadastralItems = getCadastralItems(cadastral.node());
     BOOST_LOG_TRIVIAL(debug)
         << "Got " << cadastralItems.size() << " CadastralItems";
     xmlSpatial.spatial()->append(cadastralItems);
     res.push_back(xmlSpatial);
+    BOOST_LOG_TRIVIAL(info)
+        << "StandardParser::getXMLSpatials: got: " << spatialInfo;
   }
   return res;
 }
@@ -136,8 +140,8 @@ XMLInfo StandardParser::getXMLInfo() {
   std::string date(dateNode.child_value());
   std::string number(numberNode.child_value());
 
-  BOOST_LOG_TRIVIAL(debug) << "StandardParser::getXMLInfo: got type: " << type
-                           << ", date: " << date << ", number: " << number;
+  BOOST_LOG_TRIVIAL(info) << "StandardParser::getXMLInfo: got type: " << type
+                          << ", date: " << date << ", number: " << number;
 
   return XMLInfo(type, date, number);
 }
