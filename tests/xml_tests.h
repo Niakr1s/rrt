@@ -55,7 +55,7 @@ TEST(xml, intersects) {
       cns.begin(), cns.end(), std::back_inserter(res),
       [&](rrt::XMLSpatial& it) { return it.spatial()->intersects(line3); });
   ASSERT_EQ(res.size(), 1);
-  ASSERT_EQ(res[0].info().cadastralNumber(), "77:03:0009007");
+  ASSERT_EQ(res[0].info().cadastralNumber().string(), "77:03:0009007");
 }
 
 #endif  // XML_TESTS_H

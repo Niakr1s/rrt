@@ -13,6 +13,7 @@ class CadastralNumber {
   CadastralNumber(const std::string& str);
 
   std::string string() const;
+  std::string underscoredString() const;
 
  public:
   bool operator<(const CadastralNumber& rhs) const;

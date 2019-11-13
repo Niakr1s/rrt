@@ -2,6 +2,7 @@
 #define XMLSPATIAL_H
 
 #include <memory>
+#include "dxf.h"
 #include "spatial.h"
 #include "xmlspatialinfo.h"
 

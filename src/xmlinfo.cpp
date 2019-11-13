@@ -1,5 +1,7 @@
 #include "xmlinfo.h"
 
+#include <boost/algorithm/string.hpp>
+
 namespace rrt {
 
 XMLInfo::XMLInfo() {}
@@ -17,8 +19,14 @@ std::string XMLInfo::number() const {
   return number_;
 }
 
-boost::gregorian::date XMLInfo::date() const {
-  return date_;
+std::string XMLInfo::fsSafeNumber() const {
+  std::string res(number_);
+  boost::replace_all(res, ":", "_");
+  return res;
+}
+
+std::string XMLInfo::date() const {
+  return boost::gregorian::to_iso_extended_string(date_);
 }
 
 }  // namespace rrt

@@ -36,6 +36,12 @@ std::string CadastralNumber::string() const {
   return str_;
 }
 
+std::string CadastralNumber::underscoredString() const {
+  std::string res(str_);
+  boost::replace_all(res, ":", "_");
+  return res;
+}
+
 void CadastralNumber::getNumbers(const std::string& str) {
   std::vector<std::string> splitted;
   boost::split(splitted, str, boost::is_any_of(":"));

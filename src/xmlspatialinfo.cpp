@@ -9,8 +9,8 @@ std::string XMLSpatialInfo::type() const {
   return type_;
 }
 
-std::string XMLSpatialInfo::cadastralNumber() const {
-  return cadastralNumber_.string();
+const CadastralNumber& XMLSpatialInfo::cadastralNumber() const {
+  return cadastralNumber_;
 }
 
 std::ostream& operator<<(std::ostream& out, const XMLSpatialInfo& rhs) {
