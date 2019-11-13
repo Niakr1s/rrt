@@ -15,12 +15,14 @@ class DXF {
  public:
   DXF();
 
+  using Version = DRW::Version;
+
   std::shared_ptr<Spatial> spatial();
   void drawSpatial(std::string cadastralNumber,
                    std::shared_ptr<Spatial> spatial);
 
   void fileImport(const std::string& path);
-  void fileExport(const std::string& path);
+  void fileExport(const std::string& path, Version version);
 
  private:
   dx_iface dxIface_;

@@ -26,23 +26,6 @@ std::shared_ptr<Spatial> DXF::spatial() {
 
 void DXF::drawSpatial(std::string cadastralNumber,
                       std::shared_ptr<Spatial> spatial) {
-  //  boost::replace_all(cadastralNumber, ":", "_");
-  //  std::string utf8CN = fmt::format("{}", cadastralNumber);
-  //  auto& blocks = dxData_.blocks;
-  //  if (auto found = std::find_if(blocks.begin(), blocks.end(),
-  //                                [&](auto& it) { return it->name == utf8CN;
-  //                                });
-  //      found != blocks.end()) {
-  //    dxIface_.currentBlock = *found;
-  //  } else {
-  //    DRW_Block block;
-  //    block.name = utf8CN;
-  //    block.basePoint.x = 0.;
-  //    block.basePoint.y = 0.;
-  //    block.basePoint.z = 0.;
-  //    dxIface_.addBlock(block);
-  //  }
-
   boost::replace_all(cadastralNumber, ":", "_");
   auto& blocks = dxData_.layers;
   if (auto found =
@@ -83,8 +66,8 @@ void DXF::fileImport(const std::string& path) {
                           << path;
 }
 
-void DXF::fileExport(const std::string& path) {
-  if (auto ok = dxIface_.fileExport(path, DRW::AC1024, false, &dxData_); !ok) {
+void DXF::fileExport(const std::string& path, Version version) {
+  if (auto ok = dxIface_.fileExport(path, version, false, &dxData_); !ok) {
     throw std::invalid_argument(
         fmt::format("DXF: problem while exporting: {}", path));
   }

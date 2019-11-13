@@ -4,6 +4,7 @@
 #include <boost/filesystem/path.hpp>
 #include <memory>
 #include <string>
+#include "dxf.h"
 #include "xmlinfo.h"
 #include "xmlparser.h"
 
@@ -19,7 +20,8 @@ class XML {
   const xmlSpatials_t& xmlSpatials() const;
   xmlSpatials_t& xmlSpatials();
 
-  void saveToDXF(std::string path = "");
+  void saveToDXF(std::string path = "",
+                 DXF::Version version = DXF::Version::AC1015);
 
  private:
   bf::path path_;
