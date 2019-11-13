@@ -42,8 +42,6 @@ add_library(xml SHARED
     xml.cpp
     xmlspatial.h
     xmlspatial.cpp
-    xmlspatialinfo.h
-    xmlspatialinfo.cpp
     xmlparser.h
     xmlparser.cpp
     standardparser.h
