@@ -19,7 +19,7 @@ class XMLInfo {
   std::string type() const;
   std::string date() const;
   std::string orderNumber() const;
-  const CadastralNumber& cadastralNumber() const;
+  const XMLSpatialInfo& spatialInfo() const;
 
  private:
   std::string type_;

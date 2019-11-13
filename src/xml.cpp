@@ -58,7 +58,7 @@ void XML::saveToDXF(std::string path /*= ""*/,
 void XML::renameFile() {
   std::string newFilenameStr =
       fmt::format("{} {} {}{}", xmlInfo_.type(),
-                  xmlInfo_.cadastralNumber().underscoredString(),
+                  xmlInfo_.spatialInfo().cadastralNumber().underscoredString(),
                   xmlInfo_.date(), path_.extension().string());
   bf::path newFilename(newFilenameStr);
   bf::path newPath = path_.parent_path();

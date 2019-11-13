@@ -23,8 +23,8 @@ std::string XMLInfo::orderNumber() const {
   return orderNumber_;
 }
 
-const CadastralNumber& XMLInfo::cadastralNumber() const {
-  return spatialInfo_.cadastralNumber();
+const XMLSpatialInfo& XMLInfo::spatialInfo() const {
+  return spatialInfo_;
 }
 
 std::string XMLInfo::date() const {
