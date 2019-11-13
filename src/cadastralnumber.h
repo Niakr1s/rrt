@@ -26,7 +26,7 @@ class CadastralNumber {
   std::vector<int> numbers_;
 
  private:
-  void getNumbers(std::string str);
+  void getNumbers(const std::string& str);
 };
 
 std::ostream& operator<<(std::ostream& out, const CadastralNumber& rhs);

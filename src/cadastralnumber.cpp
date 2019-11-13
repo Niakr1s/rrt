@@ -1,6 +1,7 @@
 #include "cadastralnumber.h"
 
 #include <fmt/core.h>
+#include <boost/algorithm/string.hpp>
 #include <stdexcept>
 
 namespace rrt {
@@ -35,12 +36,11 @@ std::string CadastralNumber::string() const {
   return str_;
 }
 
-void CadastralNumber::getNumbers(std::string str) {
-  if (auto found = str.find(":"); found != std::string::npos) {
-    numbers_.push_back(std::stoi(str.substr(0, found)));
-    getNumbers(str.substr(found + 1));
-  } else {
-    numbers_.push_back(std::stoi(str));
+void CadastralNumber::getNumbers(const std::string& str) {
+  std::vector<std::string> splitted;
+  boost::split(splitted, str, boost::is_any_of(":"));
+  for (auto& chunk : splitted) {
+    numbers_.push_back(std::stoi(chunk));
   }
 }
 
