@@ -1,6 +1,7 @@
 #include "xml.h"
 
 #include <fmt/core.h>
+#include <boost/filesystem.hpp>
 #include <boost/log/trivial.hpp>
 #include <pugixml.hpp>
 #include <stdexcept>
@@ -47,11 +48,27 @@ void XML::saveToDXF(std::string path /*= ""*/,
 
   DXF dxf;
   for (auto& xmlSpatial : spatials_) {
-    dxf.drawSpatial(xmlSpatial.info().cadastralNumber(),
+    dxf.drawSpatial(xmlSpatial.info().cadastralNumber().string(),
                     xmlSpatial.info().type(), xmlSpatial.spatial(),
                     xmlSpatial.color());
   }
   dxf.fileExport(path, version);
+}
+
+void XML::renameFile() {
+  std::string newFilenameStr =
+      fmt::format("{} {} {}{}", xmlInfo_.type(),
+                  xmlInfo_.cadastralNumber().underscoredString(),
+                  xmlInfo_.date(), path_.extension().string());
+  bf::path newFilename(newFilenameStr);
+  bf::path newPath = path_.parent_path();
+  newPath.append(newFilenameStr);
+  bf::rename(path_, newPath);
+  path_ = newPath;
+}
+
+const XMLInfo& XML::info() const {
+  return xmlInfo_;
 }
 
 }  // namespace rrt

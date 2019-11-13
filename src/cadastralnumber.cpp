@@ -6,6 +6,8 @@
 
 namespace rrt {
 
+CadastralNumber::CadastralNumber() {}
+
 CadastralNumber::CadastralNumber(const std::string& str) : str_(str) {
   getNumbers(str_);
   if (numbers_.size() == 0 || numbers_.size() > 4) {

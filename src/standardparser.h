@@ -20,7 +20,9 @@ class StandardParser : public XMLParser {
   XMLInfo getXMLInfo() override;
 
  private:
+  static const pugi::xpath_query CADASTRAL_NUMBER_QUERY;
   pugi::xpath_node_set getCadastralNumberNodes();
+  pugi::xpath_node getFirstCadastralNumberNode();
   pugi::xpath_node_set getEntitySpatialNodes(
       const pugi::xml_node& cadastralNumberNode);
   pugi::xpath_node_set getSpatialElementNodes(

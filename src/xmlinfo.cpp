@@ -6,10 +6,14 @@ namespace rrt {
 
 XMLInfo::XMLInfo() {}
 
-XMLInfo::XMLInfo(std::string type, std::string date, std::string number)
+XMLInfo::XMLInfo(std::string type,
+                 std::string date,
+                 std::string number,
+                 const XMLSpatialInfo& spatialInfo)
     : type_(type),
       date_(boost::gregorian::from_string(date)),
-      orderNumber_(number) {}
+      orderNumber_(number),
+      spatialInfo_(spatialInfo) {}
 
 std::string XMLInfo::type() const {
   return type_;
@@ -17,6 +21,10 @@ std::string XMLInfo::type() const {
 
 std::string XMLInfo::orderNumber() const {
   return orderNumber_;
+}
+
+const CadastralNumber& XMLInfo::cadastralNumber() const {
+  return spatialInfo_.cadastralNumber();
 }
 
 std::string XMLInfo::date() const {

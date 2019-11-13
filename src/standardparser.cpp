@@ -11,9 +11,12 @@ namespace rrt {
 StandardParser::StandardParser(pugi::xml_document& root) : XMLParser(root) {}
 
 pugi::xpath_node_set rrt::StandardParser::getCadastralNumberNodes() {
-  static const pugi::xpath_query CADASTRAL_NUMBER_QUERY(
-      ".//*[@CadastralNumber]");
   pugi::xpath_node_set res = root_.select_nodes(CADASTRAL_NUMBER_QUERY);
+  return res;
+}
+
+pugi::xpath_node StandardParser::getFirstCadastralNumberNode() {
+  pugi::xpath_node res = root_.select_node(CADASTRAL_NUMBER_QUERY);
   return res;
 }
 
@@ -140,10 +143,16 @@ XMLInfo StandardParser::getXMLInfo() {
   std::string date(dateNode.child_value());
   std::string number(numberNode.child_value());
 
+  auto firstNode = getFirstCadastralNumberNode().node();
+  auto firstSpatialInfo = getSpatialInfo(firstNode);
+
   BOOST_LOG_TRIVIAL(info) << "StandardParser::getXMLInfo: got type: " << type
                           << ", date: " << date << ", number: " << number;
 
-  return XMLInfo(type, date, number);
+  return XMLInfo(type, date, number, firstSpatialInfo);
 }
+
+const pugi::xpath_query StandardParser::CADASTRAL_NUMBER_QUERY(
+    ".//*[@CadastralNumber]");
 
 }  // namespace rrt

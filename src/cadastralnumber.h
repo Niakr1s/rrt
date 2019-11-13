@@ -10,6 +10,7 @@ namespace rrt {
 
 class CadastralNumber {
  public:
+  CadastralNumber();
   CadastralNumber(const std::string& str);
 
   std::string string() const;

@@ -2,6 +2,8 @@
 
 namespace rrt {
 
+XMLSpatialInfo::XMLSpatialInfo() {}
+
 XMLSpatialInfo::XMLSpatialInfo(std::string type, std::string cadastralNumber)
     : type_(type), cadastralNumber_(cadastralNumber) {}
 

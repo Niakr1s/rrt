@@ -10,6 +10,7 @@ namespace rrt {
 
 class XMLSpatialInfo {
  public:
+  XMLSpatialInfo();
   XMLSpatialInfo(std::string type, std::string cadastralNumber);
 
   friend std::ostream& operator<<(std::ostream& out, const XMLSpatialInfo& rhs);
