@@ -10,10 +10,23 @@ std::shared_ptr<XMLParser> XMLParser::chooseParser(pugi::xml_document& root) {
   return std::make_shared<StandardParser>(root);
 }
 
-std::string XMLParser::localSelector(const char* input) {
+const std::string XMLParser::localSelector(const std::string& input) {
   std::string res = ".//*[local-name()='";
   res.append(input);
   res.append("']");
+  return res;
+}
+
+const std::string XMLParser::attributeSelector(const std::string& input) {
+  std::string res = ".//*[@";
+  res.append(input);
+  res.append("]");
+  return res;
+}
+
+const std::string XMLParser::childSelector(const std::string& input) {
+  std::string res = ".//";
+  res.append(input);
   return res;
 }
 

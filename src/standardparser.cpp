@@ -10,22 +10,29 @@ namespace rrt {
 
 StandardParser::StandardParser(pugi::xml_document& root) : XMLParser(root) {}
 
+StandardParser::StandardParser(pugi::xml_document& root,
+                               const StandardParserSettings& settings)
+    : XMLParser(root), settings_(settings) {}
+
 pugi::xpath_node_set rrt::StandardParser::getCadastralNumberNodes() {
-  pugi::xpath_node_set res = root_.select_nodes(CADASTRAL_NUMBER_QUERY);
+  pugi::xpath_node_set res =
+      root_.select_nodes(attributeSelector(settings_.CadastralNumber).c_str());
   return res;
 }
 
 pugi::xpath_node StandardParser::getFirstCadastralNumberNode() {
-  pugi::xpath_node res = root_.select_node(CADASTRAL_NUMBER_QUERY);
+  pugi::xpath_node res =
+      root_.select_node(attributeSelector(settings_.CadastralNumber).c_str());
   return res;
 }
 
 pugi::xpath_node_set StandardParser::getEntitySpatialNodes(
     const pugi::xml_node& cadastralNumberNode) {
   pugi::xpath_node_set res;
-  auto selector = localSelector("EntitySpatial");
-  if (std::strcmp(cadastralNumberNode.name(), "CadastralBlock") == 0) {
-    auto spatialNode = cadastralNumberNode.child("SpatialData");
+  auto selector = localSelector(settings_.EntitySpatial);
+  if (std::strcmp(cadastralNumberNode.name(),
+                  settings_.CadastralBlock.c_str()) == 0) {
+    auto spatialNode = cadastralNumberNode.child(settings_.SpatialData.c_str());
     res = spatialNode.select_nodes(selector.c_str());
   } else {
     res = cadastralNumberNode.select_nodes(selector.c_str());
@@ -35,20 +42,21 @@ pugi::xpath_node_set StandardParser::getEntitySpatialNodes(
 
 pugi::xpath_node_set StandardParser::getSpatialElementNodes(
     const pugi::xml_node& entitySpatialNode) {
-  auto selector = localSelector("SpatialElement");
+  auto selector = localSelector(settings_.SpatialElement);
   return entitySpatialNode.select_nodes(selector.c_str());
 }
 
 pugi::xpath_node_set StandardParser::getOrdinateNodes(
     const pugi::xml_node& spatialElementNode) {
-  auto selector = localSelector("Ordinate");
+  auto selector = localSelector(settings_.Ordinate);
   return spatialElementNode.select_nodes(selector.c_str());
 }
 
 XMLSpatialInfo StandardParser::getSpatialInfo(
     const pugi::xml_node& cadastralNumberNode) {
-  XMLSpatialInfo res(cadastralNumberNode.name(),
-                     cadastralNumberNode.attribute("CadastralNumber").value());
+  XMLSpatialInfo res(
+      cadastralNumberNode.name(),
+      cadastralNumberNode.attribute(settings_.CadastralNumber.c_str()).value());
   return res;
 }
 
@@ -60,8 +68,10 @@ Point StandardParser::getXmlPoint(const pugi::xml_node& ordinateNode) {
 
 std::pair<double, double> StandardParser::getCoordinates(
     const pugi::xml_node& ordinateNode) {
-  return {boost::lexical_cast<double>(ordinateNode.attribute("X").value()),
-          boost::lexical_cast<double>(ordinateNode.attribute("Y").value())};
+  return {boost::lexical_cast<double>(
+              ordinateNode.attribute(settings_.X.c_str()).value()),
+          boost::lexical_cast<double>(
+              ordinateNode.attribute(settings_.Y.c_str()).value())};
 }
 
 std::optional<double> StandardParser::getRadius(
@@ -131,10 +141,13 @@ XMLInfo StandardParser::getXMLInfo() {
   auto firstChild = *root_.children().begin();
   std::string type(firstChild.name());
 
-  auto certDocNode = root_.select_node(".//CertificationDoc").node();
-  auto dateNode = certDocNode.select_node(localSelector("Date").c_str()).node();
+  auto certDocNode =
+      root_.select_node(childSelector(settings_.CertificationDoc).c_str())
+          .node();
+  auto dateNode =
+      certDocNode.select_node(localSelector(settings_.Date).c_str()).node();
   auto numberNode =
-      certDocNode.select_node(localSelector("Number").c_str()).node();
+      certDocNode.select_node(localSelector(settings_.Number).c_str()).node();
 
   if (type.empty() || certDocNode.empty() || dateNode.empty() ||
       numberNode.empty()) {
@@ -153,7 +166,6 @@ XMLInfo StandardParser::getXMLInfo() {
   return XMLInfo(type, date, number, firstSpatialInfo);
 }
 
-const pugi::xpath_query StandardParser::CADASTRAL_NUMBER_QUERY(
-    ".//*[@CadastralNumber]");
+StandardParserSettings::StandardParserSettings() {}
 
 }  // namespace rrt

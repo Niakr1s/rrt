@@ -12,15 +12,40 @@
 
 namespace rrt {
 
+struct StandardParserSettings {
+  StandardParserSettings();
+
+  std::string localSelector() const;
+
+  std::string CadastralNumber = "CadastralNumber";
+  std::string CadastralBlock = "CadastralBlock";
+
+  std::string EntitySpatial = "EntitySpatial";
+  std::string SpatialData = "SpatialData";
+  std::string SpatialElement = "SpatialElement";
+
+  std::string Ordinate = "Ordinate";
+  std::string X = "X";
+  std::string Y = "Y";
+
+  std::string CertificationDoc = "CertificationDoc";
+  std::string Date = "Date";
+  std::string Number = "Number";
+};
+
 class StandardParser : public XMLParser {
  public:
   StandardParser(pugi::xml_document& root);
+  StandardParser(pugi::xml_document& root,
+                 const StandardParserSettings& settings);
 
   xmlSpatials_t getXMLSpatials() override;
   XMLInfo getXMLInfo() override;
 
  private:
-  static const pugi::xpath_query CADASTRAL_NUMBER_QUERY;
+  StandardParserSettings settings_;
+
+ private:
   pugi::xpath_node_set getCadastralNumberNodes();
   pugi::xpath_node getFirstCadastralNumberNode();
   pugi::xpath_node_set getEntitySpatialNodes(

@@ -20,7 +20,10 @@ class XMLParser {
   virtual XMLInfo getXMLInfo() = 0;
 
   static std::shared_ptr<XMLParser> chooseParser(pugi::xml_document& root);
-  static std::string localSelector(const char* input);
+
+  static const std::string localSelector(const std::string& input);
+  static const std::string attributeSelector(const std::string& input);
+  static const std::string childSelector(const std::string& input);
 
  protected:
   pugi::xml_document& root_;
