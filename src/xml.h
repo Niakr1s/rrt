@@ -24,7 +24,7 @@ class XML {
                  DXF::Version version = DXF::Version::AC1021);
   void renameFile();
 
-  const XMLInfo& info() const;
+  const XMLInfo& xmlInfo() const;
 
  private:
   bf::path path_;

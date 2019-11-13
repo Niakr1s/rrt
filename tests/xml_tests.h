@@ -17,8 +17,8 @@ TEST(xml, constructor) {
   auto xml = rrt::XML(BLOCK.c_str());
   ASSERT_NE(xml.xmlSpatials().size(), 0);
   ASSERT_EQ(xml.xmlSpatials().size(), 25);
-  ASSERT_EQ(xml.info().cadastralNumber().string(), "77:03:0009007");
-  ASSERT_EQ(xml.info().date(), "77:03:0009007");
+  ASSERT_EQ(xml.xmlInfo().cadastralNumber().string(), "77:03:0009007");
+  ASSERT_EQ(xml.xmlInfo().date(), "77:03:0009007");
 }
 
 TEST(xml, intersects) {

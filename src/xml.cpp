@@ -67,7 +67,7 @@ void XML::renameFile() {
   path_ = newPath;
 }
 
-const XMLInfo& XML::info() const {
+const XMLInfo& XML::xmlInfo() const {
   return xmlInfo_;
 }
 
