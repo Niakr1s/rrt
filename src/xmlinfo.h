@@ -9,17 +9,16 @@ namespace rrt {
 class XMLInfo {
  public:
   XMLInfo();
-  XMLInfo(std::string type, std::string date, std::string number);
+  XMLInfo(std::string type, std::string date, std::string orderNumber);
 
   std::string type() const;
   std::string date() const;
-  std::string number() const;
-  std::string fsSafeNumber() const;
+  std::string orderNumber() const;
 
  private:
   std::string type_;
   boost::gregorian::date date_;
-  std::string number_;
+  std::string orderNumber_;
 };
 
 }  // namespace rrt
