@@ -44,9 +44,12 @@ void XML::saveToDXF(std::string path /*= ""*/,
     exportPath.replace_extension("dxf");
     path = exportPath.string();
   }
+
   DXF dxf;
   for (auto& xmlSpatial : spatials_) {
-    dxf.drawSpatial(xmlSpatial.info().cadastralNumber(), xmlSpatial.spatial());
+    dxf.drawSpatial(xmlSpatial.info().cadastralNumber(),
+                    xmlSpatial.info().type(), xmlSpatial.spatial(),
+                    xmlSpatial.color());
   }
   dxf.fileExport(path, version);
 }

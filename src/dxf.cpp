@@ -8,6 +8,7 @@
 #include <boost/log/trivial.hpp>
 #include <stdexcept>
 #include <vector>
+#include "compare.h"
 #include "libdxfrw.h"
 
 namespace bg = boost::geometry;
@@ -24,36 +25,35 @@ std::shared_ptr<Spatial> DXF::spatial() {
   return spatial_;
 }
 
-void DXF::drawSpatial(std::string cadastralNumber,
-                      std::shared_ptr<Spatial> spatial) {
-  boost::replace_all(cadastralNumber, ":", "_");
-  auto& blocks = dxData_.layers;
-  if (auto found =
-          std::find_if(blocks.begin(), blocks.end(),
-                       [&](auto& it) { return it.name == cadastralNumber; });
-      found != blocks.end()) {
-  } else {
-    DRW_Layer layer;
-    layer.name = cadastralNumber;
-    dxIface_.addLayer(layer);
+void DXF::drawSpatial(const std::string& cadastralNumber,
+                      const std::string& type,
+                      std::shared_ptr<Spatial> spatial,
+                      Color color) {
+  if (spatial->empty()) {
+    return;
   }
 
+  std::string layerName(cadastralNumber);
+  boost::replace_all(layerName, ":", "_");
+  addLayer(layerName);
+
   for (auto& polygon : spatial->polygons_) {
-    draw(polygon.outer().cbegin(), polygon.outer().cend(), cadastralNumber);
+    draw(polygon.outer().cbegin(), polygon.outer().cend(), layerName, color);
     for (auto& innerPolygon : polygon.inners()) {
-      draw(innerPolygon.cbegin(), innerPolygon.cend(), cadastralNumber);
+      draw(innerPolygon.cbegin(), innerPolygon.cend(), layerName, color);
     }
   }
 
   for (auto& linestring : spatial->linestrings_) {
-    draw(linestring.cbegin(), linestring.cend(), cadastralNumber);
+    draw(linestring.cbegin(), linestring.cend(), layerName, color);
   }
 
   for (auto& circle : spatial->circles_) {
-    draw(circle, cadastralNumber);
+    draw(circle, layerName, color);
   }
 
-  //  dxIface_.endBlock();
+  std::string mtext = fmt::format("{}, {}", cadastralNumber, type);
+  draw(mtext, layerName, spatial->rect_.centroid(), Color::LIGHTGREY);
 }
 
 void DXF::fileImport(const std::string& path) {
@@ -141,25 +141,58 @@ Point DXF::toPoint(const DRW_Circle& p) {
   return Point(p.basePoint.y, p.basePoint.x, p.radious);
 }
 
+void DXF::addLayer(const std::string& name) {
+  auto& layers = dxData_.layers;
+  if (auto found = std::find_if(layers.begin(), layers.end(),
+                                [&](auto& it) { return it.name == name; });
+      found != layers.end()) {
+  } else {
+    DRW_Layer layer;
+    layer.name = name;
+    dxIface_.addLayer(layer);
+  }
+}
+
 void DXF::draw(std::vector<Spatial::point_t>::const_iterator begin,
                std::vector<Spatial::point_t>::const_iterator end,
-               const std::string& layer) {
+               const std::string& layer,
+               Color color) {
   DRW_LWPolyline drwLWPolyline;
   for (auto it = begin; it != end; ++it) {
     // changing x and y
     drwLWPolyline.addVertex(DRW_Vertex2D(bg::get<1>(*it), bg::get<0>(*it), 0));
   }
   drwLWPolyline.layer = layer;
+  drwLWPolyline.color = static_cast<int>(color);
   dxIface_.addLWPolyline(drwLWPolyline);
 }
 
-void DXF::draw(Point circle, const std::string& layer) {
+void DXF::draw(Point circle, const std::string& layer, Color color) {
   DRW_Circle drwCircle;
   drwCircle.basePoint.x = circle.y();
   drwCircle.basePoint.y = circle.x();
   drwCircle.radious = circle.r().value_or(0.);
   drwCircle.layer = layer;
+  drwCircle.color = static_cast<int>(color);
   dxIface_.addCircle(drwCircle);
+}
+
+void DXF::draw(const std::string& text,
+               const std::string& layer,
+               Spatial::point_t center,
+               Color color) {
+  DRW_Text drwText;
+  drwText.text = text;
+  drwText.basePoint.x = center.get<1>();
+  drwText.basePoint.y = center.get<0>();
+  drwText.secPoint.x = drwText.basePoint.x;
+  drwText.secPoint.y = drwText.basePoint.y;
+  drwText.layer = layer;
+  drwText.height = 1.;
+  drwText.alignH = DRW_Text::HAlign::HCenter;
+  drwText.alignV = DRW_Text::VAlign::VMiddle;
+  drwText.color = static_cast<int>(color);
+  dxIface_.addText(drwText);
 }
 
 const char* DXF::IGNORED = "ignored";

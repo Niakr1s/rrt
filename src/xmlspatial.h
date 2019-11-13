@@ -15,6 +15,8 @@ class XMLSpatial {
 
   std::shared_ptr<Spatial> spatial();
 
+  DXF::Color color() const;
+
  private:
   XMLSpatialInfo info_;
   std::shared_ptr<Spatial> spatial_;

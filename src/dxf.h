@@ -17,9 +17,19 @@ class DXF {
 
   using Version = DRW::Version;
 
+  enum class Color {
+    BLACK = 7,
+    RED = 10,
+    GREEN = 94,
+    GREY = 253,
+    LIGHTGREY = 254,
+  };
+
   std::shared_ptr<Spatial> spatial();
-  void drawSpatial(std::string cadastralNumber,
-                   std::shared_ptr<Spatial> spatial);
+  void drawSpatial(const std::string& cadastralNumber,
+                   const std::string& type,
+                   std::shared_ptr<Spatial> spatial,
+                   Color color);
 
   void fileImport(const std::string& path);
   void fileExport(const std::string& path, Version version);
@@ -43,10 +53,16 @@ class DXF {
   static Point toPoint(const DRW_Circle& p);
 
   // for drawSpatial
+  void addLayer(const std::string& name);
   void draw(std::vector<Spatial::point_t>::const_iterator begin,
             std::vector<Spatial::point_t>::const_iterator end,
-            const std::string& layer);
-  void draw(Point circle, const std::string& layer);
+            const std::string& layer,
+            Color color);
+  void draw(Point circle, const std::string& layer, Color color);
+  void draw(const std::string& text,
+            const std::string& layer,
+            Spatial::point_t center,
+            Color color);
 };
 
 }  // namespace rrt

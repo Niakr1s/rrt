@@ -30,6 +30,8 @@ class Spatial {
 
   Spatial();
 
+  bool empty();
+
   template <typename Geometry>
   bool intersects(const Geometry& geometry) const {
     if (!bg::intersects(rect_.box(), geometry)) {

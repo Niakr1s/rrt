@@ -5,6 +5,7 @@
 #include <string>
 
 #include "cadastralnumber.h"
+#include "dxf.h"
 
 namespace rrt {
 

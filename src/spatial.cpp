@@ -4,6 +4,10 @@ namespace rrt {
 
 Spatial::Spatial() {}
 
+bool Spatial::empty() {
+  return polygons_.empty() && linestrings_.empty() && circles_.empty();
+}
+
 void Spatial::append(
     const std::vector<std::vector<std::vector<Point>>>& polygons) {
   for (auto& polygon : polygons) {

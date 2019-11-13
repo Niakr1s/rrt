@@ -13,4 +13,17 @@ std::shared_ptr<Spatial> XMLSpatial::spatial() {
   return spatial_;
 }
 
+DXF::Color XMLSpatial::color() const {
+  DXF::Color res = DXF::Color::GREY;
+  if (info().type() == "Parcel") {
+    res = DXF::Color::GREEN;
+  } else if (info().type() == "Building" || info().type() == "Construction" ||
+             info().type() == "Uncompleted_Construction") {
+    res = DXF::Color::RED;
+  } else if (info().type() == "CadastralBlock") {
+    res = DXF::Color::BLACK;
+  }
+  return res;
+}
+
 }  // namespace rrt

@@ -21,7 +21,7 @@ class XML {
   xmlSpatials_t& xmlSpatials();
 
   void saveToDXF(std::string path = "",
-                 DXF::Version version = DXF::Version::AC1015);
+                 DXF::Version version = DXF::Version::AC1021);
 
  private:
   bf::path path_;

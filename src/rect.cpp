@@ -44,6 +44,12 @@ void Rect::append(const Rect::point_t& point) {
   append(point.get<0>(), point.get<1>());
 }
 
+Rect::point_t Rect::centroid() const {
+  point_t res;
+  bg::centroid(box_, res);
+  return res;
+}
+
 bool Rect::empty() const {
   return empty_;
 }
