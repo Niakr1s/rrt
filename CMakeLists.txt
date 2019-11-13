@@ -24,7 +24,7 @@ else()
 endif()
 
 find_package(Boost REQUIRED COMPONENTS
-    log filesystem
+    log filesystem date_time
 )
 
 add_subdirectory(libs/pugixml)
