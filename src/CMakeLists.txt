@@ -50,6 +50,8 @@ add_library(xml SHARED
     idb.cpp
     db.h
     db.cpp
+    sqldb.h
+    sqldb.cpp
 )
 
 target_include_directories(xml PUBLIC
