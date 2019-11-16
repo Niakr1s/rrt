@@ -2,6 +2,6 @@
 
 namespace rrt {
 
-IDB::IDB() {}
+IDB::IDB() = default;
 
 }  // namespace rrt
