@@ -3,10 +3,20 @@
 namespace rrt {
 
 XMLSpatial::XMLSpatial(const XMLSpatialInfo& info)
-    : info_(info), spatial_(std::make_shared<Spatial>()) {}
+    : info_(info),
+      xmlInfo_(std::make_shared<XMLInfo>()),
+      spatial_(std::make_shared<Spatial>()) {}
 
 XMLSpatialInfo XMLSpatial::info() const {
   return info_;
+}
+
+void XMLSpatial::add(std::shared_ptr<XMLInfo> xmlInfo) {
+  xmlInfo_ = xmlInfo;
+}
+
+XMLInfo XMLSpatial::xmlInfo() const {
+  return *xmlInfo_;
 }
 
 std::shared_ptr<Spatial> XMLSpatial::spatial() {

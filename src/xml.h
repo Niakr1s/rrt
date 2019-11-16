@@ -29,9 +29,12 @@ class XML {
 
  private:
   bf::path path_;
-  XMLInfo xmlInfo_;
+  std::shared_ptr<XMLInfo> xmlInfo_;
   std::shared_ptr<XMLParser> parser_;
   xmlSpatials_t spatials_;
+
+ private:
+  void addXmlInfoToSpatials();
 };
 
 }  // namespace rrt

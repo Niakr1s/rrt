@@ -26,7 +26,8 @@ XML::XML(const std::string& path) : path_(path) {
     throw(std::runtime_error(
         fmt::format("XML: empty spatials after parsing {}", path_.string())));
   }
-  xmlInfo_ = parser_->getXMLInfo();
+  xmlInfo_ = std::make_shared<XMLInfo>(parser_->getXMLInfo());
+  addXmlInfoToSpatials();
   BOOST_LOG_TRIVIAL(info) << "XML: succesfully parsed: " << path_;
 }
 
@@ -57,9 +58,9 @@ void XML::saveToDXF(std::string path /*= ""*/,
 
 void XML::renameFile() {
   std::string newFilenameStr =
-      fmt::format("{} {} {}{}", xmlInfo_.type(),
-                  xmlInfo_.spatialInfo().cadastralNumber().underscoredString(),
-                  xmlInfo_.date(), path_.extension().string());
+      fmt::format("{} {} {}{}", xmlInfo_->type(),
+                  xmlInfo_->spatialInfo().cadastralNumber().underscoredString(),
+                  xmlInfo_->date(), path_.extension().string());
   bf::path newFilename(newFilenameStr);
   bf::path newPath = path_.parent_path();
   newPath.append(newFilenameStr);
@@ -68,7 +69,13 @@ void XML::renameFile() {
 }
 
 const XMLInfo& XML::xmlInfo() const {
-  return xmlInfo_;
+  return *xmlInfo_;
+}
+
+void XML::addXmlInfoToSpatials() {
+  for (auto& spatial : spatials_) {
+    spatial->add(xmlInfo_);
+  }
 }
 
 }  // namespace rrt

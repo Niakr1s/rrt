@@ -4,6 +4,7 @@
 #include <memory>
 #include "dxf.h"
 #include "spatial.h"
+#include "xmlinfo.h"
 #include "xmlspatialinfo.h"
 
 namespace rrt {
@@ -16,12 +17,16 @@ class XMLSpatial {
 
   XMLSpatialInfo info() const;
 
+  void add(std::shared_ptr<XMLInfo> xmlInfo);
+  XMLInfo xmlInfo() const;
+
   std::shared_ptr<Spatial> spatial();
 
   DXF::Color color() const;
 
  private:
   XMLSpatialInfo info_;
+  std::shared_ptr<XMLInfo> xmlInfo_;
   std::shared_ptr<Spatial> spatial_;
 };
 
