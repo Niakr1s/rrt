@@ -11,7 +11,7 @@ namespace rrt {
 
 class XMLParser {
  public:
-  typedef std::vector<std::shared_ptr<XMLSpatial>> xmlSpatials_t;
+  using xmlSpatials_t = XMLSpatial::xmlSpatials_t;
 
   XMLParser(pugi::xml_document& root);
   virtual ~XMLParser() = default;

@@ -7,6 +7,7 @@
 #include "dxf.h"
 #include "xmlinfo.h"
 #include "xmlparser.h"
+#include "xmlspatial.h"
 
 namespace bf = boost::filesystem;
 
@@ -14,7 +15,7 @@ namespace rrt {
 
 class XML {
  public:
-  using xmlSpatials_t = XMLParser::xmlSpatials_t;
+  using xmlSpatials_t = XMLSpatial::xmlSpatials_t;
 
   XML(const std::string& path);
   const xmlSpatials_t& xmlSpatials() const;

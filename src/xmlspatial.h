@@ -10,6 +10,8 @@ namespace rrt {
 
 class XMLSpatial {
  public:
+  typedef std::vector<std::shared_ptr<XMLSpatial>> xmlSpatials_t;
+
   XMLSpatial(const XMLSpatialInfo& info);
 
   XMLSpatialInfo info() const;
