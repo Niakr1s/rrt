@@ -30,6 +30,7 @@ find_package(Boost REQUIRED COMPONENTS
 add_subdirectory(libs/pugixml)
 add_subdirectory(libs/fmt)
 add_subdirectory(libs/libdxfrw)
+add_subdirectory(libs/sqlite)
 
 add_subdirectory(src)
 add_subdirectory(tests)
