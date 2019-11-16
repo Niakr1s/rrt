@@ -4,6 +4,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/log/trivial.hpp>
 #include <cstring>
+#include <memory>
 #include "point.h"
 
 namespace rrt {
@@ -124,12 +125,12 @@ XMLParser::xmlSpatials_t StandardParser::getXMLSpatials() {
   xmlSpatials_t res;
   for (auto& cadastral : getCadastralNumberNodes()) {
     auto spatialInfo = getSpatialInfo(cadastral.node());
-    XMLSpatial xmlSpatial(spatialInfo);
+    auto xmlSpatial = std::make_shared<XMLSpatial>(spatialInfo);
     auto cadastralItems = getCadastralItems(cadastral.node());
     BOOST_LOG_TRIVIAL(debug)
         << "StandardParser::getXMLSpatials: got: " << cadastralItems.size()
         << " CadastralItems";
-    xmlSpatial.spatial()->append(cadastralItems);
+    xmlSpatial->spatial()->append(cadastralItems);
     res.push_back(xmlSpatial);
     BOOST_LOG_TRIVIAL(info)
         << "StandardParser::getXMLSpatials: got: " << spatialInfo;

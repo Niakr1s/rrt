@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -53,21 +54,23 @@ TEST(xml, intersects) {
       {8890.3796, 23483.3805},
   };
 
-  ASSERT_TRUE(cns[0].spatial()->intersects(line1));
-  ASSERT_FALSE(cns[0].spatial()->intersects(line2));
+  ASSERT_TRUE(cns[0]->spatial()->intersects(line1));
+  ASSERT_FALSE(cns[0]->spatial()->intersects(line2));
 
-  std::vector<rrt::XMLSpatial> res;
-  std::copy_if(
-      cns.begin(), cns.end(), std::back_inserter(res),
-      [&](rrt::XMLSpatial& it) { return it.spatial()->intersects(line1); });
+  std::vector<std::shared_ptr<rrt::XMLSpatial>> res;
+  std::copy_if(cns.begin(), cns.end(), std::back_inserter(res),
+               [&](std::shared_ptr<rrt::XMLSpatial>& it) {
+                 return it->spatial()->intersects(line1);
+               });
   ASSERT_EQ(res.size(), 2);
 
   res.clear();
-  std::copy_if(
-      cns.begin(), cns.end(), std::back_inserter(res),
-      [&](rrt::XMLSpatial& it) { return it.spatial()->intersects(line3); });
+  std::copy_if(cns.begin(), cns.end(), std::back_inserter(res),
+               [&](std::shared_ptr<rrt::XMLSpatial>& it) {
+                 return it->spatial()->intersects(line3);
+               });
   ASSERT_EQ(res.size(), 1);
-  ASSERT_EQ(res[0].info().cadastralNumber().string(), "77:03:0009007");
+  ASSERT_EQ(res[0]->info().cadastralNumber().string(), "77:03:0009007");
 }
 
 #endif  // XML_TESTS_H
