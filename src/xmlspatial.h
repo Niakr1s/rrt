@@ -13,9 +13,9 @@ class XMLSpatial {
  public:
   typedef std::vector<std::shared_ptr<XMLSpatial>> xmlSpatials_t;
 
-  XMLSpatial(const XMLSpatialInfo& info);
+  XMLSpatial(const XMLSpatialInfo& xmlSpatialInfo);
 
-  XMLSpatialInfo info() const;
+  XMLSpatialInfo xmlSpatialInfo() const;
 
   void add(std::shared_ptr<XMLInfo> xmlInfo);
   XMLInfo xmlInfo() const;
@@ -25,7 +25,7 @@ class XMLSpatial {
   DXF::Color color() const;
 
  private:
-  XMLSpatialInfo info_;
+  XMLSpatialInfo xmlSpatialInfo_;
   std::shared_ptr<XMLInfo> xmlInfo_;
   std::shared_ptr<Spatial> spatial_;
 };

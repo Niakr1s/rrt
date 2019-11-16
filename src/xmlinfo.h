@@ -14,18 +14,18 @@ class XMLInfo {
   XMLInfo(std::string type,
           std::string date,
           std::string orderNumber,
-          const XMLSpatialInfo& spatialInfo);
+          const XMLSpatialInfo& rootSpatialInfo);
 
   std::string type() const;
   std::string date() const;
   std::string orderNumber() const;
-  const XMLSpatialInfo& spatialInfo() const;
+  const XMLSpatialInfo& rootSpatialInfo() const;
 
  private:
   std::string type_;
   boost::gregorian::date date_;
   std::string orderNumber_;
-  XMLSpatialInfo spatialInfo_;
+  XMLSpatialInfo rootSpatialInfo_;
 };
 
 }  // namespace rrt

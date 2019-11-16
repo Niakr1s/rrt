@@ -49,18 +49,18 @@ void XML::saveToDXF(std::string path /*= ""*/,
 
   DXF dxf;
   for (auto& xmlSpatial : spatials_) {
-    dxf.drawSpatial(xmlSpatial->info().cadastralNumber().string(),
-                    xmlSpatial->info().type(), xmlSpatial->spatial(),
+    dxf.drawSpatial(xmlSpatial->xmlSpatialInfo().cadastralNumber().string(),
+                    xmlSpatial->xmlSpatialInfo().type(), xmlSpatial->spatial(),
                     xmlSpatial->color());
   }
   dxf.fileExport(path, version);
 }
 
 void XML::renameFile() {
-  std::string newFilenameStr =
-      fmt::format("{} {} {}{}", xmlInfo_->type(),
-                  xmlInfo_->spatialInfo().cadastralNumber().underscoredString(),
-                  xmlInfo_->date(), path_.extension().string());
+  std::string newFilenameStr = fmt::format(
+      "{} {} {}{}", xmlInfo_->type(),
+      xmlInfo_->rootSpatialInfo().cadastralNumber().underscoredString(),
+      xmlInfo_->date(), path_.extension().string());
   bf::path newFilename(newFilenameStr);
   bf::path newPath = path_.parent_path();
   newPath.append(newFilenameStr);

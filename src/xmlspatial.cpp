@@ -3,12 +3,12 @@
 namespace rrt {
 
 XMLSpatial::XMLSpatial(const XMLSpatialInfo& info)
-    : info_(info),
+    : xmlSpatialInfo_(info),
       xmlInfo_(std::make_shared<XMLInfo>()),
       spatial_(std::make_shared<Spatial>()) {}
 
-XMLSpatialInfo XMLSpatial::info() const {
-  return info_;
+XMLSpatialInfo XMLSpatial::xmlSpatialInfo() const {
+  return xmlSpatialInfo_;
 }
 
 void XMLSpatial::add(std::shared_ptr<XMLInfo> xmlInfo) {
@@ -25,12 +25,13 @@ std::shared_ptr<Spatial> XMLSpatial::spatial() {
 
 DXF::Color XMLSpatial::color() const {
   DXF::Color res = DXF::Color::GREY;
-  if (info().type() == "Parcel") {
+  if (xmlSpatialInfo().type() == "Parcel") {
     res = DXF::Color::GREEN;
-  } else if (info().type() == "Building" || info().type() == "Construction" ||
-             info().type() == "Uncompleted_Construction") {
+  } else if (xmlSpatialInfo().type() == "Building" ||
+             xmlSpatialInfo().type() == "Construction" ||
+             xmlSpatialInfo().type() == "Uncompleted_Construction") {
     res = DXF::Color::RED;
-  } else if (info().type() == "CadastralBlock") {
+  } else if (xmlSpatialInfo().type() == "CadastralBlock") {
     res = DXF::Color::BLACK;
   }
   return res;

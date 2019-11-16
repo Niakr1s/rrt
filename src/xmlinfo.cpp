@@ -13,7 +13,7 @@ XMLInfo::XMLInfo(std::string type,
     : type_(type),
       date_(boost::gregorian::from_string(date)),
       orderNumber_(number),
-      spatialInfo_(spatialInfo) {}
+      rootSpatialInfo_(spatialInfo) {}
 
 std::string XMLInfo::type() const {
   return type_;
@@ -23,8 +23,8 @@ std::string XMLInfo::orderNumber() const {
   return orderNumber_;
 }
 
-const XMLSpatialInfo& XMLInfo::spatialInfo() const {
-  return spatialInfo_;
+const XMLSpatialInfo& XMLInfo::rootSpatialInfo() const {
+  return rootSpatialInfo_;
 }
 
 std::string XMLInfo::date() const {
