@@ -91,8 +91,6 @@ std::vector<std::vector<std::vector<Point>>> StandardParser::getCadastralItems(
     auto entitySpatialItems = getEntitySpatialItems(entitySpatial.node());
     res.push_back(entitySpatialItems);
   }
-  BOOST_LOG_TRIVIAL(debug) << "StandardParser::getCadastralItems: got "
-                           << res.size() << " CadastralItems";
   return res;
 }
 
@@ -103,8 +101,6 @@ std::vector<std::vector<Point>> StandardParser::getEntitySpatialItems(
     auto spatialElementItems = getSpatialElementItems(spatialElement.node());
     res.push_back(spatialElementItems);
   }
-  BOOST_LOG_TRIVIAL(debug) << "StandardParser::getEntitySpatialItems: got "
-                           << res.size() << " EntitySpatialItems";
   return res;
 }
 
@@ -114,10 +110,7 @@ std::vector<Point> StandardParser::getSpatialElementItems(
   for (auto& ordinate : getOrdinateNodes(spatialElementNode)) {
     Point p = getXmlPoint(ordinate.node());
     res.push_back(p);
-    BOOST_LOG_TRIVIAL(debug) << p;
   }
-  BOOST_LOG_TRIVIAL(debug) << "StandardParser::getSpatialElementItems: got "
-                           << res.size() << " SpatialElementItems";
   return res;
 }
 
@@ -127,13 +120,8 @@ XMLParser::xmlSpatials_t StandardParser::getXMLSpatials() {
     auto spatialInfo = getSpatialInfo(cadastral.node());
     auto xmlSpatial = std::make_shared<XMLSpatial>(spatialInfo);
     auto cadastralItems = getCadastralItems(cadastral.node());
-    BOOST_LOG_TRIVIAL(debug)
-        << "StandardParser::getXMLSpatials: got: " << cadastralItems.size()
-        << " CadastralItems";
     xmlSpatial->spatial()->append(cadastralItems);
     res.push_back(xmlSpatial);
-    BOOST_LOG_TRIVIAL(info)
-        << "StandardParser::getXMLSpatials: got: " << spatialInfo;
   }
   return res;
 }
