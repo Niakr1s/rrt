@@ -12,7 +12,7 @@
 #include "xmlspatial.h"
 
 extern std::string PATH;
-static const std::string BLOCK = PATH + "KPT CadastralBlock 77 03 0009007.xml";
+extern const std::string BLOCK;
 
 TEST(xml, constructor) {
   auto xml = rrt::XML(BLOCK.c_str());
