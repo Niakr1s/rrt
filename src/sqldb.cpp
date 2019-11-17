@@ -42,23 +42,42 @@ void rrt::SqlDB::pushToDB(const rrt::XMLSpatial& xmlSpatial) {
 }
 
 std::shared_ptr<rrt::XMLSpatial> rrt::SqlDB::getFromDB(
-    const rrt::CadastralNumber& cadastralNumber) {
+    const rrt::CadastralNumber& cadastralNumber,
+    const std::string& date,
+    const std::string& orderNumber) {
   std::vector<XMLSpatialSerialized> xmlSpatialSerialized;
-  exec(fmt::format(R"***(
-                   SELECT * FROM spatial
-                   WHERE spatial_cadastral_number = "{}"
-                   ORDER BY date(xml_date) DESC Limit 1;
-                   )***",
-                   cadastralNumber.string()),
-       &makeXMLSpatialSerialized, &xmlSpatialSerialized);
+
+  std::string orderQueue =
+      orderNumber.empty()
+          ? ""
+          : fmt::format("AND xml_order_number = \"{}\"", orderNumber);
+
+  std::string queue;
+  if (date.empty()) {
+    queue = fmt::format(R"***(
+                        SELECT * FROM spatial
+                        WHERE spatial_cadastral_number = "{}" {}
+                        ORDER BY date(xml_date) DESC Limit 1;
+                          )***",
+                        cadastralNumber.string(), orderQueue);
+  } else {
+    queue = fmt::format(R"***(
+                          SELECT * FROM spatial
+                          WHERE spatial_cadastral_number = "{}" {} AND xml_date = "{}";
+                            )***",
+                        cadastralNumber.string(), orderQueue, date);
+  }
+
+  exec(queue, &makeXMLSpatialSerialized, &xmlSpatialSerialized);
   if (xmlSpatialSerialized.empty()) {
-    throw std::runtime_error(fmt::format("SqlDB::getFromDB: {} no such item",
-                                         cadastralNumber.string()));
+    throw std::runtime_error(
+        fmt::format("SqlDB::getFromDB: {}, {}, {}: no such item",
+                    cadastralNumber.string(), date, orderNumber));
   }
   if (xmlSpatialSerialized[0].notFull()) {
     throw std::runtime_error(
-        fmt::format("SqlDB::getFromDB: {} some fields are empty",
-                    cadastralNumber.string()));
+        fmt::format("SqlDB::getFromDB: {}, {}, {}: some fields are empty",
+                    cadastralNumber.string(), date, orderNumber));
   }
   auto res = std::make_shared<XMLSpatial>(xmlSpatialSerialized[0]);
   return res;

@@ -27,6 +27,26 @@ TEST(sql, getFromDB1) {
   auto spa = DB::get()->getFromDB(CadastralNumber(SQL_CAD_NO));
   ASSERT_EQ(spa->xmlSpatialInfo().cadastralNumber().string(), SQL_CAD_NO);
   ASSERT_EQ(spa->xmlSpatialInfo().type(), "Parcel");
+
+  spa = DB::get()->getFromDB(CadastralNumber(SQL_CAD_NO), "2018-10-23");
+  ASSERT_EQ(spa->xmlSpatialInfo().cadastralNumber().string(), SQL_CAD_NO);
+  ASSERT_EQ(spa->xmlSpatialInfo().type(), "Parcel");
+
+  EXPECT_ANY_THROW(
+      DB::get()->getFromDB(CadastralNumber(SQL_CAD_NO), "2000-10-23"));
+
+  spa = DB::get()->getFromDB(CadastralNumber(SQL_CAD_NO), "",
+                             "99/2018/207988061");
+  ASSERT_EQ(spa->xmlSpatialInfo().cadastralNumber().string(), SQL_CAD_NO);
+  ASSERT_EQ(spa->xmlSpatialInfo().type(), "Parcel");
+
+  spa = DB::get()->getFromDB(CadastralNumber(SQL_CAD_NO), "2018-10-23",
+                             "99/2018/207988061");
+  ASSERT_EQ(spa->xmlSpatialInfo().cadastralNumber().string(), SQL_CAD_NO);
+  ASSERT_EQ(spa->xmlSpatialInfo().type(), "Parcel");
+
+  EXPECT_ANY_THROW(
+      DB::get()->getFromDB(CadastralNumber(SQL_CAD_NO), "2018-10-23", "2355"));
 }
 
 #endif  // SQLLITE_TESTS_H

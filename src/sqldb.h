@@ -18,7 +18,9 @@ class SqlDB : public IDB {
   void pushToDB(const XMLSpatial& xmlSpatial) override;
 
   std::shared_ptr<XMLSpatial> getFromDB(
-      const CadastralNumber& cadastralNumber) override;
+      const CadastralNumber& cadastralNumber,
+      const std::string& date = "",
+      const std::string& orderNumber = "") override;
 
   static int makeXMLSpatialSerialized(void* xmlSpatialSerialized,
                                       int argc,

@@ -15,7 +15,9 @@ class IDB {
 
   virtual void pushToDB(const XMLSpatial& xmlSpatial) = 0;
   virtual std::shared_ptr<XMLSpatial> getFromDB(
-      const CadastralNumber& cadastralNumber) = 0;
+      const CadastralNumber& cadastralNumber,
+      const std::string& date = "",
+      const std::string& orderNumber = "") = 0;
   virtual XMLSpatial::xmlSpatials_t getAllFromDB() = 0;
 };
 
