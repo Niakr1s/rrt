@@ -28,6 +28,16 @@ class Rect {
   box_t box() const;
   bool intersects(const Rect& rhs) const;
 
+  bool operator==(const Rect& rhs) const;
+
+  double xmin() const;
+  double ymin() const;
+  double xmax() const;
+  double ymax() const;
+
+  std::string serialize() const;
+  static Rect deserialize(const std::string& in);
+
  private:
   bool empty_;
   box_t box_;

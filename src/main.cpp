@@ -11,5 +11,7 @@ int main(int argc, char* argv[]) {
   for (auto& spatial : xml.xmlSpatials()) {
     rrt::DB::get()->pushToDB(*spatial);
   }
+  auto got =
+      rrt::DB::get()->getFromDB(rrt::CadastralNumber("77:03:0009007:1225"));
   return 0;
 }

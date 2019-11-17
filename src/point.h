@@ -28,6 +28,9 @@ class Point {
 
   bool operator==(const Point& rhs) const;
 
+  static std::string serialize(const std::vector<Point>& points);
+  static std::vector<Point> deserialize(const std::string& in);
+
  private:
   point_t point_;
   std::optional<double> r_;

@@ -2,6 +2,7 @@
 #define IDB_H
 
 #include <memory>
+#include <vector>
 #include "cadastralnumber.h"
 #include "xmlspatial.h"
 
@@ -15,6 +16,7 @@ class IDB {
   virtual void pushToDB(const XMLSpatial& xmlSpatial) = 0;
   virtual std::shared_ptr<XMLSpatial> getFromDB(
       const CadastralNumber& cadastralNumber) = 0;
+  virtual XMLSpatial::xmlSpatials_t getAllFromDB() = 0;
 };
 
 }  // namespace rrt

@@ -1,6 +1,8 @@
 #include "point.h"
 
 #include <fmt/core.h>
+#include <sstream>
+#include "compare.h"
 
 namespace rrt {
 
@@ -32,16 +34,37 @@ bool Point::operator==(const Point& rhs) const {
          compare(r_.value_or(0.), rhs.r_.value_or(0.));
 }
 
+std::string Point::serialize(const std::vector<Point>& points) {
+  if (points.empty()) {
+    return "empty";
+  }
+  std::ostringstream ss;
+  for (auto& p : points) {
+    ss << std::setprecision(10) << p << ",";
+  }
+  return ss.str();
+}
+
+std::vector<Point> Point::deserialize(const std::string& in) {
+  std::vector<Point> res;
+  if (in == "empty") {
+    return res;
+  }
+  std::istringstream ss(in);
+  double x, y, r;
+  while (ss >> x >> y >> r) {
+    res.push_back(compare(r, 0.) ? Point(x, y) : Point(x, y, r));
+    ss.get();  // consuming ","
+  }
+  return res;
+}
+
 Point::point_t Point::point() const {
   return point_;
 }
 
 std::ostream& operator<<(std::ostream& out, const Point& rhs) {
-  auto str = fmt::format("X={:.2f}, Y={:.2f}", rhs.x(), rhs.y());
-  if (rhs.r_.has_value()) {
-    str.append(fmt::format(", R={:.2f}", rhs.r_.value()));
-  }
-  return out << str;
+  return out << rhs.x() << " " << rhs.y() << " " << rhs.r_.value_or(0.);
 }
 
 }  // namespace rrt

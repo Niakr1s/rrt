@@ -3,6 +3,7 @@
 #include <fmt/core.h>
 #include <boost/filesystem.hpp>
 #include <boost/log/trivial.hpp>
+#include <functional>
 
 namespace bf = boost::filesystem;
 
@@ -21,32 +22,71 @@ SqlDB::~SqlDB() {
 }
 
 void rrt::SqlDB::pushToDB(const rrt::XMLSpatial& xmlSpatial) {
+  auto xss = xmlSpatial.serialize();
   exec(fmt::format(
       R"***(
          INSERT OR IGNORE INTO spatial (
                    spatial_type, spatial_cadastral_number,
                    root_type, root_cadastral_number,
-                   xml_type, xml_date, xml_order_number)
-                   VALUES ("{}", "{}", "{}", "{}", "{}", "{}", "{}");
+                   xml_type, xml_date, xml_order_number,
+                   rect, polygons, linestrings, circle_polygons, circles
+      )
+                   VALUES ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}");
          )***",
-      xmlSpatial.xmlSpatialInfo().type(),
-      xmlSpatial.xmlSpatialInfo().cadastralNumber().string(),
-      xmlSpatial.xmlInfo().rootSpatialInfo().type(),
-      xmlSpatial.xmlInfo().rootSpatialInfo().cadastralNumber().string(),
-      xmlSpatial.xmlInfo().type(), xmlSpatial.xmlInfo().date(),
-      xmlSpatial.xmlInfo().orderNumber()));
+      xss.spatial_type, xss.spatial_cadastral_number, xss.root_type,
+      xss.root_cadastral_number, xss.xml_type, xss.xml_date,
+      xss.xml_order_number, xss.rect, xss.polygons, xss.linestrings,
+      xss.circle_polygons, xss.circles));
 
   BOOST_LOG_TRIVIAL(info) << "SqlDB::pushToDB: Succesfully pushed";
 }
 
 std::shared_ptr<rrt::XMLSpatial> rrt::SqlDB::getFromDB(
-    const rrt::CadastralNumber& cadastralNumber) {}
+    const rrt::CadastralNumber& cadastralNumber) {
+  std::vector<XMLSpatialSerialized> xmlSpatialSerialized;
+  exec(fmt::format(R"***(
+                   SELECT * FROM spatial
+                   WHERE spatial_cadastral_number = "{}"
+                   ORDER BY date(xml_date) DESC Limit 1;
+                   )***",
+                   cadastralNumber.string()),
+       &makeXMLSpatialSerialized, &xmlSpatialSerialized);
+  if (xmlSpatialSerialized.empty()) {
+    throw std::runtime_error(fmt::format("SqlDB::getFromDB: {} no such item",
+                                         cadastralNumber.string()));
+  }
+  if (xmlSpatialSerialized[0].notFull()) {
+    throw std::runtime_error(
+        fmt::format("SqlDB::getFromDB: {} some fields are empty",
+                    cadastralNumber.string()));
+  }
+  auto res = std::make_shared<XMLSpatial>(xmlSpatialSerialized[0]);
+  return res;
+}
+
+int SqlDB::makeXMLSpatialSerialized(void* xmlSpatialSerialized,
+                                    int argc,
+                                    char** argv,
+                                    char** azColName) {
+  auto spa =
+      static_cast<std::vector<XMLSpatialSerialized>*>(xmlSpatialSerialized);
+
+  for (auto i = 0; i < argc; i++) {
+    if (std::strcmp(azColName[i], "id") == 0) {
+      spa->push_back(XMLSpatialSerialized());
+    }
+    (*spa).back().insert(azColName[i], argv[i]);
+  }
+  return 0;
+}
 
 void rrt::SqlDB::init() {
   open();
   BOOST_LOG_TRIVIAL(info) << "SqlDB::initDB";
 
-  exec(R"***(
+  XMLSpatialSerialized xmlSpatialInit;
+  exec(
+      R"***(
        CREATE TABLE "spatial" (
        "id"	INTEGER,
 
@@ -82,8 +122,10 @@ void SqlDB::open() {
   }
 }
 
-void SqlDB::exec(const std::string& cmd) {
-  int rc = sqlite3_exec(db_, cmd.c_str(), &execCallback, nullptr, &zErrMsg);
+void SqlDB::exec(const std::string& cmd,
+                 int (*cb)(void*, int, char**, char**) /*= &execCallback*/,
+                 void* arg /*= nullptr*/) {
+  int rc = sqlite3_exec(db_, cmd.c_str(), cb, arg, &zErrMsg);
   if (rc != SQLITE_OK) {
     BOOST_LOG_TRIVIAL(error) << "SqlDB::exec: SQL Error: " << zErrMsg;
     sqlite3_free(zErrMsg);
@@ -103,3 +145,5 @@ int SqlDB::execCallback(void* NotUsed,
 }
 
 }  // namespace rrt
+
+rrt::XMLSpatial::xmlSpatials_t rrt::SqlDB::getAllFromDB() {}

@@ -4,16 +4,42 @@
 #include <memory>
 #include "dxf.h"
 #include "spatial.h"
+#include "string"
 #include "xmlinfo.h"
 #include "xmlspatialinfo.h"
 
 namespace rrt {
+
+struct XMLSpatialSerialized {
+  XMLSpatialSerialized();
+
+  bool notFull() const;
+
+  void insert(char* type, char* data);
+
+  std::string spatial_type;
+  std::string spatial_cadastral_number;
+
+  std::string root_type;
+  std::string root_cadastral_number;
+
+  std::string xml_type;
+  std::string xml_date;
+  std::string xml_order_number;
+
+  std::string rect;
+  std::string polygons;
+  std::string linestrings;
+  std::string circle_polygons;
+  std::string circles;
+};
 
 class XMLSpatial {
  public:
   typedef std::vector<std::shared_ptr<XMLSpatial>> xmlSpatials_t;
 
   XMLSpatial(const XMLSpatialInfo& xmlSpatialInfo);
+  XMLSpatial(const XMLSpatialSerialized& seialized);
 
   XMLSpatialInfo xmlSpatialInfo() const;
 
@@ -21,8 +47,11 @@ class XMLSpatial {
   XMLInfo xmlInfo() const;
 
   std::shared_ptr<Spatial> spatial();
+  const std::shared_ptr<Spatial> spatial() const;
 
   DXF::Color color() const;
+
+  XMLSpatialSerialized serialize() const;
 
  private:
   XMLSpatialInfo xmlSpatialInfo_;

@@ -7,6 +7,7 @@ static const std::string BLOCK = PATH + "KPT CadastralBlock 77 03 0009007.xml";
 #include "cadastralnumber_tests.h"
 #include "dxf_tests.h"
 #include "rect_tests.h"
+#include "serialize_tests.h"
 #include "sqllite_tests.h"
 #include "xml_tests.h"
 

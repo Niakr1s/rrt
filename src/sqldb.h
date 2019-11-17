@@ -20,9 +20,18 @@ class SqlDB : public IDB {
   std::shared_ptr<XMLSpatial> getFromDB(
       const CadastralNumber& cadastralNumber) override;
 
+  static int makeXMLSpatialSerialized(void* xmlSpatialSerialized,
+                                      int argc,
+                                      char** argv,
+                                      char** azColName);
+
+  XMLSpatial::xmlSpatials_t getAllFromDB() override;
+
   void init();
   void open();
-  void exec(const std::string& cmd);
+  void exec(const std::string& cmd,
+            int (*cb)(void*, int, char**, char**) = &execCallback,
+            void* arg = nullptr);
   static int execCallback(void* NotUsed,
                           int argc,
                           char** argv,

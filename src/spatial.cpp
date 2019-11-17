@@ -1,8 +1,22 @@
 #include "spatial.h"
 
+#include <sstream>
+
 namespace rrt {
 
 Spatial::Spatial() {}
+
+Spatial::Spatial(const std::string& rect,
+                 const std::string& polygons,
+                 const std::string& circlePolygons,
+                 const std::string& linestrings,
+                 const std::string& circles) {
+  rect_ = Rect::deserialize(rect);
+  bg::read_wkt(polygons, polygons_);
+  bg::read_wkt(circlePolygons, circlePolygons_);
+  bg::read_wkt(linestrings, linestrings_);
+  circles_ = Point::deserialize(circles);
+}
 
 bool Spatial::empty() {
   return polygons_.empty() && linestrings_.empty() && circles_.empty();
@@ -103,7 +117,33 @@ void Spatial::updateRect(
       }
     }
   }
-};
+}
+
+std::string Spatial::serializeRect() const {
+  return rect_.serialize();
+}
+
+std::string Spatial::serializePolygons() const {
+  std::ostringstream ss;
+  ss << bg::wkt(polygons_);
+  return ss.str();
+}
+
+std::string Spatial::serializeCirclePolygons() const {
+  std::ostringstream ss;
+  ss << bg::wkt(circlePolygons_);
+  return ss.str();
+}
+
+std::string Spatial::serializeLinestrings() const {
+  std::ostringstream ss;
+  ss << bg::wkt(linestrings_);
+  return ss.str();
+}
+
+std::string Spatial::serializeCircles() const {
+  return Point::serialize(circles_);
+}
 
 bg::strategy::buffer::point_circle Spatial::point_strategy(90);
 bg::strategy::buffer::side_straight Spatial::side_strategy;

@@ -43,6 +43,7 @@ add_executable(tests
     dxf_tests.h
     cadastralnumber_tests.h
     sqllite_tests.h
+    serialize_tests.h
 )
 
 include_directories(tests

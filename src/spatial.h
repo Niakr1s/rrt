@@ -29,6 +29,11 @@ class Spatial {
   static bg::strategy::buffer::side_straight side_strategy;
 
   Spatial();
+  Spatial(const std::string& rect,
+          const std::string& polygons,
+          const std::string& circlePolygons,
+          const std::string& linestrings,
+          const std::string& circles);
 
   bool empty();
 
@@ -58,6 +63,12 @@ class Spatial {
   static bool isClosed(const std::vector<std::vector<Point>>& polygon);
 
   void updateRect(const std::vector<std::vector<std::vector<Point>>>& polygons);
+
+  std::string serializeRect() const;
+  std::string serializePolygons() const;
+  std::string serializeCirclePolygons() const;
+  std::string serializeLinestrings() const;
+  std::string serializeCircles() const;
 
  private:
   Rect rect_;
