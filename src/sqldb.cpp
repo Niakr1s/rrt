@@ -21,6 +21,10 @@ SqlDB::~SqlDB() {
   sqlite3_close(db_);
 }
 
+void SqlDB::clearDB() {
+  exec("DELETE FROM spatial");
+}
+
 void rrt::SqlDB::pushToDB(const rrt::XMLSpatial& xmlSpatial) {
   auto xss = xmlSpatial.serialize();
   exec(fmt::format(
@@ -72,11 +76,6 @@ std::shared_ptr<rrt::XMLSpatial> rrt::SqlDB::getFromDB(
   if (xmlSpatialSerialized.empty()) {
     throw std::runtime_error(
         fmt::format("SqlDB::getFromDB: {}, {}, {}: no such item",
-                    cadastralNumber.string(), date, orderNumber));
-  }
-  if (xmlSpatialSerialized[0].notFull()) {
-    throw std::runtime_error(
-        fmt::format("SqlDB::getFromDB: {}, {}, {}: some fields are empty",
                     cadastralNumber.string(), date, orderNumber));
   }
   auto res = std::make_shared<XMLSpatial>(xmlSpatialSerialized[0]);
@@ -163,6 +162,24 @@ int SqlDB::execCallback(void* NotUsed,
   return 0;
 }
 
-}  // namespace rrt
+IDB::xmlSpatials_t rrt::SqlDB::getAllLastFromDB() {
+  std::vector<XMLSpatialSerialized> xmlSpatialSerialized;
 
-rrt::XMLSpatial::xmlSpatials_t rrt::SqlDB::getAllFromDB() {}
+  std::string queue;
+  queue = (R"***(
+           SELECT *, max(xml_date) FROM spatial
+           GROUP BY spatial_cadastral_number;
+                )***");
+  exec(queue, &makeXMLSpatialSerialized, &xmlSpatialSerialized);
+
+  IDB::xmlSpatials_t res;
+
+  for (auto& xss : xmlSpatialSerialized) {
+    auto spa = std::make_shared<XMLSpatial>(xss);
+    res.push_back(spa);
+  }
+
+  return res;
+}
+
+}  // namespace rrt

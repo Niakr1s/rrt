@@ -12,9 +12,11 @@ namespace rrt {
 class SqlDB : public IDB {
  public:
   SqlDB();
-  ~SqlDB();
+  ~SqlDB() override;
 
  public:
+  void clearDB() override;
+
   void pushToDB(const XMLSpatial& xmlSpatial) override;
 
   std::shared_ptr<XMLSpatial> getFromDB(
@@ -27,7 +29,7 @@ class SqlDB : public IDB {
                                       char** argv,
                                       char** azColName);
 
-  XMLSpatial::xmlSpatials_t getAllFromDB() override;
+  xmlSpatials_t getAllLastFromDB() override;
 
   void init();
   void open();

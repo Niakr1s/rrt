@@ -18,7 +18,7 @@ void init() {
   DB::set<rrt::SqlDB>();
   auto xml = XML(BLOCK.c_str());
   for (auto& s : xml.xmlSpatials()) {
-    rrt::DB::get()->pushToDB(*s);
+    DB::get()->pushToDB(*s);
   }
 }
 
@@ -47,6 +47,12 @@ TEST(sql, getFromDB1) {
 
   EXPECT_ANY_THROW(
       DB::get()->getFromDB(CadastralNumber(SQL_CAD_NO), "2018-10-23", "2355"));
+}
+
+TEST(sql, getAllLastFromDB1) {
+  init();
+  auto spa = DB::get()->getAllLastFromDB();
+  ASSERT_EQ(spa.size(), 25);
 }
 
 #endif  // SQLLITE_TESTS_H
