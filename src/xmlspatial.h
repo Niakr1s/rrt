@@ -39,7 +39,7 @@ class XMLSpatial {
   typedef std::vector<std::shared_ptr<XMLSpatial>> xmlSpatials_t;
 
   XMLSpatial(const XMLSpatialInfo& xmlSpatialInfo);
-  XMLSpatial(const XMLSpatialSerialized& seialized);
+  XMLSpatial(const XMLSpatialSerialized& serialized);
 
   XMLSpatialInfo xmlSpatialInfo() const;
 

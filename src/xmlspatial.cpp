@@ -11,20 +11,25 @@ XMLSpatial::XMLSpatial(const XMLSpatialInfo& info)
       xmlInfo_(std::make_shared<XMLInfo>()),
       spatial_(std::make_shared<Spatial>()) {}
 
-XMLSpatial::XMLSpatial(const XMLSpatialSerialized& seialized)
-    : xmlSpatialInfo_(seialized.spatial_type,
-                      seialized.spatial_cadastral_number),
+XMLSpatial::XMLSpatial(const XMLSpatialSerialized& serialized)
+    : xmlSpatialInfo_(serialized.spatial_type,
+                      serialized.spatial_cadastral_number),
       xmlInfo_(std::make_shared<XMLInfo>(
-          seialized.xml_type,
-          seialized.xml_date,
-          seialized.xml_order_number,
-          XMLSpatialInfo(seialized.root_type,
-                         seialized.root_cadastral_number))),
-      spatial_(std::make_shared<Spatial>(seialized.rect,
-                                         seialized.polygons,
-                                         seialized.circle_polygons,
-                                         seialized.linestrings,
-                                         seialized.circles)) {}
+          serialized.xml_type,
+          serialized.xml_date,
+          serialized.xml_order_number,
+          XMLSpatialInfo(serialized.root_type,
+                         serialized.root_cadastral_number))),
+      spatial_(std::make_shared<Spatial>(serialized.rect,
+                                         serialized.polygons,
+                                         serialized.circle_polygons,
+                                         serialized.linestrings,
+                                         serialized.circles)) {
+  if (serialized.notFull()) {
+    BOOST_LOG_TRIVIAL(warning)
+        << "XMLSpatial(const XMLSpatialSerialized&): serialized is not full";
+  }
+}
 
 XMLSpatialInfo XMLSpatial::xmlSpatialInfo() const {
   return xmlSpatialInfo_;
