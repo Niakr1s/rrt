@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include <string>
+#include <vector>
 
 #include "cadastralnumber.h"
 
@@ -18,6 +19,13 @@ TEST(cadastralnumber, constructor) {
   ASSERT_TRUE(cn2 < cn12);
   ASSERT_TRUE(cn3 < cn4);
   ASSERT_NE(cn1, cn2);
+}
+
+TEST(cadastralnumber, strings) {
+  rrt::CadastralNumber cn2("21:01:000000");
+
+  std::vector<std::string> cmp({"21", "01", "000000"});
+  ASSERT_EQ(cn2.strings(), cmp);
 }
 
 #endif  // CADASTRALNUMBER_TESTS_H

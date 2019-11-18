@@ -14,6 +14,7 @@ class CadastralNumber {
   CadastralNumber(const std::string& str);
 
   std::string string() const;
+  std::vector<std::string> strings() const;
   std::string underscoredString() const;
 
  public:
