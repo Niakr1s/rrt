@@ -1,14 +1,3 @@
-# rrt
-
-add_executable(rrt
-    main.cpp
-)
-
-target_link_libraries(rrt
-    dxf
-    xml
-)
-
 # dxf
 
 add_library(dxf SHARED
@@ -106,3 +95,5 @@ target_link_libraries(cadastral_info
     fmt::fmt
     Boost::date_time
 )
+
+subdirs(gui)
