@@ -6,6 +6,15 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 add_executable(rrt
     main.cpp
+    mainwindow.h
+    mainwindow.cpp
+    resources/resources.qrc
+    mainwidget.h
+    mainwidget.cpp
+    xmltreemodel.h
+    xmltreemodel.cpp
+    xmltreeitem.h
+    xmltreeitem.cpp
 )
 
 target_link_libraries(rrt

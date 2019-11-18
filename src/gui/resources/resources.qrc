@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>dxf.svg</file>
+        <file>xml.svg</file>
+        <file>about.svg</file>
+        <file>exit.svg</file>
+        <file>rrt.png</file>
+    </qresource>
+</RCC>
