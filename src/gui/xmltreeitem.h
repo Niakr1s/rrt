@@ -5,6 +5,7 @@
 #include <QVector>
 #include <memory>
 #include <string>
+#include "spatial.h"
 #include "xmlspatial.h"
 
 class XMLTreeItem {
@@ -29,6 +30,9 @@ class XMLTreeItem {
   void appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial);
   std::shared_ptr<rrt::XMLSpatial> spatial() const;
   QString tooltipData() const;
+  bool intersects(const rrt::Spatial& spatial);
+
+  bool intersectsFlag() const;
 
  private:
   QVector<XMLTreeItem*> childs_;
@@ -36,6 +40,8 @@ class XMLTreeItem {
 
   std::string strID_;
   std::shared_ptr<rrt::XMLSpatial> spatial_;
+
+  bool intersectsFlag_ = false;
 };
 
 #endif  // XMLTREEITEM_H

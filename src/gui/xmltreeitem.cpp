@@ -85,3 +85,15 @@ QString XMLTreeItem::tooltipData() const {
                                           .string()));
   return res;
 }
+
+bool XMLTreeItem::intersects(const rrt::Spatial& spatial) {
+  if (spatial_ == nullptr) {
+    return false;
+  }
+  intersectsFlag_ = spatial_->spatial()->intersects(spatial);
+  return intersectsFlag_;
+}
+
+bool XMLTreeItem::intersectsFlag() const {
+  return intersectsFlag_;
+}

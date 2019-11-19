@@ -3,6 +3,7 @@
 #include <QStandardItemModel>
 #include <QString>
 #include <QVBoxLayout>
+#include "xmltreedelegate.h"
 #include "xmltreemodel.h"
 
 MainWidget::MainWidget(QWidget* parent) : QWidget(parent) {
@@ -24,9 +25,11 @@ QTreeView* MainWidget::createTreeView() {
   tv->setModel(model);
   tv->setSortingEnabled(true);
   tv->setEditTriggers(QTableView::NoEditTriggers);
-
   tv->setMinimumHeight(600);
-  tv->setMinimumHeight(400);
+
+  auto delegate = new XMLTreeDelegate();
+  tv->setItemDelegate(delegate);
+
   return tv;
 }
 

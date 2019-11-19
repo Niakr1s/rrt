@@ -1,0 +1,25 @@
+#include "xmltreedelegate.h"
+
+#include <QDebug>
+#include <QLinearGradient>
+#include <QPainter>
+#include "xmltreeitem.h"
+
+XMLTreeDelegate::XMLTreeDelegate(QObject* parent)
+    : QStyledItemDelegate(parent) {}
+
+void XMLTreeDelegate::paint(QPainter* painter,
+                            const QStyleOptionViewItem& option,
+                            const QModelIndex& index) const {
+  XMLTreeItem* item = static_cast<XMLTreeItem*>(index.internalPointer());
+  if (item == nullptr) {
+    return;
+  }
+  if (item->intersectsFlag()) {
+    auto optCopy = option;
+    optCopy.palette.setColor(QPalette::Text, Qt::green);
+    QStyledItemDelegate::paint(painter, optCopy, index);
+  } else {
+    QStyledItemDelegate::paint(painter, option, index);
+  }
+}
