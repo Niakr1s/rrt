@@ -39,19 +39,11 @@ class Spatial {
 
   template <typename Geometry>
   bool intersects(const Geometry& geometry) const {
-    if (!bg::intersects(rect_.box(), geometry)) {
-      return false;
-    }
-    if (bg::intersects(polygons_, geometry)) {
-      return true;
-    }
-    if (bg::intersects(linestrings_, geometry)) {
-      return true;
-    }
-    if (bg::intersects(circlePolygons_, geometry)) {
-      return true;
-    }
-    return false;
+    return (bg::intersects(rect_.box(), geometry)) &&
+
+           (bg::intersects(polygons_, geometry) ||
+            bg::intersects(linestrings_, geometry) ||
+            bg::intersects(circlePolygons_, geometry));
   }
 
   bool intersects(const Spatial& rhs) const;
