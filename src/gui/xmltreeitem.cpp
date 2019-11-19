@@ -97,3 +97,14 @@ bool XMLTreeItem::intersects(const rrt::Spatial& spatial) {
 bool XMLTreeItem::intersectsFlag() const {
   return intersectsFlag_;
 }
+
+void XMLTreeItem::turnOffIntersectsFlag() {
+  intersectsFlag_ = false;
+}
+
+void XMLTreeItem::forEach(std::function<void(XMLTreeItem*)> fn) {
+  fn(this);
+  for (auto& child : childs_) {
+    child->forEach(fn);
+  }
+}

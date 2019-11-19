@@ -40,6 +40,10 @@ void XMLTreeModel::setupModelData(XMLTreeItem* parent) {
   }
 }
 
+XMLTreeItem* XMLTreeModel::getRootItem() const {
+  return rootItem;
+}
+
 QVariant XMLTreeModel::data(const QModelIndex& index, int role) const {
   if (!index.isValid())
     return QVariant();

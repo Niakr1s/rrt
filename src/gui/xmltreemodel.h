@@ -14,6 +14,7 @@ class XMLTreeModel : public QAbstractItemModel {
   ~XMLTreeModel() override;
 
   void setupModelData(XMLTreeItem* parent);
+  XMLTreeItem* getRootItem() const;
 
  private:
   XMLTreeItem* rootItem;

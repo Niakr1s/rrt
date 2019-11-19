@@ -3,6 +3,7 @@
 
 #include <QVariant>
 #include <QVector>
+#include <functional>
 #include <memory>
 #include <string>
 #include "spatial.h"
@@ -33,6 +34,9 @@ class XMLTreeItem {
   bool intersects(const rrt::Spatial& spatial);
 
   bool intersectsFlag() const;
+  void turnOffIntersectsFlag();
+
+  void forEach(std::function<void(XMLTreeItem*)> fn);
 
  private:
   QVector<XMLTreeItem*> childs_;

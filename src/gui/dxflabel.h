@@ -25,6 +25,7 @@ class DXFLabel : public QLabel {
  signals:
   void dxfCloseSignal();
   void newDXFFileSignal(QFileInfo);
+  void newDXFSpatialSignal(std::shared_ptr<rrt::Spatial>);
 
  public slots:
   void onDxfClose();

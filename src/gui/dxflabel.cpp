@@ -76,6 +76,7 @@ void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
     dxfFilePath_ = fi.filePath();
     dxf.fileImport(dxfFilePath_.toStdString());
     spatial_ = dxf.spatial();
+    emit newDXFSpatialSignal(spatial_);
     QString newText;
     newText = QString("<div>%1: \"%2\"</div>")
                   .arg(tr("Current file"))
