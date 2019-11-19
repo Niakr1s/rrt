@@ -28,7 +28,7 @@ TEST(xml, xmlInfo) {
       xml.xmlInfo().rootSpatialInfo().cadastralNumber().underscoredString(),
       "77_03_0009007");
   ASSERT_EQ(xml.xmlInfo().rootSpatialInfo().type(), "CadastralBlock");
-  ASSERT_EQ(xml.xmlInfo().date(), "2018-10-23");
+  ASSERT_EQ(xml.xmlInfo().dateString(), "2018-10-23");
   ASSERT_EQ(xml.xmlInfo().type(), "KPT");
   ASSERT_EQ(xml.xmlInfo().orderNumber(), "99/2018/207988061");
 }

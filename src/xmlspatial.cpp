@@ -76,7 +76,7 @@ XMLSpatialSerialized XMLSpatial::serialize() const {
       xmlInfo().rootSpatialInfo().cadastralNumber().string();
 
   res.xml_type = xmlInfo().type();
-  res.xml_date = xmlInfo().date();
+  res.xml_date = xmlInfo().dateString();
   res.xml_order_number = xmlInfo().orderNumber();
 
   res.rect = spatial()->serializeRect();

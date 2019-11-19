@@ -27,6 +27,7 @@ class XMLTreeItem {
   XMLTreeItem* parentItem();
 
   void appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial);
+  std::shared_ptr<rrt::XMLSpatial> spatial() const;
   QString tooltipData() const;
 
  private:

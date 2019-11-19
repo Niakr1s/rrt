@@ -19,6 +19,10 @@ std::string XMLInfo::type() const {
   return type_;
 }
 
+boost::gregorian::date XMLInfo::date() const {
+  return date_;
+}
+
 std::string XMLInfo::orderNumber() const {
   return orderNumber_;
 }
@@ -27,7 +31,7 @@ const XMLSpatialInfo& XMLInfo::rootSpatialInfo() const {
   return rootSpatialInfo_;
 }
 
-std::string XMLInfo::date() const {
+std::string XMLInfo::dateString() const {
   return boost::gregorian::to_iso_extended_string(date_);
 }
 

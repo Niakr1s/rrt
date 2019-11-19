@@ -58,7 +58,14 @@ XMLTreeItem* XMLTreeItem::parentItem() {
 }
 
 void XMLTreeItem::appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial) {
-  spatial_ = spatial;
+  if (spatial_ == nullptr ||
+      spatial->xmlInfo().date() > spatial_->xmlInfo().date()) {
+    spatial_ = spatial;
+  }
+}
+
+std::shared_ptr<rrt::XMLSpatial> XMLTreeItem::spatial() const {
+  return spatial_;
 }
 
 QString XMLTreeItem::tooltipData() const {
@@ -69,7 +76,7 @@ QString XMLTreeItem::tooltipData() const {
       QString("XML: %1, %2, %3\nParent: %4: %5")
           .arg(QString::fromStdString(spatial_->xmlInfo().type()))
           .arg(QString::fromStdString(spatial_->xmlInfo().orderNumber()))
-          .arg(QString::fromStdString(spatial_->xmlInfo().date()))
+          .arg(QString::fromStdString(spatial_->xmlInfo().dateString()))
           .arg(QString::fromStdString(
               spatial_->xmlInfo().rootSpatialInfo().type()))
           .arg(QString::fromStdString(spatial_->xmlInfo()

@@ -29,7 +29,7 @@ void XMLTreeModel::setupModelData(XMLTreeItem* parent) {
 
       // second condition: we want all versions of a spatial with one
       // cadastral number
-      if (idChild == nullptr || str == path.back()) {
+      if (idChild == nullptr) {
         it->appendChild(child);
         it = child;
       } else {

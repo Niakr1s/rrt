@@ -12,12 +12,13 @@ class XMLInfo {
  public:
   XMLInfo();
   XMLInfo(std::string type,
-          std::string date,
+          std::string dateString,
           std::string orderNumber,
           const XMLSpatialInfo& rootSpatialInfo);
 
   std::string type() const;
-  std::string date() const;
+  boost::gregorian::date date() const;
+  std::string dateString() const;
   std::string orderNumber() const;
   const XMLSpatialInfo& rootSpatialInfo() const;
 

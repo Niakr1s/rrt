@@ -60,7 +60,7 @@ void XML::renameFile() {
   std::string newFilenameStr = fmt::format(
       "{} {} {}{}", xmlInfo_->type(),
       xmlInfo_->rootSpatialInfo().cadastralNumber().underscoredString(),
-      xmlInfo_->date(), path_.extension().string());
+      xmlInfo_->dateString(), path_.extension().string());
   bf::path newFilename(newFilenameStr);
   bf::path newPath = path_.parent_path();
   newPath.append(newFilenameStr);
