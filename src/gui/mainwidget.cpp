@@ -8,10 +8,10 @@
 MainWidget::MainWidget(QWidget* parent) : QWidget(parent) {
   QVBoxLayout* vbox = new QVBoxLayout();
   treeView_ = createTreeView();
-  resultLabel_ = createresultLabel();
+  dxfLabel_ = createDXFLabel();
 
   vbox->addWidget(treeView_);
-  vbox->addWidget(resultLabel_);
+  vbox->addWidget(dxfLabel_);
 
   setLayout(vbox);
 }
@@ -30,8 +30,8 @@ QTreeView* MainWidget::createTreeView() {
   return tv;
 }
 
-QLabel* MainWidget::createresultLabel() {
-  auto res = new QLabel(tr("<center>Drag your DXF file here</center>"));
+DXFLabel* MainWidget::createDXFLabel() {
+  auto res = new DXFLabel();
   res->setWordWrap(true);
   res->setMinimumHeight(100);
   res->setMinimumWidth(400);

@@ -5,6 +5,7 @@
 #include <QTableView>
 #include <QTreeView>
 #include <QWidget>
+#include "dxflabel.h"
 
 class MainWidget : public QWidget {
   Q_OBJECT
@@ -17,11 +18,11 @@ class MainWidget : public QWidget {
 
  private:
   QTreeView* treeView_;
-  QLabel* resultLabel_;
+  DXFLabel* dxfLabel_;
 
  private:
   QTreeView* createTreeView();
-  QLabel* createresultLabel();
+  DXFLabel* createDXFLabel();
 };
 
 #endif  // MAINWIDGET_H
