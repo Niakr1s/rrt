@@ -5,5 +5,6 @@
         <file>about.svg</file>
         <file>exit.svg</file>
         <file>rrt.png</file>
+        <file>close.svg</file>
     </qresource>
 </RCC>
