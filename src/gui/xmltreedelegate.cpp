@@ -18,8 +18,7 @@ void XMLTreeDelegate::paint(QPainter* painter,
   if (item->intersectsFlag()) {
     auto optCopy = option;
     optCopy.palette.setColor(QPalette::Text, Qt::green);
-    QStyledItemDelegate::paint(painter, optCopy, index);
-  } else {
-    QStyledItemDelegate::paint(painter, option, index);
+    return QStyledItemDelegate::paint(painter, optCopy, index);
   }
+  QStyledItemDelegate::paint(painter, option, index);
 }

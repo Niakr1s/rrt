@@ -19,4 +19,7 @@ MainWidget::MainWidget(QWidget* parent) : QWidget(parent) {
 
   connect(dxfLabel_, &DXFLabel::dxfCloseSignal, treeView_,
           &XMLTreeView::onDxfClose);
+
+  connect(dxfLabel_, &DXFLabel::newXMLFilesSignal, treeView_,
+          &XMLTreeView::onNewXMLFiles);
 }

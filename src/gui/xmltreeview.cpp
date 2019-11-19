@@ -1,6 +1,9 @@
 #include "xmltreeview.h"
 
+#include <QDebug>
+#include <exception>
 #include <future>
+#include "xml.h"
 #include "xmltreedelegate.h"
 #include "xmltreemodel.h"
 
@@ -22,6 +25,21 @@ void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
   rootItem()->forEach([&](XMLTreeItem* item) {
     std::async(&XMLTreeItem::intersects, item, *spatial);
   });
+}
+
+void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
+  for (auto& xmlFile : xmlFiles) {
+    if (!xmlFile.exists()) {
+      continue;
+    }
+    try {
+      rrt::XML xml(xmlFile.absoluteFilePath().toStdString());
+      static_cast<XMLTreeModel*>(model())->appendSpatials(xml.xmlSpatials());
+    } catch (std::exception& e) {
+      qDebug() << e.what();
+    }
+  }
+  expandAll();
 }
 
 void XMLTreeView::onDxfClose() {

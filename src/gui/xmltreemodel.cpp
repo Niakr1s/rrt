@@ -1,19 +1,20 @@
 #include "xmltreemodel.h"
 
+#include <QDebug>
+#include <boost/log/trivial.hpp>
 #include "db.h"
 
 XMLTreeModel::XMLTreeModel(QObject* parent) : QAbstractItemModel(parent) {
-  rootItem = new XMLTreeItem();
-  setupModelData(rootItem);
+  rootItem_ = new XMLTreeItem();
+  appendSpatialsFromDB();
 }
 
 XMLTreeModel::~XMLTreeModel() {
-  delete rootItem;
+  delete rootItem_;
 }
 
-void XMLTreeModel::setupModelData(XMLTreeItem* parent) {
-  auto spatials = rrt::DB::get()->getAllLastFromDB();
-
+void XMLTreeModel::appendSpatials(
+    const rrt::XMLSpatial::xmlSpatials_t& spatials) {
   for (auto& spatial : spatials) {
     auto path = spatial->xmlSpatialInfo().cadastralNumber().strings();
     while (path.size() != 3) {
@@ -22,26 +23,53 @@ void XMLTreeModel::setupModelData(XMLTreeItem* parent) {
     path.push_back(spatial->xmlSpatialInfo().type());
     path.push_back(spatial->xmlSpatialInfo().cadastralNumber().string());
 
-    XMLTreeItem* it = parent;
+    auto idx = QModelIndex();
     for (auto& str : path) {
-      XMLTreeItem* child = new XMLTreeItem(str, it);
-      auto idChild = it->child(str);
-
-      // second condition: we want all versions of a spatial with one
-      // cadastral number
-      if (idChild == nullptr) {
-        it->appendChild(child);
-        it = child;
-      } else {
-        it = idChild;
+      bool found = false;
+      for (int i = 0; i != rowCount(idx); ++i) {
+        auto child = index(i, 0, idx);
+        if (getItem(child)->strID() == str) {
+          idx = child;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        insertRow(rowCount(idx), idx);
+        idx = index(rowCount(idx) - 1, 0, idx);
+        setData(idx, QString::fromStdString(str), Qt::DisplayRole);
       }
     }
-    it->appendSpatial(spatial);
+    getItem(idx)->appendSpatial(spatial);
   }
 }
 
+void XMLTreeModel::appendSpatialsFromDB() {
+  auto spatials = rrt::DB::get()->getAllLastFromDB();
+  appendSpatials(spatials);
+}
+
+int XMLTreeModel::size() const {
+  int res = 0;
+  getRootItem()->forEach([&res](XMLTreeItem* item) {
+    if (item->spatial() != nullptr) {
+      ++res;
+    }
+  });
+  return res;
+}
+
+XMLTreeItem* XMLTreeModel::getItem(const QModelIndex& index) const {
+  if (index.isValid()) {
+    XMLTreeItem* item = static_cast<XMLTreeItem*>(index.internalPointer());
+    if (item)
+      return item;
+  }
+  return rootItem_;
+}
+
 XMLTreeItem* XMLTreeModel::getRootItem() const {
-  return rootItem;
+  return rootItem_;
 }
 
 QVariant XMLTreeModel::data(const QModelIndex& index, int role) const {
@@ -51,7 +79,7 @@ QVariant XMLTreeModel::data(const QModelIndex& index, int role) const {
   XMLTreeItem* item = static_cast<XMLTreeItem*>(index.internalPointer());
 
   if (role == Qt::DisplayRole) {
-    return item->data(index.column());
+    return item->data(0);
   }
 
   if (role == Qt::ToolTipRole) {
@@ -91,7 +119,7 @@ QModelIndex XMLTreeModel::index(int row,
   XMLTreeItem* parentItem;
 
   if (!parent.isValid()) {
-    parentItem = rootItem;
+    parentItem = rootItem_;
   } else {
     parentItem = static_cast<XMLTreeItem*>(parent.internalPointer());
   }
@@ -111,7 +139,7 @@ QModelIndex XMLTreeModel::parent(const QModelIndex& index) const {
   XMLTreeItem* childItem = static_cast<XMLTreeItem*>(index.internalPointer());
   XMLTreeItem* parentItem = childItem->parentItem();
 
-  if (parentItem == rootItem)
+  if (parentItem == rootItem_)
     return QModelIndex();
 
   return createIndex(parentItem->row(), 0, parentItem);
@@ -119,11 +147,11 @@ QModelIndex XMLTreeModel::parent(const QModelIndex& index) const {
 
 int XMLTreeModel::rowCount(const QModelIndex& parent) const {
   XMLTreeItem* parentItem;
-  if (parent.column() > 0)
-    return 0;
+  //  if (parent.column() > 0)
+  //    return 0;
 
   if (!parent.isValid())
-    parentItem = rootItem;
+    parentItem = rootItem_;
   else
     parentItem = static_cast<XMLTreeItem*>(parent.internalPointer());
 
@@ -133,5 +161,29 @@ int XMLTreeModel::rowCount(const QModelIndex& parent) const {
 int XMLTreeModel::columnCount(const QModelIndex& parent) const {
   if (parent.isValid())
     return static_cast<XMLTreeItem*>(parent.internalPointer())->columnCount();
-  return rootItem->columnCount();
+  return rootItem_->columnCount();
+}
+
+bool XMLTreeModel::insertRows(int row, int count, const QModelIndex& parent) {
+  XMLTreeItem* parentItem = getItem(parent);
+  if (!parentItem)
+    return false;
+
+  beginInsertRows(parent, row, row + count - 1);
+  const bool success =
+      parentItem->insertChildren(row, count, rootItem_->columnCount());
+  endInsertRows();
+
+  return success;
+}
+
+bool XMLTreeModel::setData(const QModelIndex& index,
+                           const QVariant& value,
+                           int role) {
+  XMLTreeItem* item = getItem(index);
+  bool result = item->setData(0, value);
+  if (result) {
+    emit dataChanged(index, index, {Qt::DisplayRole, Qt::EditRole});
+  }
+  return result;
 }

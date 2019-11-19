@@ -1,6 +1,7 @@
 #include "dxflabel.h"
 
 #include <QDebug>
+#include <QDir>
 #include <QErrorMessage>
 #include <QFileInfo>
 #include <QList>
@@ -49,19 +50,29 @@ void DXFLabel::dragEnterEvent(QDragEnterEvent* event) {
 }
 
 void DXFLabel::dropEvent(QDropEvent* event) {
+  QVector<QFileInfo> xmlFiles;
   for (auto& url : event->mimeData()->urls()) {
     if (url.isLocalFile()) {
       QFileInfo fi(url.toLocalFile());
       if (fi.suffix().toLower() == "dxf" || fi.suffix().toLower() == "dwg") {
         emit newDXFFileSignal(fi);
         return;
+      } else if (fi.suffix().toLower() == "xml") {
+        xmlFiles.push_back(fi);
       }
     }
+  }
+  if (!xmlFiles.empty()) {
+    emit newXMLFilesSignal(xmlFiles);
   }
 }
 
 void DXFLabel::setDefaultText() {
-  setText(tr("Drag your DXF file here"));
+  setText(
+      QString("<div>%1</div><div>%2</div><div>%3</div>")
+          .arg(tr("Drag your DXF or XMLs here."))
+          .arg(tr("DXF will be checked in all top window XMLs."))
+          .arg(tr("XMLs will be copied in %1/data.").arg(QDir::currentPath())));
 }
 
 void DXFLabel::onDxfClose() {

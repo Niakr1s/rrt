@@ -1,6 +1,7 @@
 #ifndef XMLTREEITEM_H
 #define XMLTREEITEM_H
 
+#include <QModelIndex>
 #include <QVariant>
 #include <QVector>
 #include <functional>
@@ -20,7 +21,6 @@ class XMLTreeItem {
   void appendChild(XMLTreeItem* child);
 
   XMLTreeItem* child(int row);
-  XMLTreeItem* child(const std::string& strID);
 
   int childCount() const;
   int columnCount() const;
@@ -35,8 +35,15 @@ class XMLTreeItem {
 
   bool intersectsFlag() const;
   void turnOffIntersectsFlag();
+  bool newFlag() const;
 
   void forEach(std::function<void(XMLTreeItem*)> fn);
+
+  bool insertChildren(int row, int count, int columns);
+
+  bool setData(int col, const QVariant& value);
+
+  std::string strID() const;
 
  private:
   QVector<XMLTreeItem*> childs_;
@@ -46,6 +53,7 @@ class XMLTreeItem {
   std::shared_ptr<rrt::XMLSpatial> spatial_;
 
   bool intersectsFlag_ = false;
+  bool newFlag_ = false;
 };
 
 #endif  // XMLTREEITEM_H

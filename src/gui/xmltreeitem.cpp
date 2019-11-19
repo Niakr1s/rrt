@@ -17,15 +17,6 @@ XMLTreeItem* XMLTreeItem::child(int row) {
   return childs_.at(row);
 }
 
-XMLTreeItem* XMLTreeItem::child(const std::string& strID) {
-  for (auto& child : childs_) {
-    if (child->strID_ == strID) {
-      return child;
-    }
-  }
-  return nullptr;
-}
-
 int XMLTreeItem::childCount() const {
   return childs_.count();
 }
@@ -58,9 +49,11 @@ XMLTreeItem* XMLTreeItem::parentItem() {
 }
 
 void XMLTreeItem::appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial) {
-  if (spatial_ == nullptr ||
-      spatial->xmlInfo().date() > spatial_->xmlInfo().date()) {
+  if (spatial_ == nullptr) {
     spatial_ = spatial;
+  } else if (spatial->xmlInfo().date() > spatial_->xmlInfo().date()) {
+    spatial_ = spatial;
+    newFlag_ = true;
   }
 }
 
@@ -69,20 +62,20 @@ std::shared_ptr<rrt::XMLSpatial> XMLTreeItem::spatial() const {
 }
 
 QString XMLTreeItem::tooltipData() const {
+  QString res;
   if (spatial_ == nullptr) {
-    return "";
+    return res;
   }
-  QString res =
-      QString("XML: %1, %2, %3\nParent: %4: %5")
-          .arg(QString::fromStdString(spatial_->xmlInfo().type()))
-          .arg(QString::fromStdString(spatial_->xmlInfo().orderNumber()))
-          .arg(QString::fromStdString(spatial_->xmlInfo().dateString()))
-          .arg(QString::fromStdString(
-              spatial_->xmlInfo().rootSpatialInfo().type()))
-          .arg(QString::fromStdString(spatial_->xmlInfo()
-                                          .rootSpatialInfo()
-                                          .cadastralNumber()
-                                          .string()));
+  res = QString("XML: %1, %2, %3\nParent: %4: %5")
+            .arg(QString::fromStdString(spatial_->xmlInfo().type()))
+            .arg(QString::fromStdString(spatial_->xmlInfo().orderNumber()))
+            .arg(QString::fromStdString(spatial_->xmlInfo().dateString()))
+            .arg(QString::fromStdString(
+                spatial_->xmlInfo().rootSpatialInfo().type()))
+            .arg(QString::fromStdString(spatial_->xmlInfo()
+                                            .rootSpatialInfo()
+                                            .cadastralNumber()
+                                            .string()));
   return res;
 }
 
@@ -107,4 +100,31 @@ void XMLTreeItem::forEach(std::function<void(XMLTreeItem*)> fn) {
   for (auto& child : childs_) {
     child->forEach(fn);
   }
+}
+
+bool XMLTreeItem::insertChildren(int row, int count, int columns) {
+  if (row < 0 || row > childs_.size()) {
+    return false;
+  }
+  for (int i = 0; i < count; ++i) {
+    XMLTreeItem* item = new XMLTreeItem("", this);
+    childs_.insert(row, item);
+  }
+  return true;
+}
+
+bool XMLTreeItem::setData(int col, const QVariant& value) {
+  if (col < 0 || col >= Column::MAX) {
+    return false;
+  }
+  strID_ = value.toString().toStdString();
+  return true;
+}
+
+std::string XMLTreeItem::strID() const {
+  return strID_;
+}
+
+bool XMLTreeItem::newFlag() const {
+  return newFlag_;
 }

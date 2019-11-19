@@ -96,4 +96,4 @@ target_link_libraries(cadastral_info
     Boost::date_time
 )
 
-subdirs(gui)
+add_subdirectory(gui)

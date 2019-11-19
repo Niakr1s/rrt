@@ -27,8 +27,10 @@ target_link_libraries(rrt
     dxf
     xml
     Qt5::Widgets
+    Boost::log
 )
 
 target_include_directories(rrt PUBLIC
     ../
+    ${Boost_INCLUDE_DIRS}
 )
