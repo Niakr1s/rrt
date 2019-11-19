@@ -21,7 +21,7 @@ DXFLabel::DXFLabel(QWidget* parent) : QLabel(parent) {
                           Qt::TextSelectableByKeyboard);
 
   connect(this, &DXFLabel::dxfCloseSignal, this, &DXFLabel::onDxfClose);
-  connect(this, &DXFLabel::newFileSignal, this, &DXFLabel::onNewFile);
+  connect(this, &DXFLabel::newDXFFileSignal, this, &DXFLabel::onNewDXFFile);
 }
 
 void DXFLabel::paintEvent(QPaintEvent* event) {
@@ -53,7 +53,7 @@ void DXFLabel::dropEvent(QDropEvent* event) {
     if (url.isLocalFile()) {
       QFileInfo fi(url.toLocalFile());
       if (fi.suffix().toLower() == "dxf" || fi.suffix().toLower() == "dwg") {
-        emit newFileSignal(fi);
+        emit newDXFFileSignal(fi);
         return;
       }
     }
@@ -70,7 +70,7 @@ void DXFLabel::onDxfClose() {
   setDefaultText();
 }
 
-void DXFLabel::onNewFile(const QFileInfo& fi) {
+void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
   try {
     rrt::DXF dxf;
     dxfFilePath_ = fi.filePath();

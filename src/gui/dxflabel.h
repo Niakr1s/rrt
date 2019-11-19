@@ -24,11 +24,11 @@ class DXFLabel : public QLabel {
 
  signals:
   void dxfCloseSignal();
-  void newFileSignal(QFileInfo);
+  void newDXFFileSignal(QFileInfo);
 
  public slots:
   void onDxfClose();
-  void onNewFile(const QFileInfo& fi);
+  void onNewDXFFile(const QFileInfo& fi);
 
  private:
   QRect closeButtonRect_;
