@@ -44,6 +44,7 @@ add_executable(tests
     cadastralnumber_tests.h
     sqllite_tests.h
     serialize_tests.h
+    intersects_tests.h
 )
 
 include_directories(tests

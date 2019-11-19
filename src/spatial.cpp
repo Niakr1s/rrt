@@ -22,6 +22,14 @@ bool Spatial::empty() {
   return polygons_.empty() && linestrings_.empty() && circles_.empty();
 }
 
+bool Spatial::intersects(const Spatial& rhs) const {
+  if (!intersects(rhs.rect_.box())) {
+    return false;
+  }
+  return (intersects(rhs.polygons_) || intersects(rhs.linestrings_) ||
+          intersects(rhs.circlePolygons_));
+}
+
 void Spatial::append(
     const std::vector<std::vector<std::vector<Point>>>& polygons) {
   for (auto& polygon : polygons) {

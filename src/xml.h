@@ -27,6 +27,8 @@ class XML {
 
   const XMLInfo& xmlInfo() const;
 
+  xmlSpatials_t intersects(const Spatial& spatial) const;
+
  private:
   bf::path path_;
   std::shared_ptr<XMLInfo> xmlInfo_;

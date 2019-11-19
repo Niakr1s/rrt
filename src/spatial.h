@@ -54,6 +54,8 @@ class Spatial {
     return false;
   }
 
+  bool intersects(const Spatial& rhs) const;
+
   void append(const std::vector<std::vector<std::vector<Point>>>& points);
   void append(const std::vector<std::vector<Point>>& points);
   void append(const std::vector<Point>& points);

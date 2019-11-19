@@ -72,6 +72,16 @@ const XMLInfo& XML::xmlInfo() const {
   return *xmlInfo_;
 }
 
+XML::xmlSpatials_t XML::intersects(const Spatial& spatial) const {
+  xmlSpatials_t res;
+  for (auto& it : spatials_) {
+    if (it->spatial()->intersects(spatial)) {
+      res.push_back(it);
+    }
+  }
+  return res;
+}
+
 void XML::addXmlInfoToSpatials() {
   for (auto& spatial : spatials_) {
     spatial->add(xmlInfo_);
