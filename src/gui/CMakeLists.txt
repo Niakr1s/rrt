@@ -19,6 +19,8 @@ add_executable(rrt
     dxflabel.cpp
     xmltreedelegate.h
     xmltreedelegate.cpp
+    xmltreeview.h
+    xmltreeview.cpp
 )
 
 target_link_libraries(rrt

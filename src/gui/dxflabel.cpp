@@ -14,6 +14,11 @@ DXFLabel::DXFLabel(QWidget* parent) : QLabel(parent) {
   setAcceptDrops(true);
   setDefaultText();
   setAlignment(Qt::AlignCenter);
+  setWordWrap(true);
+  setMinimumHeight(100);
+  setMinimumWidth(400);
+  setTextInteractionFlags(Qt::TextSelectableByMouse |
+                          Qt::TextSelectableByKeyboard);
 
   connect(this, &DXFLabel::dxfCloseSignal, this, &DXFLabel::onDxfClose);
   connect(this, &DXFLabel::newFileSignal, this, &DXFLabel::onNewFile);

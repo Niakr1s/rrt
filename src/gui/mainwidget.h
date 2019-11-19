@@ -6,6 +6,7 @@
 #include <QTreeView>
 #include <QWidget>
 #include "dxflabel.h"
+#include "xmltreeview.h"
 
 class MainWidget : public QWidget {
   Q_OBJECT
@@ -17,12 +18,8 @@ class MainWidget : public QWidget {
  public slots:
 
  private:
-  QTreeView* treeView_;
+  XMLTreeView* treeView_;
   DXFLabel* dxfLabel_;
-
- private:
-  QTreeView* createTreeView();
-  DXFLabel* createDXFLabel();
 };
 
 #endif  // MAINWIDGET_H
