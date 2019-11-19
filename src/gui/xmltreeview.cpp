@@ -33,7 +33,7 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
       continue;
     }
     try {
-      rrt::XML xml(xmlFile.absoluteFilePath().toStdString());
+      rrt::XML xml(xmlFile.absoluteFilePath().toStdWString());
       static_cast<XMLTreeModel*>(model())->appendSpatials(xml.xmlSpatials());
     } catch (std::exception& e) {
       qDebug() << e.what();

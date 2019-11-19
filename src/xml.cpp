@@ -9,8 +9,12 @@
 
 namespace rrt {
 
-XML::XML(const std::string& path) : path_(path) {
+XML::XML(const std::string& path)
+    : XML(std::wstring(path.cbegin(), path.cend())) {}
+
+XML::XML(const std::wstring& path) : path_(path) {
   pugi::xml_document root;
+  BOOST_LOG_TRIVIAL(info) << "XML: trying to open: " << path_;
   if (auto res = root.load_file(path_.c_str()); res.status != pugi::status_ok) {
     throw(std::invalid_argument(fmt::format(
         "XML: wrong input file: {}. {}", path_.string(), res.description())));
