@@ -14,12 +14,15 @@ class XMLTreeModel : public QAbstractItemModel {
   XMLTreeModel(QObject* parent = nullptr);
   ~XMLTreeModel() override;
 
-  void appendSpatials(const rrt::XMLSpatial::xmlSpatials_t& spatials);
+  void appendSpatials(const rrt::XMLSpatial::xmlSpatials_t& spatials,
+                      bool newFlag = true);
   void appendSpatialsFromDB();
   int size() const;
 
   XMLTreeItem* getItem(const QModelIndex& index) const;
   XMLTreeItem* getRootItem() const;
+
+  void forEach(std::function<void(XMLTreeItem*)> fn);
 
  private:
   XMLTreeItem* rootItem_;

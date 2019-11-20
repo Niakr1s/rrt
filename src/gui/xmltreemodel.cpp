@@ -7,6 +7,7 @@
 XMLTreeModel::XMLTreeModel(QObject* parent) : QAbstractItemModel(parent) {
   rootItem_ = new XMLTreeItem();
   appendSpatialsFromDB();
+  BOOST_LOG_TRIVIAL(debug) << "root rows = " << rowCount(QModelIndex());
 }
 
 XMLTreeModel::~XMLTreeModel() {
@@ -14,7 +15,8 @@ XMLTreeModel::~XMLTreeModel() {
 }
 
 void XMLTreeModel::appendSpatials(
-    const rrt::XMLSpatial::xmlSpatials_t& spatials) {
+    const rrt::XMLSpatial::xmlSpatials_t& spatials,
+    bool newFlag) {
   for (auto& spatial : spatials) {
     auto path = spatial->xmlSpatialInfo().cadastralNumber().strings();
     while (path.size() != 3) {
@@ -41,12 +43,13 @@ void XMLTreeModel::appendSpatials(
       }
     }
     getItem(idx)->appendSpatial(spatial);
+    getItem(idx)->setNewFlag(newFlag);
   }
 }
 
 void XMLTreeModel::appendSpatialsFromDB() {
   auto spatials = rrt::DB::get()->getAllLastFromDB();
-  appendSpatials(spatials);
+  appendSpatials(spatials, false);
 }
 
 int XMLTreeModel::size() const {
@@ -70,6 +73,12 @@ XMLTreeItem* XMLTreeModel::getItem(const QModelIndex& index) const {
 
 XMLTreeItem* XMLTreeModel::getRootItem() const {
   return rootItem_;
+}
+
+void XMLTreeModel::forEach(std::function<void(XMLTreeItem*)> fn) {
+  for (int i = 0; i != rowCount(QModelIndex()); ++i) {
+    getItem(index(i, 0))->forEach(fn);
+  }
 }
 
 QVariant XMLTreeModel::data(const QModelIndex& index, int role) const {

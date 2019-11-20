@@ -1,5 +1,7 @@
 #include "xmltreeitem.h"
 
+#include <boost/log/trivial.hpp>
+
 XMLTreeItem::XMLTreeItem(const std::string& strID, XMLTreeItem* parentItem)
     : parent_(parentItem), strID_(strID), spatial_(nullptr) {}
 
@@ -84,6 +86,7 @@ bool XMLTreeItem::intersects(const rrt::Spatial& spatial) {
     return false;
   }
   intersectsFlag_ = spatial_->spatial()->intersects(spatial);
+  BOOST_LOG_TRIVIAL(debug) << strID_ << " intersects = " << intersectsFlag_;
   return intersectsFlag_;
 }
 
@@ -127,4 +130,7 @@ std::string XMLTreeItem::strID() const {
 
 bool XMLTreeItem::newFlag() const {
   return newFlag_;
+}
+void XMLTreeItem::setNewFlag(bool newFlag) {
+  newFlag_ = newFlag;
 }

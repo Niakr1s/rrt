@@ -27,7 +27,7 @@ XMLTreeView::XMLTreeView(QWidget* parent)
 }
 
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
-  rootItem()->forEach([&](XMLTreeItem* item) {
+  xmlModel()->forEach([&](XMLTreeItem* item) {
     std::async(&XMLTreeItem::intersects, item, *spatial);
   });
 }
@@ -64,11 +64,11 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
 }
 
 void XMLTreeView::onDxfClose() {
-  rootItem()->forEach([](XMLTreeItem* item) { item->turnOffIntersectsFlag(); });
+  xmlModel()->forEach([](XMLTreeItem* item) { item->turnOffIntersectsFlag(); });
 }
 
-XMLTreeItem* XMLTreeView::rootItem() {
-  return static_cast<XMLTreeItem*>(model()->index(0, 0).internalPointer());
+XMLTreeModel* XMLTreeView::xmlModel() {
+  return static_cast<XMLTreeModel*>(model());
 }
 
 void XMLTreeView::initDirectories() const {

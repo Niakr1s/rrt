@@ -8,6 +8,7 @@
 #include "boost/filesystem/path.hpp"
 #include "spatial.h"
 #include "xmltreeitem.h"
+#include "xmltreemodel.h"
 
 namespace bf = boost::filesystem;
 
@@ -30,7 +31,7 @@ class XMLTreeView : public QTreeView {
   bf::path dataPath_;
 
  private:
-  XMLTreeItem* rootItem();
+  XMLTreeModel* xmlModel();
   void initDirectories() const;
 };
 

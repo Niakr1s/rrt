@@ -11,6 +11,8 @@
 #include "xmlspatial.h"
 
 class XMLTreeItem {
+  friend class XMLTreeModel;
+
  public:
   enum Column : int { CadastralNumber = 0, MAX };
 
@@ -36,8 +38,7 @@ class XMLTreeItem {
   bool intersectsFlag() const;
   void turnOffIntersectsFlag();
   bool newFlag() const;
-
-  void forEach(std::function<void(XMLTreeItem*)> fn);
+  void setNewFlag(bool newFlag);
 
   bool insertChildren(int row, int count, int columns);
 
@@ -54,6 +55,9 @@ class XMLTreeItem {
 
   bool intersectsFlag_ = false;
   bool newFlag_ = false;
+
+ private:
+  void forEach(std::function<void(XMLTreeItem*)> fn);
 };
 
 #endif  // XMLTREEITEM_H
