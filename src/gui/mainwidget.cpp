@@ -19,6 +19,31 @@ MainWidget::MainWidget(QWidget* parent) : QWidget(parent) {
   vbox->addWidget(dxfLabel_);
   setLayout(vbox);
 
+  connectAll();
+}
+
+void MainWidget::onErrXMLs(QVector<QString> errXMlPaths) {
+  QMessageBox* errXmlMessageBox = new QMessageBox(this);
+  errXmlMessageBox->setMinimumWidth(600);
+  errXmlMessageBox->setWindowTitle(tr("Couldn't parse some XMLs"));
+  errXmlMessageBox->setText(tr("Invalid file names are listed below"));
+  errXmlMessageBox->setIcon(QMessageBox::Warning);
+  errXmlMessageBox->setDetailedText(
+      VecStr<QString>(errXMlPaths).sepByNewLine());
+  errXmlMessageBox->show();
+}
+
+void MainWidget::onErrDXF(QString errDXFPath) {
+  QMessageBox* errXmlMessageBox = new QMessageBox(this);
+  errXmlMessageBox->setMinimumWidth(600);
+  errXmlMessageBox->setWindowTitle(tr("Couldn't parse DXF"));
+  errXmlMessageBox->setText(tr("Invalid file name is listed below"));
+  errXmlMessageBox->setIcon(QMessageBox::Critical);
+  errXmlMessageBox->setDetailedText(errDXFPath);
+  errXmlMessageBox->show();
+}
+
+void MainWidget::connectAll() {
   connect(dxfLabel_, &DXFLabel::newDXFSpatialSignal, treeView_,
           &XMLTreeView::onNewDXFSpatial);
 
@@ -35,24 +60,9 @@ MainWidget::MainWidget(QWidget* parent) : QWidget(parent) {
           &XMLTreeView::expandAll);
   connect(treeViewBtns_->btnCollapse(), &QPushButton::clicked, treeView_,
           &XMLTreeView::collapseAll);
-}
 
-void MainWidget::onErrXMLs(QVector<QString> errXMlPaths) {
-  QMessageBox* errXmlMessageBox = new QMessageBox(this);
-  errXmlMessageBox->setMinimumWidth(600);
-  errXmlMessageBox->setWindowTitle(tr("Couldn't parse some XMLs"));
-  errXmlMessageBox->setText(tr("Invalid file names are listed below"));
-  errXmlMessageBox->setIcon(QMessageBox::Warning);
-  errXmlMessageBox->setDetailedText(VecStr(errXMlPaths).sepByNewLine());
-  errXmlMessageBox->show();
-}
-
-void MainWidget::onErrDXF(QString errDXFPath) {
-  QMessageBox* errXmlMessageBox = new QMessageBox(this);
-  errXmlMessageBox->setMinimumWidth(600);
-  errXmlMessageBox->setWindowTitle(tr("Couldn't parse DXF"));
-  errXmlMessageBox->setText(tr("Invalid file name is listed below"));
-  errXmlMessageBox->setIcon(QMessageBox::Critical);
-  errXmlMessageBox->setDetailedText(errDXFPath);
-  errXmlMessageBox->show();
+  connect(treeViewBtns_->btnCopySemicolon(), &QPushButton::clicked, treeView_,
+          &XMLTreeView::onCopySemicolonButtonClick);
+  connect(treeViewBtns_->btnCopyNewline(), &QPushButton::clicked, treeView_,
+          &XMLTreeView::onCopyNewlineButtonClick);
 }

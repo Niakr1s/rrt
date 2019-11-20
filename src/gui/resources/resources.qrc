@@ -9,5 +9,7 @@
         <file>new.png</file>
         <file>collapse.svg</file>
         <file>expand.svg</file>
+        <file>newline.png</file>
+        <file>semicolon.png</file>
     </qresource>
 </RCC>

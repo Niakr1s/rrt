@@ -27,6 +27,9 @@ class MainWidget : public QWidget {
   XMLTreeButtons* treeViewBtns_;
   XMLTreeView* treeView_;
   DXFLabel* dxfLabel_;
+
+ private:
+  void connectAll();
 };
 
 #endif  // MAINWIDGET_H

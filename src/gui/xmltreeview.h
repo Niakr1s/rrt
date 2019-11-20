@@ -28,6 +28,8 @@ class XMLTreeView : public QTreeView {
   void onNewXMLFiles(QVector<QFileInfo> xmlFiles);
   void onDxfClose();
   void onRowsInserted(const QModelIndex& parent, int first, int last);
+  void onCopySemicolonButtonClick();
+  void onCopyNewlineButtonClick();
 
  private:
   bf::path cwd_;

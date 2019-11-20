@@ -1,11 +1,14 @@
 #include "xmltreeview.h"
 
+#include <QClipboard>
+#include <QGuiApplication>
 #include <boost/date_time.hpp>
 #include <boost/log/trivial.hpp>
 #include <exception>
 #include <future>
 #include "boost/filesystem.hpp"
 #include "db.h"
+#include "vecstr.h"
 #include "xml.h"
 #include "xmltreedelegate.h"
 #include "xmltreemodel.h"
@@ -83,6 +86,16 @@ void XMLTreeView::onRowsInserted(const QModelIndex& parent,
   for (int i = first; i <= last; ++i) {
     expand(model()->index(i, 0, parent));
   }
+}
+
+void XMLTreeView::onCopySemicolonButtonClick() {
+  QGuiApplication::clipboard()->setText(QString::fromStdString(
+      VecStr<std::string>(intersectsResult_).sepBySemicolon()));
+}
+
+void XMLTreeView::onCopyNewlineButtonClick() {
+  QGuiApplication::clipboard()->setText(QString::fromStdString(
+      VecStr<std::string>(intersectsResult_).sepByNewLine()));
 }
 
 XMLTreeModel* XMLTreeView::xmlModel() {
