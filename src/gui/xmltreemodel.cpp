@@ -7,7 +7,6 @@
 XMLTreeModel::XMLTreeModel(QObject* parent) : QAbstractItemModel(parent) {
   rootItem_ = new XMLTreeItem();
   appendSpatialsFromDB();
-  BOOST_LOG_TRIVIAL(debug) << "root rows = " << rowCount(QModelIndex());
 }
 
 XMLTreeModel::~XMLTreeModel() {

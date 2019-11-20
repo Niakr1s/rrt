@@ -23,7 +23,11 @@ XMLTreeView::XMLTreeView(QWidget* parent)
   setSortingEnabled(true);
   setEditTriggers(QTreeView::NoEditTriggers);
   setMinimumHeight(400);
+
   expandAll();
+
+  connect(model, &XMLTreeModel::rowsInserted, this,
+          &XMLTreeView::onRowsInserted);
 }
 
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
@@ -38,6 +42,7 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
     if (!xmlFile.exists()) {
       continue;
     }
+
     try {
       rrt::XML xml(xmlFile.absoluteFilePath().toStdWString());
       static_cast<XMLTreeModel*>(model())->appendSpatials(xml.xmlSpatials());
@@ -60,11 +65,19 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
   if (!errPaths.empty()) {
     errXMLsSignal(errPaths);
   }
-  expandAll();
 }
 
 void XMLTreeView::onDxfClose() {
   xmlModel()->forEach([](XMLTreeItem* item) { item->turnOffIntersectsFlag(); });
+}
+
+void XMLTreeView::onRowsInserted(const QModelIndex& parent,
+                                 int first,
+                                 int last) {
+  BOOST_LOG_TRIVIAL(debug) << " XMLTreeView::onRowsInserted";
+  for (int i = first; i <= last; ++i) {
+    expand(model()->index(i, 0, parent));
+  }
 }
 
 XMLTreeModel* XMLTreeView::xmlModel() {
