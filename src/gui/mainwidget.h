@@ -17,6 +17,8 @@ class MainWidget : public QWidget {
  public:
   explicit MainWidget(QWidget* parent = nullptr);
 
+  DXFLabel* dxfLabel() const;
+
  signals:
 
  public slots:

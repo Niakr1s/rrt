@@ -2,8 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QAction>
+#include <QFileInfo>
 #include <QLabel>
 #include <QMainWindow>
+#include <QStringList>
 #include <QTableView>
 #include <QToolBar>
 #include "mainwidget.h"
@@ -14,9 +16,12 @@ class MainWindow : public QMainWindow {
   explicit MainWindow(QWidget* parent = nullptr);
 
  signals:
+  void newDXFFileSignal(QFileInfo);
+  void newXMLFilesSignal(QVector<QFileInfo>);
 
  public slots:
-  void slotNoImpl();
+  void onActionOpenXmls();
+  void onActionOpenDxf();
 
  private:
   QAction* actionOpenXmls_;

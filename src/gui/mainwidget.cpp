@@ -43,6 +43,10 @@ void MainWidget::onErrDXF(QString errDXFPath) {
   errXmlMessageBox->show();
 }
 
+DXFLabel* MainWidget::dxfLabel() const {
+  return dxfLabel_;
+}
+
 void MainWidget::connectAll() {
   connect(dxfLabel_, &DXFLabel::newDXFSpatialSignal, treeView_,
           &XMLTreeView::onNewDXFSpatial);
