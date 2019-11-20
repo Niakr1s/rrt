@@ -72,8 +72,7 @@ XMLTreeModel* XMLTreeView::xmlModel() {
 }
 
 void XMLTreeView::initDirectories() const {
-  bf::path cwd = bf::current_path();
-  if (!bf::exists(cwd / "data")) {
-    bf::create_directory(cwd / "data");
+  if (!bf::exists(dataPath_)) {
+    bf::create_directory(dataPath_);
   }
 }
