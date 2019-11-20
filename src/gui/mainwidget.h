@@ -1,6 +1,7 @@
 #ifndef MAINWIDGET_H
 #define MAINWIDGET_H
 
+#include <QGroupBox>
 #include <QLabel>
 #include <QString>
 #include <QTableView>
@@ -8,6 +9,7 @@
 #include <QVector>
 #include <QWidget>
 #include "dxflabel.h"
+#include "xmltreebuttons.h"
 #include "xmltreeview.h"
 
 class MainWidget : public QWidget {
@@ -22,6 +24,7 @@ class MainWidget : public QWidget {
   void onErrDXF(QString errDXFPath);
 
  private:
+  XMLTreeButtons* treeViewBtns_;
   XMLTreeView* treeView_;
   DXFLabel* dxfLabel_;
 };

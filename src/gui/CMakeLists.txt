@@ -23,6 +23,8 @@ add_executable(rrt
     xmltreeview.cpp
     vecstr.h
     vecstr.cpp
+    xmltreebuttons.h
+    xmltreebuttons.cpp
 )
 
 target_link_libraries(rrt

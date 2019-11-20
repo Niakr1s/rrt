@@ -10,8 +10,11 @@
 
 MainWidget::MainWidget(QWidget* parent) : QWidget(parent) {
   QVBoxLayout* vbox = new QVBoxLayout();
+  treeViewBtns_ = new XMLTreeButtons();
+
   treeView_ = new XMLTreeView();
   dxfLabel_ = new DXFLabel();
+  vbox->addWidget(treeViewBtns_);
   vbox->addWidget(treeView_);
   vbox->addWidget(dxfLabel_);
   setLayout(vbox);
@@ -27,6 +30,11 @@ MainWidget::MainWidget(QWidget* parent) : QWidget(parent) {
 
   connect(treeView_, &XMLTreeView::errXMLsSignal, this, &MainWidget::onErrXMLs);
   connect(dxfLabel_, &DXFLabel::errDXFSignal, this, &MainWidget::onErrDXF);
+
+  connect(treeViewBtns_->btnExpand(), &QPushButton::clicked, treeView_,
+          &XMLTreeView::expandAll);
+  connect(treeViewBtns_->btnCollapse(), &QPushButton::clicked, treeView_,
+          &XMLTreeView::collapseAll);
 }
 
 void MainWidget::onErrXMLs(QVector<QString> errXMlPaths) {
