@@ -18,6 +18,8 @@ class XMLTreeView : public QTreeView {
  public:
   XMLTreeView(QWidget* parent = nullptr);
 
+  QVector<std::string> intersectsResult() const;
+
  signals:
   void errXMLsSignal(QVector<QString>);
 
@@ -34,6 +36,7 @@ class XMLTreeView : public QTreeView {
  private:
   XMLTreeModel* xmlModel();
   void initDirectories() const;
+  QVector<std::string> intersectsResult_;
 };
 
 #endif  // XMLTREEVIEW_H

@@ -31,8 +31,13 @@ XMLTreeView::XMLTreeView(QWidget* parent)
 }
 
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
-  xmlModel()->forEach([&](XMLTreeItem* item) {
-    std::async(&XMLTreeItem::intersects, item, *spatial);
+  intersectsResult_.clear();
+  std::async([&] {
+    xmlModel()->forEach([&](XMLTreeItem* item) {
+      if (item->intersects(*spatial)) {
+        intersectsResult_.push_back(item->strID());
+      }
+    });
   });
 }
 
@@ -88,4 +93,8 @@ void XMLTreeView::initDirectories() const {
   if (!bf::exists(dataPath_)) {
     bf::create_directory(dataPath_);
   }
+}
+
+QVector<std::string> XMLTreeView::intersectsResult() const {
+  return intersectsResult_;
 }
