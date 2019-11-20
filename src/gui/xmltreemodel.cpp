@@ -80,6 +80,11 @@ void XMLTreeModel::forEach(std::function<void(XMLTreeItem*)> fn) {
   }
 }
 
+void XMLTreeModel::forEach(QModelIndex idx,
+                           std::function<void(XMLTreeItem*)> fn) {
+  getItem(idx)->forEach(fn);
+}
+
 QVariant XMLTreeModel::data(const QModelIndex& index, int role) const {
   if (!index.isValid())
     return QVariant();

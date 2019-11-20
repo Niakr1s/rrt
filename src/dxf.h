@@ -18,6 +18,7 @@ class DXF {
   using Version = DRW::Version;
 
   enum class Color {
+    LIGHTGREEN = 3,
     BLACK = 7,
     RED = 10,
     GREEN = 94,
@@ -30,9 +31,13 @@ class DXF {
                    const std::string& type,
                    std::shared_ptr<Spatial> spatial,
                    Color color);
+  void drawSpatial(std::shared_ptr<Spatial> spatial,
+                   Color color = Color::BLACK,
+                   const std::string& layerName = "0");
 
   void fileImport(const std::string& path);
-  void fileExport(const std::string& path, Version version);
+  void fileExport(const std::string& path,
+                  Version version = DXF::Version::AC1021);
 
  private:
   dx_iface dxIface_;

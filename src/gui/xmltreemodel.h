@@ -23,6 +23,7 @@ class XMLTreeModel : public QAbstractItemModel {
   XMLTreeItem* getRootItem() const;
 
   void forEach(std::function<void(XMLTreeItem*)> fn);
+  void forEach(QModelIndex idx, std::function<void(XMLTreeItem*)> fn);
 
  private:
   XMLTreeItem* rootItem_;

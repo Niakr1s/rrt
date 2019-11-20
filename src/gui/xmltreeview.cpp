@@ -1,6 +1,7 @@
 #include "xmltreeview.h"
 
 #include <QClipboard>
+#include <QFileDialog>
 #include <QGuiApplication>
 #include <boost/date_time.hpp>
 #include <boost/log/trivial.hpp>
@@ -8,6 +9,7 @@
 #include <future>
 #include "boost/filesystem.hpp"
 #include "db.h"
+#include "dxf.h"
 #include "vecstr.h"
 #include "xml.h"
 #include "xmltreedelegate.h"
@@ -40,9 +42,13 @@ XMLTreeView::XMLTreeView(QWidget* parent)
   setContextMenuPolicy(Qt::CustomContextMenu);
   connect(this, &XMLTreeView::customContextMenuRequested, this,
           &XMLTreeView::onCustomContextMenuRequested);
+
+  connect(exportAction, &QAction::triggered, this,
+          &XMLTreeView::onExportAction);
 }
 
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
+  spatial_ = spatial;
   intersectsResult_.clear();
   std::async([&] {
     xmlModel()->forEach([&](XMLTreeItem* item) {
@@ -86,6 +92,7 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
 
 void XMLTreeView::onDxfClose() {
   xmlModel()->forEach([](XMLTreeItem* item) { item->turnOffIntersectsFlag(); });
+  spatial_ = nullptr;
 }
 
 void XMLTreeView::onRowsInserted(const QModelIndex& parent,
@@ -108,11 +115,38 @@ void XMLTreeView::onCopyNewlineButtonClick() {
 }
 
 void XMLTreeView::onCustomContextMenuRequested(QPoint p) {
-  auto selected = selectedIndexes();
-  if (selected.empty()) {
+  if (selectedIndexes().empty()) {
     return;
   }
   exportMenu_->popup(mapToGlobal(p));
+}
+
+void XMLTreeView::onExportAction() {
+  if (selectedIndexes().empty()) {
+    return;
+  }
+  QModelIndex selected = selectedIndexes().first();
+
+  rrt::DXF dxf;
+  if (spatial_) {
+    dxf.drawSpatial(spatial_, rrt::DXF::Color::LIGHTGREEN);
+  }
+  xmlModel()->forEach(selected, [&](XMLTreeItem* item) {
+    auto spa = item->spatial();
+    if (spa != nullptr) {
+      dxf.drawSpatial(spa->xmlSpatialInfo().cadastralNumber().string(),
+                      spa->xmlSpatialInfo().type(), spa->spatial(),
+                      spa->color());
+    }
+  });
+
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Save DXF File"), "",
+                                                  tr("DXF (*.dxf)"));
+  try {
+    dxf.fileExport(fileName.toStdString());
+  } catch (std::exception& e) {
+    BOOST_LOG_TRIVIAL(error) << e.what();
+  }
 }
 
 XMLTreeModel* XMLTreeView::xmlModel() {

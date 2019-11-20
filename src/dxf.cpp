@@ -37,6 +37,29 @@ void DXF::drawSpatial(const std::string& cadastralNumber,
   boost::replace_all(layerName, ":", "_");
   addLayer(layerName);
 
+  drawSpatial(spatial, color, layerName);
+  //  for (auto& polygon : spatial->polygons_) {
+  //    draw(polygon.outer().cbegin(), polygon.outer().cend(), layerName,
+  //    color); for (auto& innerPolygon : polygon.inners()) {
+  //      draw(innerPolygon.cbegin(), innerPolygon.cend(), layerName, color);
+  //    }
+  //  }
+
+  //  for (auto& linestring : spatial->linestrings_) {
+  //    draw(linestring.cbegin(), linestring.cend(), layerName, color);
+  //  }
+
+  //  for (auto& circle : spatial->circles_) {
+  //    draw(circle, layerName, color);
+  //  }
+
+  std::string mtext = fmt::format("{}, {}", cadastralNumber, type);
+  draw(mtext, layerName, spatial->rect_.centroid(), Color::LIGHTGREY);
+}
+
+void DXF::drawSpatial(std::shared_ptr<Spatial> spatial,
+                      DXF::Color color,
+                      const std::string& layerName) {
   for (auto& polygon : spatial->polygons_) {
     draw(polygon.outer().cbegin(), polygon.outer().cend(), layerName, color);
     for (auto& innerPolygon : polygon.inners()) {
@@ -51,9 +74,6 @@ void DXF::drawSpatial(const std::string& cadastralNumber,
   for (auto& circle : spatial->circles_) {
     draw(circle, layerName, color);
   }
-
-  std::string mtext = fmt::format("{}, {}", cadastralNumber, type);
-  draw(mtext, layerName, spatial->rect_.centroid(), Color::LIGHTGREY);
 }
 
 void DXF::fileImport(const std::string& path) {

@@ -32,6 +32,7 @@ class XMLTreeView : public QTreeView {
   void onCopySemicolonButtonClick();
   void onCopyNewlineButtonClick();
   void onCustomContextMenuRequested(QPoint p);
+  void onExportAction();
 
  private:
   bf::path cwd_;
@@ -42,6 +43,7 @@ class XMLTreeView : public QTreeView {
   XMLTreeModel* xmlModel();
   void initDirectories() const;
   QVector<std::string> intersectsResult_;
+  std::shared_ptr<rrt::Spatial> spatial_;
 };
 
 #endif  // XMLTREEVIEW_H
