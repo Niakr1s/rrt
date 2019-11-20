@@ -24,11 +24,13 @@ class XML {
 
   void saveToDXF(std::string path = "",
                  DXF::Version version = DXF::Version::AC1021);
-  void renameFile();
+  bf::path renameFile();
 
   const XMLInfo& xmlInfo() const;
 
   xmlSpatials_t intersects(const Spatial& spatial) const;
+
+  bf::path path() const;
 
  private:
   bf::path path_;

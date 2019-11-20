@@ -44,9 +44,9 @@ std::vector<std::string> CadastralNumber::strings() const {
   return res;
 }
 
-std::string CadastralNumber::underscoredString() const {
+std::string CadastralNumber::safeString() const {
   std::string res(str_);
-  boost::replace_all(res, ":", "_");
+  boost::replace_all(res, ":", "-");
   return res;
 }
 

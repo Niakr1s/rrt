@@ -2,8 +2,10 @@
 #define MAINWIDGET_H
 
 #include <QLabel>
+#include <QString>
 #include <QTableView>
 #include <QTreeView>
+#include <QVector>
 #include <QWidget>
 #include "dxflabel.h"
 #include "xmltreeview.h"
@@ -16,6 +18,7 @@ class MainWidget : public QWidget {
  signals:
 
  public slots:
+  void onErrXMLs(QVector<QString> errXMlPaths);
 
  private:
   XMLTreeView* treeView_;

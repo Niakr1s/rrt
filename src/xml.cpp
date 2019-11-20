@@ -60,16 +60,17 @@ void XML::saveToDXF(std::string path /*= ""*/,
   dxf.fileExport(path, version);
 }
 
-void XML::renameFile() {
-  std::string newFilenameStr = fmt::format(
-      "{} {} {}{}", xmlInfo_->type(),
-      xmlInfo_->rootSpatialInfo().cadastralNumber().underscoredString(),
-      xmlInfo_->dateString(), path_.extension().string());
+bf::path XML::renameFile() {
+  std::string newFilenameStr =
+      fmt::format("{} {} {}{}", xmlInfo_->type(),
+                  xmlInfo_->rootSpatialInfo().cadastralNumber().safeString(),
+                  xmlInfo_->dateString(), path_.extension().string());
   bf::path newFilename(newFilenameStr);
   bf::path newPath = path_.parent_path();
   newPath.append(newFilenameStr);
   bf::rename(path_, newPath);
   path_ = newPath;
+  return path_;
 }
 
 const XMLInfo& XML::xmlInfo() const {
@@ -84,6 +85,10 @@ XML::xmlSpatials_t XML::intersects(const Spatial& spatial) const {
     }
   }
   return res;
+}
+
+bf::path XML::path() const {
+  return path_;
 }
 
 void XML::addXmlInfoToSpatials() {

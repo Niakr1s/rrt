@@ -21,6 +21,8 @@ add_executable(rrt
     xmltreedelegate.cpp
     xmltreeview.h
     xmltreeview.cpp
+    vecstr.h
+    vecstr.cpp
 )
 
 target_link_libraries(rrt

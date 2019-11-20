@@ -15,7 +15,7 @@ class CadastralNumber {
 
   std::string string() const;
   std::vector<std::string> strings() const;
-  std::string underscoredString() const;
+  std::string safeString() const;
 
  public:
   bool operator<(const CadastralNumber& rhs) const;

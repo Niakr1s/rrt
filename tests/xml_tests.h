@@ -24,9 +24,8 @@ TEST(xml, xmlInfo) {
   auto xml = rrt::XML(BLOCK.c_str());
   ASSERT_EQ(xml.xmlInfo().rootSpatialInfo().cadastralNumber().string(),
             "77:03:0009007");
-  ASSERT_EQ(
-      xml.xmlInfo().rootSpatialInfo().cadastralNumber().underscoredString(),
-      "77_03_0009007");
+  ASSERT_EQ(xml.xmlInfo().rootSpatialInfo().cadastralNumber().safeString(),
+            "77-03-0009007");
   ASSERT_EQ(xml.xmlInfo().rootSpatialInfo().type(), "CadastralBlock");
   ASSERT_EQ(xml.xmlInfo().dateString(), "2018-10-23");
   ASSERT_EQ(xml.xmlInfo().type(), "KPT");
