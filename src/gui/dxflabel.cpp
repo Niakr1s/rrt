@@ -9,6 +9,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QUrl>
+#include <boost/log/trivial.hpp>
 #include "dxf.h"
 
 DXFLabel::DXFLabel(QWidget* parent) : QLabel(parent) {
@@ -82,25 +83,25 @@ void DXFLabel::onDxfClose() {
 }
 
 void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
+  rrt::DXF dxf;
+  dxfFilePath_ = fi.filePath();
   try {
-    rrt::DXF dxf;
-    dxfFilePath_ = fi.filePath();
     dxf.fileImport(dxfFilePath_.toStdString());
-    spatial_ = dxf.spatial();
-    emit newDXFSpatialSignal(spatial_);
-    QString newText;
-    newText = QString("<div>%1: \"%2\"</div>")
-                  .arg(tr("Current file"))
-                  .arg(dxfFilePath_);
-    if (spatial_->empty()) {
-      newText += QString("<br><font color=\"Red\">%1</font>")
-                     .arg(tr("Warninig: This file is empty"));
-    }
-    setText(newText);
   } catch (std::exception& e) {
-    emit dxfCloseSignal();
-    emit errDXFSignal(fi.fileName());
+    BOOST_LOG_TRIVIAL(error) << e.what();
+    return;
   }
+  spatial_ = dxf.spatial();
+  emit newDXFSpatialSignal(spatial_);
+  QString newText;
+  newText = QString("<div>%1: \"%2\"</div>")
+                .arg(tr("Current file"))
+                .arg(dxfFilePath_);
+  if (spatial_->empty()) {
+    newText += QString("<br><font color=\"Red\">%1</font>")
+                   .arg(tr("Warninig: This file is empty"));
+  }
+  setText(newText);
 }
 
 std::shared_ptr<rrt::Spatial> DXFLabel::spatial() const {
