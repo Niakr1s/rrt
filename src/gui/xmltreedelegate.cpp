@@ -1,6 +1,7 @@
 #include "xmltreedelegate.h"
 
 #include <QDebug>
+#include <QIcon>
 #include <QLinearGradient>
 #include <QPainter>
 #include "xmltreeitem.h"
@@ -15,10 +16,18 @@ void XMLTreeDelegate::paint(QPainter* painter,
   if (item == nullptr) {
     return;
   }
+  auto optCopy = option;
   if (item->intersectsFlag()) {
-    auto optCopy = option;
     optCopy.palette.setColor(QPalette::Text, Qt::green);
-    return QStyledItemDelegate::paint(painter, optCopy, index);
   }
-  QStyledItemDelegate::paint(painter, option, index);
+  if (item->newFlag()) {
+    auto rect = optCopy.rect;
+    static QImage newIcon = QImage(":/icons/new");
+    rect.setLeft(rect.right() - 25);
+    rect.setRight(rect.right() - 2);
+    rect.setTop(rect.top() + 2);
+    rect.setBottom(rect.bottom() - 2);
+    painter->drawImage(rect, newIcon);
+  }
+  QStyledItemDelegate::paint(painter, optCopy, index);
 }
