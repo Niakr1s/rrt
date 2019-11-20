@@ -2,9 +2,9 @@
 
 #include <QDebug>
 #include <QDir>
-#include <QErrorMessage>
 #include <QFileInfo>
 #include <QList>
+#include <QMessageBox>
 #include <QMimeData>
 #include <QMouseEvent>
 #include <QPainter>
@@ -98,9 +98,8 @@ void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
     }
     setText(newText);
   } catch (std::exception& e) {
-    auto errMsg = new QErrorMessage(this);
-    errMsg->showMessage(e.what());
-    errMsg->show();
+    emit dxfCloseSignal();
+    emit errDXFSignal(fi.fileName());
   }
 }
 

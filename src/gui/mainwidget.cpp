@@ -26,6 +26,7 @@ MainWidget::MainWidget(QWidget* parent) : QWidget(parent) {
           &XMLTreeView::onNewXMLFiles);
 
   connect(treeView_, &XMLTreeView::errXMLsSignal, this, &MainWidget::onErrXMLs);
+  connect(dxfLabel_, &DXFLabel::errDXFSignal, this, &MainWidget::onErrDXF);
 }
 
 void MainWidget::onErrXMLs(QVector<QString> errXMlPaths) {
@@ -35,5 +36,15 @@ void MainWidget::onErrXMLs(QVector<QString> errXMlPaths) {
   errXmlMessageBox->setText(tr("Invalid file names are listed below"));
   errXmlMessageBox->setIcon(QMessageBox::Warning);
   errXmlMessageBox->setDetailedText(VecStr(errXMlPaths).sepByNewLine());
+  errXmlMessageBox->show();
+}
+
+void MainWidget::onErrDXF(QString errDXFPath) {
+  QMessageBox* errXmlMessageBox = new QMessageBox(this);
+  errXmlMessageBox->setMinimumWidth(600);
+  errXmlMessageBox->setWindowTitle(tr("Couldn't parse DXF"));
+  errXmlMessageBox->setText(tr("Invalid file name is listed below"));
+  errXmlMessageBox->setIcon(QMessageBox::Critical);
+  errXmlMessageBox->setDetailedText(errDXFPath);
   errXmlMessageBox->show();
 }

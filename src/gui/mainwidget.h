@@ -19,6 +19,7 @@ class MainWidget : public QWidget {
 
  public slots:
   void onErrXMLs(QVector<QString> errXMlPaths);
+  void onErrDXF(QString errDXFPath);
 
  private:
   XMLTreeView* treeView_;

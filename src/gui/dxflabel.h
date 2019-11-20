@@ -4,6 +4,7 @@
 #include <QFileInfo>
 #include <QLabel>
 #include <QRect>
+#include <QString>
 #include <QVector>
 #include "spatial.h"
 
@@ -25,6 +26,7 @@ class DXFLabel : public QLabel {
 
  signals:
   void dxfCloseSignal();
+  void errDXFSignal(QString);
   void newDXFFileSignal(QFileInfo);
   void newXMLFilesSignal(QVector<QFileInfo>);
   void newDXFSpatialSignal(std::shared_ptr<rrt::Spatial>);
