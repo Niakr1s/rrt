@@ -5,6 +5,7 @@
 #include <exception>
 #include <future>
 #include "boost/filesystem.hpp"
+#include "db.h"
 #include "xml.h"
 #include "xmltreedelegate.h"
 #include "xmltreemodel.h"
@@ -40,6 +41,7 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
     try {
       rrt::XML xml(xmlFile.absoluteFilePath().toStdWString());
       static_cast<XMLTreeModel*>(model())->appendSpatials(xml.xmlSpatials());
+      rrt::DB::get()->pushToDB(xml);
 
       try {
         bf::path newPath = xml.renameFile();

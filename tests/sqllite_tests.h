@@ -17,9 +17,7 @@ const std::string SQL_CAD_NO = "77:03:0009007:1225";
 void init() {
   DB::set<rrt::SqlDB>();
   auto xml = XML(BLOCK.c_str());
-  for (auto& s : xml.xmlSpatials()) {
-    DB::get()->pushToDB(*s);
-  }
+  DB::get()->pushToDB(xml);
 }
 
 TEST(sql, getFromDB1) {
@@ -52,7 +50,7 @@ TEST(sql, getFromDB1) {
 TEST(sql, getAllLastFromDB1) {
   init();
   auto spa = DB::get()->getAllLastFromDB();
-  ASSERT_EQ(spa.size(), 25);
+  ASSERT_GE(spa.size(), 25);
 }
 
 #endif  // SQLLITE_TESTS_H

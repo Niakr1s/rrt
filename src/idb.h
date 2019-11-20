@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include "cadastralnumber.h"
+#include "xml.h"
 #include "xmlspatial.h"
 
 namespace rrt {
@@ -18,6 +19,7 @@ class IDB {
   virtual void clearDB() = 0;
 
   virtual void pushToDB(const XMLSpatial& xmlSpatial) = 0;
+  virtual void pushToDB(const XML& xml);
 
   virtual std::shared_ptr<XMLSpatial> getFromDB(
       const CadastralNumber& cadastralNumber,
