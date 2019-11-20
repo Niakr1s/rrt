@@ -2,6 +2,7 @@
 #define XMLTREEVIEW_H
 
 #include <QFileInfo>
+#include <QMenu>
 #include <QTreeView>
 #include <QVector>
 #include <memory>
@@ -30,10 +31,12 @@ class XMLTreeView : public QTreeView {
   void onRowsInserted(const QModelIndex& parent, int first, int last);
   void onCopySemicolonButtonClick();
   void onCopyNewlineButtonClick();
+  void onCustomContextMenuRequested(QPoint p);
 
  private:
   bf::path cwd_;
   bf::path dataPath_;
+  QMenu* exportMenu_;
 
  private:
   XMLTreeModel* xmlModel();

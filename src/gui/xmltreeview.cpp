@@ -17,6 +17,11 @@ XMLTreeView::XMLTreeView(QWidget* parent)
     : QTreeView(parent), cwd_(bf::current_path()), dataPath_(cwd_ / "data") {
   initDirectories();
 
+  exportMenu_ = new QMenu();
+  QAction* exportAction =
+      new QAction(QIcon(":/icons/dxf.svg"), tr("Export to DXF"));
+  exportMenu_->addAction(exportAction);
+
   XMLTreeModel* model = new XMLTreeModel();
   setModel(model);
 
@@ -31,6 +36,10 @@ XMLTreeView::XMLTreeView(QWidget* parent)
 
   connect(model, &XMLTreeModel::rowsInserted, this,
           &XMLTreeView::onRowsInserted);
+
+  setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(this, &XMLTreeView::customContextMenuRequested, this,
+          &XMLTreeView::onCustomContextMenuRequested);
 }
 
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
@@ -96,6 +105,14 @@ void XMLTreeView::onCopySemicolonButtonClick() {
 void XMLTreeView::onCopyNewlineButtonClick() {
   QGuiApplication::clipboard()->setText(QString::fromStdString(
       VecStr<std::string>(intersectsResult_).sepByNewLine()));
+}
+
+void XMLTreeView::onCustomContextMenuRequested(QPoint p) {
+  auto selected = selectedIndexes();
+  if (selected.empty()) {
+    return;
+  }
+  exportMenu_->popup(mapToGlobal(p));
 }
 
 XMLTreeModel* XMLTreeView::xmlModel() {
