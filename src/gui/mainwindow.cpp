@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QMenu>
 #include <QMenuBar>
+#include <QMessageBox>
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
@@ -38,6 +39,16 @@ void MainWindow::onActionOpenDxf() {
   QString fileName = QFileDialog::getOpenFileName(
       this, tr("Open DXF"), "", tr("Autocad drawing (*.dxf *.dwg)"));
   emit newDXFFileSignal(QFileInfo(fileName));
+}
+
+void MainWindow::onActionAbout() {
+  QMessageBox::about(this, "About Rosreestr Tools",
+                     tr(R"***(<div>This text is for Cadastral Engineers.</div>
+<div>It can open, rename and export to dxf rosreestr xml files. Besides, it can check intersection of dxf files in them.</div>
+<br>
+<address>
+If you see any bugs, please contact author via <a href="https://github.com/Niakr1s/rrt/issues">github</a>.<br>
+</address>)***"));
 }
 
 QToolBar* MainWindow::createTopToolBar() {
@@ -74,4 +85,5 @@ void MainWindow::initActions() {
           &MainWindow::onActionOpenXmls);
   connect(actionOpenDxf_, &QAction::triggered, this,
           &MainWindow::onActionOpenDxf);
+  connect(actionAbout_, &QAction::triggered, this, &MainWindow::onActionAbout);
 }

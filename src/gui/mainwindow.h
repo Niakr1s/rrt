@@ -22,6 +22,7 @@ class MainWindow : public QMainWindow {
  public slots:
   void onActionOpenXmls();
   void onActionOpenDxf();
+  void onActionAbout();
 
  private:
   QAction* actionOpenXmls_;
