@@ -5,6 +5,8 @@
 #include <QWidget>
 
 class XMLTreeButtons : public QWidget {
+  Q_OBJECT
+
  public:
   XMLTreeButtons(QWidget* parent = nullptr);
 

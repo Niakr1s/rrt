@@ -141,7 +141,7 @@ void XMLTreeView::onExportAction() {
   });
 
   QString fileName = QFileDialog::getSaveFileName(this, tr("Save DXF File"), "",
-                                                  tr("DXF (*.dxf)"));
+                                                  "DXF (*.dxf)");
   try {
     dxf.fileExport(fileName.toStdString());
   } catch (std::exception& e) {

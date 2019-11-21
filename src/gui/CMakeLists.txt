@@ -2,9 +2,11 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-add_executable(rrt
+find_package(Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
+
+set(SRC
     main.cpp
     mainwindow.h
     mainwindow.cpp
@@ -25,6 +27,23 @@ add_executable(rrt
     vecstr.cpp
     xmltreebuttons.h
     xmltreebuttons.cpp
+)
+
+file(GLOB TS_FILES
+    ts/*.ts
+)
+
+set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/i10n)
+
+if (CREATE_TRANSLATIONS)
+    qt5_create_translation(QM_FILES ${SRC} ${TS_FILES})
+else()
+    qt5_add_translation(QM_FILES ${TS_FILES})
+endif()
+
+add_executable(rrt
+    ${SRC}
+    ${QM_FILES}
 )
 
 target_link_libraries(rrt

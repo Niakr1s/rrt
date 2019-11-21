@@ -25,9 +25,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 }
 
 void MainWindow::onActionOpenXmls() {
-  QVector<QString> fileName = QFileDialog::getOpenFileNames(
-                                  this, tr("Open XMLs"), "", tr("XML (*.xml)"))
-                                  .toVector();
+  QVector<QString> fileName =
+      QFileDialog::getOpenFileNames(this, tr("Open XMLs"), "", "XML (*.xml)")
+          .toVector();
   QVector<QFileInfo> res;
   for (auto& f : fileName) {
     res.push_back(QFileInfo(f));
@@ -37,13 +37,14 @@ void MainWindow::onActionOpenXmls() {
 
 void MainWindow::onActionOpenDxf() {
   QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open DXF"), "", tr("Autocad drawing (*.dxf *.dwg)"));
+      this, tr("Open DXF"), "", "Autocad drawing (*.dxf *.dwg)");
   emit newDXFFileSignal(QFileInfo(fileName));
 }
 
 void MainWindow::onActionAbout() {
-  QMessageBox::about(this, "About Rosreestr Tools",
-                     tr(R"***(<div>This text is for Cadastral Engineers.</div>
+  QMessageBox::about(
+      this, tr("About"),
+      tr(R"***(<div>This program is for Cadastral Engineers.</div>
 <div>It can open, rename and export to dxf rosreestr xml files. Besides, it can check intersection of dxf files in them.</div>
 <br>
 <address>
