@@ -473,6 +473,9 @@ std::string DRW_ConvUTF16::toUtf8(std::string *s){//RLZ: pending to write
 std::string DRW_ExtConverter::convertByiconv(const char *in_encode,
                                              const char *out_encode,
                                              const std::string *s) {
+    if (strcmp(in_encode, "SJIS") == 0) {
+      return *s;
+    } // WARNING: dirty hack by Niakr1s to bypass iconv SEGFAULT
     const int BUF_SIZE = 1000;
     static char in_buf[BUF_SIZE], out_buf[BUF_SIZE];
 
