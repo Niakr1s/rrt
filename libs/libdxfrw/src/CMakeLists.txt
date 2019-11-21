@@ -10,9 +10,5 @@ add_library(dxfrw SHARED
 )
 
 target_link_libraries(dxfrw
-    iconv
-)
-
-target_link_options(dxfrw PUBLIC
-    -liconv
+   iconv
 )
