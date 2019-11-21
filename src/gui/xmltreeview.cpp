@@ -3,10 +3,11 @@
 #include <QClipboard>
 #include <QFileDialog>
 #include <QGuiApplication>
+#include <QThread>
 #include <boost/date_time.hpp>
 #include <boost/log/trivial.hpp>
 #include <exception>
-#include <future>
+#include <thread>
 #include "boost/filesystem.hpp"
 #include "db.h"
 #include "dxf.h"
@@ -60,34 +61,46 @@ void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
 }
 
 void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
-  QVector<QString> errPaths;
-  for (auto& xmlFile : xmlFiles) {
-    if (!xmlFile.exists()) {
-      continue;
-    }
-
-    try {
-      rrt::XML xml(xmlFile.absoluteFilePath().toStdWString());
-      static_cast<XMLTreeModel*>(model())->appendSpatials(xml.xmlSpatials());
-      rrt::DB::get()->pushToDB(xml);
-
-      try {
-        bf::path newPath = xml.renameFile();
-        bf::path dataPath = dataPath_ / newPath.filename();
-        if (!bf::exists(dataPath)) {
-          bf::copy(newPath, dataPath);
-        }
-      } catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << e.what();
+  std::thread([=] {
+    QVector<QString> errPaths;
+    std::vector<std::thread> threads;
+    for (auto& xmlFile : xmlFiles) {
+      if (!xmlFile.exists()) {
+        continue;
       }
-    } catch (std::exception& e) {
-      BOOST_LOG_TRIVIAL(error) << e.what();
-      errPaths.push_back(xmlFile.fileName());
+      auto t = std::thread([&, this] {
+        try {
+          rrt::XML xml(xmlFile.absoluteFilePath().toStdWString());
+
+          xmlModel()->mutex_.lock();
+          static_cast<XMLTreeModel*>(model())->appendSpatials(
+              xml.xmlSpatials());
+          xmlModel()->mutex_.unlock();
+
+          rrt::DB::get()->pushToDB(xml);
+          try {
+            bf::path newPath = xml.renameFile();
+            bf::path dataPath = dataPath_ / newPath.filename();
+            if (!bf::exists(dataPath)) {
+              bf::copy(newPath, dataPath);
+            }
+          } catch (std::exception& e) {
+            BOOST_LOG_TRIVIAL(error) << e.what();
+          }
+        } catch (std::exception& e) {
+          BOOST_LOG_TRIVIAL(error) << e.what();
+          errPaths.push_back(xmlFile.fileName());
+        }
+      });
+      threads.push_back(std::move(t));
     }
-  }
-  if (!errPaths.empty()) {
-    errXMLsSignal(errPaths);
-  }
+    for (auto& t : threads) {
+      t.join();
+    }
+    if (!errPaths.empty()) {
+      errXMLsSignal(errPaths);
+    }
+  }).detach();
 }
 
 void XMLTreeView::onDxfClose() {

@@ -6,10 +6,13 @@
 #include <QObject>
 #include <QVariant>
 #include <QVector>
+#include <mutex>
 #include "xmlspatial.h"
 #include "xmltreeitem.h"
 
 class XMLTreeModel : public QAbstractItemModel {
+  friend class XMLTreeView;
+
  public:
   XMLTreeModel(QObject* parent = nullptr);
   ~XMLTreeModel() override;
@@ -27,6 +30,7 @@ class XMLTreeModel : public QAbstractItemModel {
 
  private:
   XMLTreeItem* rootItem_;
+  std::mutex mutex_;
 
   // QAbstractItemModel interface
  public:
