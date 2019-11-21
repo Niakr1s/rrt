@@ -36,8 +36,8 @@ void MainWindow::onActionOpenXmls() {
 }
 
 void MainWindow::onActionOpenDxf() {
-  QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open DXF"), "", "Autocad drawing (*.dxf *.dwg)");
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open DXF"), "",
+                                                  "Autocad drawing (*.dxf)");
   emit newDXFFileSignal(QFileInfo(fileName));
 }
 

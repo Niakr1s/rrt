@@ -55,7 +55,7 @@ void DXFLabel::dropEvent(QDropEvent* event) {
   for (auto& url : event->mimeData()->urls()) {
     if (url.isLocalFile()) {
       QFileInfo fi(url.toLocalFile());
-      if (fi.suffix().toLower() == "dxf" || fi.suffix().toLower() == "dwg") {
+      if (fi.suffix().toLower() == "dxf") {
         emit newDXFFileSignal(fi);
         return;
       } else if (fi.suffix().toLower() == "xml") {
@@ -84,13 +84,13 @@ void DXFLabel::onDxfClose() {
 
 void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
   rrt::DXF dxf;
-  dxfFilePath_ = fi.filePath();
   try {
-    dxf.fileImport(dxfFilePath_.toStdString());
+    dxf.fileImport(fi.filePath().toStdString());
   } catch (std::exception& e) {
-    BOOST_LOG_TRIVIAL(error) << e.what();
+    BOOST_LOG_TRIVIAL(error) << "DXFLabel::onNewDXFFile: " << e.what();
     return;
   }
+  dxfFilePath_ = fi.filePath();
   spatial_ = dxf.spatial();
   emit newDXFSpatialSignal(spatial_);
   QString newText;
