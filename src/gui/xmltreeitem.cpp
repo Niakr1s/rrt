@@ -50,9 +50,11 @@ XMLTreeItem* XMLTreeItem::parentItem() {
   return parent_;
 }
 
-void XMLTreeItem::appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial) {
+void XMLTreeItem::appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial,
+                                bool fromDB) {
   if (spatial_ == nullptr) {
     spatial_ = spatial;
+    newFlag_ = !fromDB;
   } else if (spatial->xmlInfo().date() > spatial_->xmlInfo().date()) {
     spatial_ = spatial;
     newFlag_ = true;

@@ -15,7 +15,7 @@ XMLTreeModel::~XMLTreeModel() {
 
 void XMLTreeModel::appendSpatials(
     const rrt::XMLSpatial::xmlSpatials_t& spatials,
-    bool newFlag) {
+    bool fromDB) {
   for (auto& spatial : spatials) {
     auto path = spatial->xmlSpatialInfo().cadastralNumber().strings();
     while (path.size() != 3) {
@@ -41,14 +41,13 @@ void XMLTreeModel::appendSpatials(
         setData(idx, QString::fromStdString(str), Qt::DisplayRole);
       }
     }
-    getItem(idx)->appendSpatial(spatial);
-    getItem(idx)->setNewFlag(newFlag);
+    getItem(idx)->appendSpatial(spatial, fromDB);
   }
 }
 
 void XMLTreeModel::appendSpatialsFromDB() {
   auto spatials = rrt::DB::get()->getAllLastFromDB();
-  appendSpatials(spatials, false);
+  appendSpatials(spatials, true);
 }
 
 int XMLTreeModel::size() const {

@@ -30,7 +30,7 @@ class XMLTreeItem {
   int row() const;
   XMLTreeItem* parentItem();
 
-  void appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial);
+  void appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial, bool fromDB);
   std::shared_ptr<rrt::XMLSpatial> spatial() const;
   QString tooltipData() const;
   bool intersects(const rrt::Spatial& spatial);

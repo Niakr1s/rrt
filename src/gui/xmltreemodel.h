@@ -15,7 +15,7 @@ class XMLTreeModel : public QAbstractItemModel {
   ~XMLTreeModel() override;
 
   void appendSpatials(const rrt::XMLSpatial::xmlSpatials_t& spatials,
-                      bool newFlag = true);
+                      bool fromDB = false);
   void appendSpatialsFromDB();
   int size() const;
 
