@@ -10,12 +10,13 @@
 namespace rrt {
 
 class DXF {
-  static const char* IGNORED;  // layer with this name will be ignored
 
  public:
   DXF();
 
   using Version = DRW::Version;
+
+  static const char* IGNORED;  // layer with this name will be ignored
 
   enum class Color {
     LIGHTGREEN = 3,

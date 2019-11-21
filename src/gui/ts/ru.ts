@@ -4,27 +4,32 @@
 <context>
     <name>DXFLabel</name>
     <message>
-        <location filename="../dxflabel.cpp" line="74"/>
+        <location filename="../dxflabel.cpp" line="78"/>
         <source>Drag your DXF or XMLs here.</source>
-        <translation>Перетащите сюда ваш DXF или XML файл.</translation>
+        <translation>Перетащите сюда ваш DXF файл или несколько XML файлов.</translation>
     </message>
     <message>
-        <location filename="../dxflabel.cpp" line="75"/>
+        <location filename="../dxflabel.cpp" line="79"/>
         <source>DXF will be checked in all top window XMLs.</source>
         <translation>DXF файлы будут проверены во всех XML из окна сверху.</translation>
     </message>
     <message>
-        <location filename="../dxflabel.cpp" line="76"/>
+        <location filename="../dxflabel.cpp" line="80"/>
+        <source>All blocks in DXF will be ignored. Everything in %1 layer will be ignored.</source>
+        <translation>Все блоки в DXF будут проигнорированы. Всё в слое %1 будет проигнорировано.</translation>
+    </message>
+    <message>
+        <location filename="../dxflabel.cpp" line="83"/>
         <source>XMLs will be copied in %1/data.</source>
         <translation>XML файлы будут скопированы в %1/data.</translation>
     </message>
     <message>
-        <location filename="../dxflabel.cpp" line="98"/>
+        <location filename="../dxflabel.cpp" line="105"/>
         <source>Current file</source>
         <translation>Текущий файл</translation>
     </message>
     <message>
-        <location filename="../dxflabel.cpp" line="102"/>
+        <location filename="../dxflabel.cpp" line="109"/>
         <source>Warninig: This file is empty</source>
         <translation>Предупреждение:Файл пустой</translation>
     </message>
@@ -60,7 +65,7 @@
         <translation>Открыть XML файлы</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="40"/>
+        <location filename="../mainwindow.cpp" line="39"/>
         <source>Open DXF</source>
         <translation>Открыть DXF файл</translation>
     </message>

@@ -52,12 +52,14 @@ void DXFLabel::dragEnterEvent(QDragEnterEvent* event) {
 
 void DXFLabel::dropEvent(QDropEvent* event) {
   QVector<QFileInfo> xmlFiles;
+  QFileInfo dxfFile;
+  bool dxfFileFound = false;
   for (auto& url : event->mimeData()->urls()) {
     if (url.isLocalFile()) {
       QFileInfo fi(url.toLocalFile());
-      if (fi.suffix().toLower() == "dxf") {
-        emit newDXFFileSignal(fi);
-        return;
+      if (!dxfFileFound && fi.suffix().toLower() == "dxf") {
+        dxfFileFound = true;
+        dxfFile = fi;
       } else if (fi.suffix().toLower() == "xml") {
         xmlFiles.push_back(fi);
       }
@@ -65,14 +67,19 @@ void DXFLabel::dropEvent(QDropEvent* event) {
   }
   if (!xmlFiles.empty()) {
     emit newXMLFilesSignal(xmlFiles);
+  } else if (dxfFileFound) {
+    emit newDXFFileSignal(dxfFile);
   }
 }
 
 void DXFLabel::setDefaultText() {
   setText(
-      QString("<div>%1</div><div>%2</div><div>%3</div>")
+      QString("<div>%1</div><div>%2</div><div>%3</div><div>%4</div>")
           .arg(tr("Drag your DXF or XMLs here."))
           .arg(tr("DXF will be checked in all top window XMLs."))
+          .arg(tr("All blocks in DXF will be ignored. Everything in %1 layer "
+                  "will be ignored.")
+                   .arg(QString(rrt::DXF::IGNORED)))
           .arg(tr("XMLs will be copied in %1/data.").arg(QDir::currentPath())));
 }
 
