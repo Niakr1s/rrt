@@ -109,11 +109,11 @@ void XMLTreeView::onDxfClose() {
   spatial_ = nullptr;
 }
 
-void XMLTreeView::onRowsInserted(const QModelIndex& parent,
-                                 int first,
-                                 int last) {
+void XMLTreeView::onRowsInserted(QModelIndex parent, int first, int last) {
   for (int i = first; i <= last; ++i) {
     expand(model()->index(i, 0, parent));
+    QModelIndex parentInner = parent;
+    expandUntilRoot(parentInner);
   }
 }
 
@@ -178,4 +178,11 @@ void XMLTreeView::initDirectories() const {
 
 QVector<std::string> XMLTreeView::intersectsResult() const {
   return intersectsResult_;
+}
+
+void XMLTreeView::expandUntilRoot(QModelIndex item) {
+  while (item.isValid()) {
+    expand(item);
+    item = item.parent();
+  }
 }

@@ -22,6 +22,8 @@ class XMLTreeView : public QTreeView {
 
   QVector<std::string> intersectsResult() const;
 
+  void expandUntilRoot(QModelIndex item);
+
  signals:
   void startProcessingXMLsSignal(int size);
   void oneXMLProcessedSignal(int pos, int max);
@@ -32,7 +34,7 @@ class XMLTreeView : public QTreeView {
   void onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial);
   void onNewXMLFiles(QVector<QFileInfo> xmlFiles);
   void onDxfClose();
-  void onRowsInserted(const QModelIndex& parent, int first, int last);
+  void onRowsInserted(QModelIndex parent, int first, int last);
   void onCopySemicolonButtonClick();
   void onCopyNewlineButtonClick();
   void onCustomContextMenuRequested(QPoint p);
