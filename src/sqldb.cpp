@@ -41,8 +41,6 @@ void rrt::SqlDB::pushToDB(const rrt::XMLSpatial& xmlSpatial) {
       xss.root_cadastral_number, xss.xml_type, xss.xml_date,
       xss.xml_order_number, xss.rect, xss.polygons, xss.linestrings,
       xss.circle_polygons, xss.circles));
-
-  BOOST_LOG_TRIVIAL(info) << "SqlDB::pushToDB: Succesfully pushed";
 }
 
 std::shared_ptr<rrt::XMLSpatial> rrt::SqlDB::getFromDB(
