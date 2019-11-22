@@ -159,7 +159,10 @@ void MainWindow::closeEvent(QCloseEvent* event) {
     return QMainWindow::closeEvent(event);
   }
   auto btn = QMessageBox::warning(
-      this, tr("Are you sure?"), tr("WarningText"),
+      this, tr("Are you sure?"),
+      tr("Application is still updating DB, please wait until DB indicator in "
+         "toolbar turns off. Closing app will cause DB inconsistence. "
+         "Are you still want to exit?"),
       QMessageBox::Button::Ok | QMessageBox::Button::Cancel);
   if (btn == QMessageBox::StandardButton::Ok) {
     return QMainWindow::closeEvent(event);
