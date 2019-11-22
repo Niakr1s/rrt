@@ -37,6 +37,7 @@ class XMLTreeView : public QTreeView {
   void onCopyNewlineButtonClick();
   void onCustomContextMenuRequested(QPoint p);
   void onExportAction();
+  void onExpandButtonToggled(bool expand);
 
  private:
   bf::path cwd_;

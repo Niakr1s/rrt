@@ -162,6 +162,10 @@ void XMLTreeView::onExportAction() {
   }
 }
 
+void XMLTreeView::onExpandButtonToggled(bool expand) {
+  expand ? expandAll() : collapseAll();
+}
+
 XMLTreeModel* XMLTreeView::xmlModel() {
   return static_cast<XMLTreeModel*>(model());
 }

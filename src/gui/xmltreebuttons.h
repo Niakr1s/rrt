@@ -11,13 +11,11 @@ class XMLTreeButtons : public QWidget {
   XMLTreeButtons(QWidget* parent = nullptr);
 
   QPushButton* btnExpand() const;
-  QPushButton* btnCollapse() const;
   QPushButton* btnCopySemicolon() const;
   QPushButton* btnCopyNewline() const;
 
  private:
   QPushButton* btnExpand_;
-  QPushButton* btnCollapse_;
   QPushButton* btnCopySemicolon_;
   QPushButton* btnCopyNewline_;
 

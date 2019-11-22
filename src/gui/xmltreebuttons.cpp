@@ -4,10 +4,11 @@
 #include <QPushButton>
 
 XMLTreeButtons::XMLTreeButtons(QWidget* parent) : QWidget(parent) {
-  btnExpand_ =
-      makeDefaultButton(QIcon(":/icons/expand.svg"), tr(""), tr("Expand"));
-  btnCollapse_ =
-      makeDefaultButton(QIcon(":/icons/collapse.svg"), tr(""), tr("Collapse"));
+  btnExpand_ = makeDefaultButton(QIcon(":/icons/expand.svg"), tr(""),
+                                 tr("Expand/Collapse"));
+  btnExpand_->setCheckable(true);
+  btnExpand_->setChecked(true);
+
   btnCopyNewline_ = makeDefaultButton(QIcon(":/icons/newline.png"), tr(""),
                                       tr("Copy with newline separator"));
   btnCopySemicolon_ = makeDefaultButton(QIcon(":/icons/semicolon.png"), tr(""),
@@ -15,7 +16,6 @@ XMLTreeButtons::XMLTreeButtons(QWidget* parent) : QWidget(parent) {
 
   auto hbox = new QHBoxLayout();
   hbox->addWidget(btnExpand_);
-  hbox->addWidget(btnCollapse_);
   hbox->addStretch();
   hbox->addWidget(btnCopySemicolon_);
   hbox->addWidget(btnCopyNewline_);
@@ -27,10 +27,6 @@ XMLTreeButtons::XMLTreeButtons(QWidget* parent) : QWidget(parent) {
 
 QPushButton* XMLTreeButtons::btnExpand() const {
   return btnExpand_;
-}
-
-QPushButton* XMLTreeButtons::btnCollapse() const {
-  return btnCollapse_;
 }
 
 QPushButton* XMLTreeButtons::btnCopySemicolon() const {

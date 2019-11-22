@@ -69,10 +69,10 @@ void MainWidget::connectAll() {
 
   connect(dxfLabel_, &DXFLabel::errDXFSignal, this, &MainWidget::onErrDXF);
 
-  connect(treeViewBtns_->btnExpand(), &QPushButton::clicked, treeView_,
-          &XMLTreeView::expandAll);
-  connect(treeViewBtns_->btnCollapse(), &QPushButton::clicked, treeView_,
-          &XMLTreeView::collapseAll);
+  connect(treeViewBtns_->btnExpand(), &QPushButton::toggled, treeView_,
+          &XMLTreeView::onExpandButtonToggled);
+  connect(treeViewBtns_->btnExpand(), &QPushButton::toggled, treeView_,
+          &XMLTreeView::onExpandButtonToggled);
 
   connect(treeViewBtns_->btnCopySemicolon(), &QPushButton::clicked, treeView_,
           &XMLTreeView::onCopySemicolonButtonClick);
