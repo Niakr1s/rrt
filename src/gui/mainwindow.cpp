@@ -2,6 +2,7 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QCloseEvent>
 #include <QFileDialog>
 #include <QMenu>
 #include <QMenuBar>
@@ -151,4 +152,17 @@ void MainWindow::connectAll() {
           &MainWindow::onOneXMLProcessed);
   connect(mainWidget_->treeView(), &XMLTreeView::endProcessingXMLsSignal, this,
           &MainWindow::onEndProcessingXMLs);
+}
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+  if (dbProcesses == 0) {
+    return QMainWindow::closeEvent(event);
+  }
+  auto btn = QMessageBox::warning(
+      this, tr("Are you sure?"), tr("WarningText"),
+      QMessageBox::Button::Ok | QMessageBox::Button::Cancel);
+  if (btn == QMessageBox::StandardButton::Ok) {
+    return QMainWindow::closeEvent(event);
+  }
+  event->ignore();
 }

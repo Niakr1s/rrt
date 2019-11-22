@@ -52,6 +52,10 @@ class MainWindow : public QMainWindow {
   void initActions();
   void initStatusBar();
   void connectAll();
+
+  // QWidget interface
+ protected:
+  void closeEvent(QCloseEvent* event) override;
 };
 
 #endif  // MAINWINDOW_H
