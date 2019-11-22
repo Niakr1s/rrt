@@ -6,6 +6,7 @@
 #include <QTreeView>
 #include <QVector>
 #include <memory>
+#include <string>
 #include "boost/filesystem/path.hpp"
 #include "spatial.h"
 #include "xmltreeitem.h"
@@ -25,6 +26,7 @@ class XMLTreeView : public QTreeView {
   void startProcessingXMLsSignal(int size);
   void oneXMLProcessedSignal(int pos, int max);
   void endProcessingXMLsSignal(QVector<QString> err);
+  void endProcessingDXFSignal(int found);
 
  public slots:
   void onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial);

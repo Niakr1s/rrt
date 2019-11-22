@@ -34,6 +34,7 @@ class DXFLabel : public QLabel {
  public slots:
   void onDxfClose();
   void onNewDXFFile(const QFileInfo& fi);
+  void onEndProcessingDXFSignal(int found);
 
  private:
   QRect closeButtonRect_;

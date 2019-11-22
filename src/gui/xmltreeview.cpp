@@ -51,13 +51,16 @@ XMLTreeView::XMLTreeView(QWidget* parent)
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
   spatial_ = spatial;
   intersectsResult_.clear();
-  std::async([&] {
+  std::thread([=] {
     xmlModel()->forEach([&](XMLTreeItem* item) {
       if (item->intersects(*spatial)) {
         intersectsResult_.push_back(item->strID());
       }
     });
-  });
+    emit endProcessingDXFSignal(intersectsResult_.size());
+    BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewDXFSpatial: end, got "
+                             << intersectsResult_.size() << " intersections";
+  }).detach();
 }
 
 void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
@@ -97,7 +100,7 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
     for (auto& t : threads) {
       t.join();
     }
-    endProcessingXMLsSignal(errPaths);
+    emit endProcessingXMLsSignal(errPaths);
   }).detach();
 }
 

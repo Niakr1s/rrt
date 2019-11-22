@@ -90,6 +90,7 @@ void DXFLabel::onDxfClose() {
 }
 
 void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
+  setDisabled(true);
   rrt::DXF dxf;
   try {
     dxf.fileImport(fi.filePath().toStdString());
@@ -104,11 +105,21 @@ void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
   newText = QString("<div>%1: \"%2\"</div>")
                 .arg(tr("Current file"))
                 .arg(dxfFilePath_);
-  if (spatial_->empty()) {
-    newText += QString("<br><font color=\"Red\">%1</font>")
-                   .arg(tr("Warninig: This file is empty"));
-  }
   setText(newText);
+}
+
+void DXFLabel::onEndProcessingDXFSignal(int found) {
+  BOOST_LOG_TRIVIAL(debug) << "DXFLabel::onEndProcessingDXFSignal: start";
+  setDisabled(false);
+  if (found == 0) {
+    setText(text() + QString("<br><font color=\"Red\">%1</font>")
+                         .arg(tr("Warninig: This file is empty")));
+  } else {
+    setText(text() +
+            QString(tr("<div>Got %1 results. You can copy them in clipboard "
+                       "via buttons in top-right corner of treeview.</div>"))
+                .arg(found));
+  }
 }
 
 std::shared_ptr<rrt::Spatial> DXFLabel::spatial() const {

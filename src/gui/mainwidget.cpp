@@ -4,6 +4,7 @@
 #include <QStandardItemModel>
 #include <QString>
 #include <QVBoxLayout>
+#include <boost/log/trivial.hpp>
 #include "vecstr.h"
 #include "xmltreedelegate.h"
 #include "xmltreemodel.h"
@@ -77,4 +78,7 @@ void MainWidget::connectAll() {
           &XMLTreeView::onCopySemicolonButtonClick);
   connect(treeViewBtns_->btnCopyNewline(), &QPushButton::clicked, treeView_,
           &XMLTreeView::onCopyNewlineButtonClick);
+
+  connect(treeView_, &XMLTreeView::endProcessingDXFSignal, dxfLabel_,
+          &DXFLabel::onEndProcessingDXFSignal, Qt::QueuedConnection);
 }
