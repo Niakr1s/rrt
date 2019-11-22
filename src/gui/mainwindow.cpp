@@ -6,7 +6,9 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QStatusBar>
 #include <QVBoxLayout>
+#include "xmltreeview.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   setWindowIcon(QIcon(":/icons/rrt.png"));
@@ -17,11 +19,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
   initActions();
   createMenuBar();
+  initStatusBar();
 
-  connect(this, &MainWindow::newDXFFileSignal, mainWidget_->dxfLabel(),
-          &DXFLabel::newDXFFileSignal);
-  connect(this, &MainWindow::newXMLFilesSignal, mainWidget_->dxfLabel(),
-          &DXFLabel::newXMLFilesSignal);
+  connectAll();
 }
 
 void MainWindow::onActionOpenXmls() {
@@ -49,8 +49,40 @@ void MainWindow::onActionAbout() {
 <br>
 <address>
 If you see any bugs, please contact author via <a href="https://github.com/Niakr1s/rrt/issues">github</a>.<br>
-</address>)***"));
+         </address>)***"));
 }
+
+void MainWindow::onStartProcessingXMLs(int size) {
+  ++dbProcesses;
+  dbIconLabel_->show();
+  statusBarMessage_->setText(tr("Processing XMLs ..."));
+  progressBar_->setRange(0, size);
+  progressBar_->show();
+}
+
+void MainWindow::onOneXMLProcessed(int pos, int max) {
+  if (++pos == max) {
+    progressBar_->reset();
+    progressBar_->hide();
+
+    if (dbProcesses == 0) {
+      statusBarMessage_->setText(tr("Ready"));
+    } else {
+      statusBarMessage_->setText(tr("Still working with DB ..."));
+    }
+  } else {
+    progressBar_->setValue(pos);
+  }
+}
+
+void MainWindow::onEndProcessingXMLs(QVector<QString> errXMlPaths) {
+  if (--dbProcesses == 0) {
+    dbIconLabel_->hide();
+    statusBarMessage_->setText(tr("Ready"));
+  }
+}
+
+void MainWindow::onErrDXF(QString errDXFPath) {}
 
 QToolBar* MainWindow::createTopToolBar() {
   QToolBar* ttb = new QToolBar();
@@ -87,4 +119,36 @@ void MainWindow::initActions() {
   connect(actionOpenDxf_, &QAction::triggered, this,
           &MainWindow::onActionOpenDxf);
   connect(actionAbout_, &QAction::triggered, this, &MainWindow::onActionAbout);
+}
+
+void MainWindow::initStatusBar() {
+  progressBar_ = new QProgressBar();
+  progressBar_->setAlignment(Qt::AlignRight);
+  progressBar_->setMaximumSize(150, 15);
+  progressBar_->setTextVisible(false);
+  statusBar()->addPermanentWidget(progressBar_);
+  progressBar_->hide();
+
+  dbIconLabel_ = new QLabel();
+  dbIconLabel_->setPixmap(QPixmap(":/icons/database.svg")
+                              .scaledToHeight(statusBar()->height() / 2));
+  statusBar()->addPermanentWidget(dbIconLabel_);
+  dbIconLabel_->hide();
+
+  statusBarMessage_ = new QLabel("Ready");
+  statusBar()->addWidget(statusBarMessage_);
+}
+
+void MainWindow::connectAll() {
+  connect(this, &MainWindow::newDXFFileSignal, mainWidget_->dxfLabel(),
+          &DXFLabel::newDXFFileSignal);
+  connect(this, &MainWindow::newXMLFilesSignal, mainWidget_->dxfLabel(),
+          &DXFLabel::newXMLFilesSignal);
+
+  connect(mainWidget_->treeView(), &XMLTreeView::startProcessingXMLsSignal,
+          this, &MainWindow::onStartProcessingXMLs);
+  connect(mainWidget_->treeView(), &XMLTreeView::oneXMLProcessedSignal, this,
+          &MainWindow::onOneXMLProcessed);
+  connect(mainWidget_->treeView(), &XMLTreeView::endProcessingXMLsSignal, this,
+          &MainWindow::onEndProcessingXMLs);
 }

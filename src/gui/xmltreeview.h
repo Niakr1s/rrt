@@ -22,7 +22,9 @@ class XMLTreeView : public QTreeView {
   QVector<std::string> intersectsResult() const;
 
  signals:
-  void errXMLsSignal(QVector<QString>);
+  void startProcessingXMLsSignal(int size);
+  void oneXMLProcessedSignal(int pos, int max);
+  void endProcessingXMLsSignal(QVector<QString> err);
 
  public slots:
   void onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial);

@@ -62,20 +62,20 @@ void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
 
 void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
   std::thread([=] {
+    int sz = xmlFiles.size();
+    emit startProcessingXMLsSignal(sz);
     QVector<QString> errPaths;
     std::vector<std::thread> threads;
-    for (auto& xmlFile : xmlFiles) {
-      if (!xmlFile.exists()) {
-        continue;
-      }
-      auto t = std::thread([&, this] {
+    for (int i = 0; i != sz; ++i) {
+      auto t = std::thread([&errPaths, &xmlFiles, sz, i, this] {
         try {
-          rrt::XML xml(xmlFile.absoluteFilePath().toStdWString());
+          rrt::XML xml(xmlFiles[i].absoluteFilePath().toStdWString());
 
           xmlModel()->mutex_.lock();
           static_cast<XMLTreeModel*>(model())->appendSpatials(
               xml.xmlSpatials());
           xmlModel()->mutex_.unlock();
+          emit oneXMLProcessedSignal(i, sz);
 
           rrt::DB::get()->pushToDB(xml);
           try {
@@ -89,7 +89,7 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
           }
         } catch (std::exception& e) {
           BOOST_LOG_TRIVIAL(error) << e.what();
-          errPaths.push_back(xmlFile.fileName());
+          errPaths.push_back(xmlFiles[i].fileName());
         }
       });
       threads.push_back(std::move(t));
@@ -97,9 +97,7 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
     for (auto& t : threads) {
       t.join();
     }
-    if (!errPaths.empty()) {
-      errXMLsSignal(errPaths);
-    }
+    endProcessingXMLsSignal(errPaths);
   }).detach();
 }
 
@@ -111,7 +109,6 @@ void XMLTreeView::onDxfClose() {
 void XMLTreeView::onRowsInserted(const QModelIndex& parent,
                                  int first,
                                  int last) {
-  BOOST_LOG_TRIVIAL(debug) << " XMLTreeView::onRowsInserted";
   for (int i = first; i <= last; ++i) {
     expand(model()->index(i, 0, parent));
   }

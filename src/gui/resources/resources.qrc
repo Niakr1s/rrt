@@ -11,5 +11,6 @@
         <file>expand.svg</file>
         <file>newline.png</file>
         <file>semicolon.png</file>
+        <file>database.svg</file>
     </qresource>
 </RCC>

@@ -18,11 +18,12 @@ class MainWidget : public QWidget {
   explicit MainWidget(QWidget* parent = nullptr);
 
   DXFLabel* dxfLabel() const;
+  XMLTreeView* treeView() const;
 
  signals:
 
  public slots:
-  void onErrXMLs(QVector<QString> errXMlPaths);
+  void onEndProcessingXMLs(QVector<QString> errXMlPaths);
   void onErrDXF(QString errDXFPath);
 
  private:

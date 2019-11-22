@@ -5,9 +5,11 @@
 #include <QFileInfo>
 #include <QLabel>
 #include <QMainWindow>
+#include <QProgressBar>
 #include <QStringList>
 #include <QTableView>
 #include <QToolBar>
+#include <atomic>
 #include "mainwidget.h"
 
 class MainWindow : public QMainWindow {
@@ -24,6 +26,12 @@ class MainWindow : public QMainWindow {
   void onActionOpenDxf();
   void onActionAbout();
 
+  void onStartProcessingXMLs(int size);
+  void onOneXMLProcessed(int pos, int max);
+  void onEndProcessingXMLs(QVector<QString> errXMlPaths);
+
+  void onErrDXF(QString errDXFPath);
+
  private:
   QAction* actionOpenXmls_;
   QAction* actionOpenDxf_;
@@ -32,10 +40,18 @@ class MainWindow : public QMainWindow {
 
   MainWidget* mainWidget_;
 
+  QLabel* statusBarMessage_;
+  QProgressBar* progressBar_;
+  QLabel* dbIconLabel_;
+
+  std::atomic<int> dbProcesses = 0;
+
  private:
   QToolBar* createTopToolBar();
   void createMenuBar();
   void initActions();
+  void initStatusBar();
+  void connectAll();
 };
 
 #endif  // MAINWINDOW_H
