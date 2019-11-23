@@ -4,7 +4,7 @@ set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
+find_package(Qt5 COMPONENTS Widgets LinguistTools Network REQUIRED)
 
 set(SRC
     main.cpp
@@ -27,6 +27,8 @@ set(SRC
     xmltreebuttons.cpp
     xmltreesortfilterproxymodel.h
     xmltreesortfilterproxymodel.cpp
+    updater.h
+    updater.cpp
     typedefs.h
 )
 
@@ -52,9 +54,11 @@ target_link_libraries(rrt
     xml
     Qt5::Widgets
     Boost::log
+    Qt5::Network
 )
 
 target_include_directories(rrt PUBLIC
     ../
     ${Boost_INCLUDE_DIRS}
+    ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
 )
