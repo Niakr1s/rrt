@@ -12,5 +12,6 @@
         <file>newline.png</file>
         <file>semicolon.png</file>
         <file>database.svg</file>
+        <file>rrt.ico</file>
     </qresource>
 </RCC>

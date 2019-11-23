@@ -47,6 +47,7 @@ endif()
 add_executable(rrt
     ${SRC}
     ${QM_FILES}
+    resources/rrt.o
 )
 
 target_link_libraries(rrt

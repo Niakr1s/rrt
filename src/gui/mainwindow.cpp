@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   auto updater = new Updater();
   updater->startUpdateQuery();
 
-  setWindowIcon(QIcon(":/icons/rrt.png"));
+  setWindowIcon(QIcon(":/icons/rrt.ico"));
   setWindowTitle("Rosreestr Tools");
 
   mainWidget_ = new MainWidget();
