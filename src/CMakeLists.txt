@@ -15,7 +15,7 @@ target_link_libraries(dxf
 )
 
 target_include_directories(dxf PUBLIC
-    ../libs/libdxfrw/include
+    ../libs/libdxfrw/src
 )
 
 # xml

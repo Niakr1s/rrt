@@ -1,3 +1,7 @@
+find_package(Boost REQUIRED COMPONENTS
+    filesystem
+)
+
 file(GLOB src
     "*.h"
     "*.cpp"
@@ -11,4 +15,9 @@ add_library(dxfrw SHARED
 
 target_link_libraries(dxfrw
    iconv
+   Boost::filesystem
+)
+
+include_directories(spatial
+    ${Boost_INCLUDE_DIRS}
 )

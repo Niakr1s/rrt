@@ -63,13 +63,20 @@ void DXF::drawSpatial(std::shared_ptr<Spatial> spatial,
 }
 
 void DXF::fileImport(const std::string& path) {
+  return fileImport(bf::path(path));
+}
+
+void DXF::fileImport(const std::wstring& path) {
+  return fileImport(bf::path(path));
+}
+
+void DXF::fileImport(const boost::filesystem::path& path) {
   BOOST_LOG_TRIVIAL(info) << "DXF::fileImport: starting to open: " << path;
   if (auto ok = dxIface_.fileImport(path, &dxData_); !ok) {
-    throw std::invalid_argument(
-        fmt::format("DXF: problem while importing: {}", path));
+    throw std::invalid_argument("DXF: problem while importing");
   }
   dataToSpatial();
-  BOOST_LOG_TRIVIAL(info) << "DXF::fileImport: succesfully opened and parsed: "
+  BOOST_LOG_TRIVIAL(info) << "DXF::fileImport: succesfully opened and parsed : "
                           << path;
 }
 

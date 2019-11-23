@@ -9,8 +9,11 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QUrl>
+#include <boost/filesystem/path.hpp>
 #include <boost/log/trivial.hpp>
 #include "dxf.h"
+
+namespace bf = boost::filesystem;
 
 DXFLabel::DXFLabel(QWidget* parent) : QLabel(parent) {
   setAcceptDrops(true);
@@ -91,9 +94,10 @@ void DXFLabel::onDxfClose() {
 
 void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
   setDisabled(true);
+  bf::path path = bf::path(fi.filePath().toStdWString());
   rrt::DXF dxf;
   try {
-    dxf.fileImport(fi.filePath().toStdString());
+    dxf.fileImport(path);
   } catch (std::exception& e) {
     BOOST_LOG_TRIVIAL(error) << "DXFLabel::onNewDXFFile: " << e.what();
     setEnabled(true);

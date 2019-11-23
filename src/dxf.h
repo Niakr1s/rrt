@@ -1,16 +1,18 @@
 #ifndef DXF_H
 #define DXF_H
 
+#include <boost/filesystem/path.hpp>
 #include <memory>
 #include <string>
 #include "dx_data.h"
 #include "dx_iface.h"
 #include "spatial.h"
 
+namespace bf = boost::filesystem;
+
 namespace rrt {
 
 class DXF {
-
  public:
   DXF();
 
@@ -37,6 +39,8 @@ class DXF {
                    const std::string& layerName = "0");
 
   void fileImport(const std::string& path);
+  void fileImport(const std::wstring& path);
+  void fileImport(const boost::filesystem::path& path);
   void fileExport(const std::string& path,
                   Version version = DXF::Version::AC1021);
 
