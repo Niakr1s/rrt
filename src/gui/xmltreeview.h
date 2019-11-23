@@ -5,6 +5,7 @@
 #include <QHash>
 #include <QMenu>
 #include <QModelIndex>
+#include <QStringList>
 #include <QTreeView>
 #include <QVector>
 #include <memory>
@@ -33,7 +34,7 @@ class XMLTreeView : public QTreeView {
   void oneXMLProcessedSignal(int pos, int max);
   void XMLtoDBStartSignal();
   void XMLtoDBEndSignal();
-  void endProcessingXMLsSignal(QVector<QString> err);
+  void endProcessingXMLsSignal(QStringList err);
   void endProcessingDXFSignal(std::shared_ptr<DXFResult>);
 
  public slots:

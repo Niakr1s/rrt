@@ -5,7 +5,6 @@
 #include <QString>
 #include <QVBoxLayout>
 #include <boost/log/trivial.hpp>
-#include "vecstr.h"
 #include "xmltreedelegate.h"
 #include "xmltreemodel.h"
 
@@ -23,15 +22,14 @@ MainWidget::MainWidget(QWidget* parent) : QWidget(parent) {
   connectAll();
 }
 
-void MainWidget::onEndProcessingXMLs(QVector<QString> errXMlPaths) {
-  if (!errXMlPaths.empty()) {
+void MainWidget::onEndProcessingXMLs(QStringList errXMLPaths) {
+  if (!errXMLPaths.empty()) {
     QMessageBox* errXmlMessageBox = new QMessageBox(this);
     errXmlMessageBox->setMinimumWidth(600);
     errXmlMessageBox->setWindowTitle(tr("Couldn't parse some XMLs"));
     errXmlMessageBox->setText(tr("Invalid file names are listed below"));
     errXmlMessageBox->setIcon(QMessageBox::Warning);
-    errXmlMessageBox->setDetailedText(
-        VecStr<QString>(errXMlPaths).sepByNewLine());
+    errXmlMessageBox->setDetailedText(errXMLPaths.join("\n"));
     errXmlMessageBox->show();
   }
 }

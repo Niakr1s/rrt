@@ -10,7 +10,6 @@
 #include "boost/filesystem.hpp"
 #include "db.h"
 #include "dxf.h"
-#include "vecstr.h"
 #include "xml.h"
 #include "xmltreedelegate.h"
 #include "xmltreemodel.h"
@@ -82,7 +81,7 @@ void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
 void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
   int sz = xmlFiles.size();
   emit startProcessingXMLsSignal(sz);
-  QVector<QString> errPaths;
+  QStringList errPaths;
   std::vector<std::thread> threads;
   for (int i = 0; i != sz; ++i) {
     try {

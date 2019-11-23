@@ -72,7 +72,7 @@ void MainWindow::onOneXMLProcessed(int pos, int max) {
   }
 }
 
-void MainWindow::onEndProcessingXMLs(QVector<QString> errXMlPaths) {
+void MainWindow::onEndProcessingXMLs(QStringList) {
   updateDBIcon();
 }
 

@@ -23,8 +23,6 @@ set(SRC
     xmltreedelegate.cpp
     xmltreeview.h
     xmltreeview.cpp
-    vecstr.h
-    vecstr.cpp
     xmltreebuttons.h
     xmltreebuttons.cpp
     xmltreesortfilterproxymodel.h

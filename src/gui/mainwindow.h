@@ -28,7 +28,7 @@ class MainWindow : public QMainWindow {
 
   void onStartProcessingXMLs(int size);
   void onOneXMLProcessed(int pos, int max);
-  void onEndProcessingXMLs(QVector<QString> errXMlPaths);
+  void onEndProcessingXMLs(QStringList);
   void onXMLtoDBStartSignal();
   void onXMLtoDBEndSignal();
 

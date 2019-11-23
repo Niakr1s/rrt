@@ -23,7 +23,7 @@ class MainWidget : public QWidget {
  signals:
 
  public slots:
-  void onEndProcessingXMLs(QVector<QString> errXMlPaths);
+  void onEndProcessingXMLs(QStringList errXMLPaths);
   void onErrDXF(QString errDXFPath);
 
  private:
