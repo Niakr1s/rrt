@@ -7,7 +7,6 @@ XMLTreeButtons::XMLTreeButtons(QWidget* parent) : QWidget(parent) {
   btnExpand_ = makeDefaultButton(QIcon(":/icons/expand.svg"), tr(""),
                                  tr("Expand/Collapse"));
   btnExpand_->setCheckable(true);
-  btnExpand_->setChecked(true);
 
   btnCopyNewline_ = makeDefaultButton(QIcon(":/icons/newline.png"), tr(""),
                                       tr("Copy with newline separator"));
