@@ -31,6 +31,10 @@ class dx_iface : public DRW_Interface {
                   DRW::Version v,
                   bool binary,
                   dx_data* fData);
+  bool fileExport(const bf::path& file,
+                  DRW::Version v,
+                  bool binary,
+                  dx_data* fData);
   void writeEntity(DRW_Entity* e);
 
   // reimplement virtual DRW_Interface functions

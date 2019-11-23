@@ -18,6 +18,6 @@ target_link_libraries(dxfrw
    Boost::filesystem
 )
 
-include_directories(spatial
+include_directories(
     ${Boost_INCLUDE_DIRS}
 )

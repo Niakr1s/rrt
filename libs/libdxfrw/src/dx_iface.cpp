@@ -55,6 +55,13 @@ bool dx_iface::fileExport(const std::string& file,
                           DRW::Version v,
                           bool binary,
                           dx_data* fData) {
+  return fileExport(bf::path(file), v, binary, fData);
+}
+
+bool dx_iface::fileExport(const boost::filesystem::path& file,
+                          DRW::Version v,
+                          bool binary,
+                          dx_data* fData) {
   cData = fData;
   dxfW = new dxfRW(file);
   bool success = dxfW->write(this, v, binary);

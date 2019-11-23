@@ -43,6 +43,7 @@ class DXF {
   void fileImport(const boost::filesystem::path& path);
   void fileExport(const std::string& path,
                   Version version = DXF::Version::AC1021);
+  void fileExport(const bf::path& path, Version version = DXF::Version::AC1021);
 
  private:
   dx_iface dxIface_;

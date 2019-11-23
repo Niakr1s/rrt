@@ -5,6 +5,7 @@
 #include <QGuiApplication>
 #include <QThread>
 #include <boost/date_time.hpp>
+#include <boost/filesystem/path.hpp>
 #include <boost/log/trivial.hpp>
 #include <exception>
 #include <thread>
@@ -155,8 +156,9 @@ void XMLTreeView::onExportAction() {
 
   QString fileName = QFileDialog::getSaveFileName(this, tr("Save DXF File"), "",
                                                   "DXF (*.dxf)");
+  auto path = boost::filesystem::path(fileName.toStdWString());
   try {
-    dxf.fileExport(fileName.toStdString());
+    dxf.fileExport(path);
   } catch (std::exception& e) {
     BOOST_LOG_TRIVIAL(error) << e.what();
   }

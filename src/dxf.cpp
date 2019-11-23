@@ -81,9 +81,13 @@ void DXF::fileImport(const boost::filesystem::path& path) {
 }
 
 void DXF::fileExport(const std::string& path, Version version) {
+  return fileExport(bf::path(path));
+}
+
+void DXF::fileExport(const boost::filesystem::path& path,
+                     DXF::Version version) {
   if (auto ok = dxIface_.fileExport(path, version, false, &dxData_); !ok) {
-    throw std::invalid_argument(
-        fmt::format("DXF: problem while exporting: {}", path));
+    throw std::invalid_argument("DXF: problem while exporting");
   }
   BOOST_LOG_TRIVIAL(info) << "DXF::fileExport: succesfully exported: " << path;
 }
