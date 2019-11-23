@@ -1,9 +1,13 @@
 #include "xmltreebuttons.h"
 
+#include <QClipboard>
+#include <QGuiApplication>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include "typedefs.h"
 
-XMLTreeButtons::XMLTreeButtons(QWidget* parent) : QWidget(parent) {
+XMLTreeButtons::XMLTreeButtons(QWidget* parent)
+    : QWidget(parent), result_(nullptr) {
   btnExpand_ = makeDefaultButton(QIcon(":/icons/expand.svg"), tr(""),
                                  tr("Expand/Collapse"));
   btnExpand_->setCheckable(true);
@@ -15,6 +19,11 @@ XMLTreeButtons::XMLTreeButtons(QWidget* parent) : QWidget(parent) {
   btnCopySemicolon_ =
       makeDefaultButton(QIcon(":/icons/semicolon.png"), tr(""),
                         tr("Copy with semicolon separator"), true);
+
+  connect(btnCopySemicolon_, &QPushButton::clicked, this,
+          &XMLTreeButtons::onBtnCopySemicolonClicked);
+  connect(btnCopyNewline_, &QPushButton::clicked, this,
+          &XMLTreeButtons::onBtnCopyNewlineClicked);
 
   auto hbox = new QHBoxLayout();
   hbox->addWidget(btnExpand_);
@@ -50,10 +59,20 @@ void XMLTreeButtons::onDXFClose() {
   btnCopyNewline_->hide();
 }
 
-void XMLTreeButtons::onEndProcessingDXF(int) {
-  // TODO propagate combobox
+void XMLTreeButtons::onEndProcessingDXF(std::shared_ptr<DXFResult> res) {
+  result_ = res;
+  propagateComboBox();
+  comboBox_->show();
   btnCopySemicolon_->show();
   btnCopyNewline_->show();
+}
+
+void XMLTreeButtons::onBtnCopySemicolonClicked() {
+  resToClipboard(comboBox_->currentText(), ";");
+}
+
+void XMLTreeButtons::onBtnCopyNewlineClicked() {
+  resToClipboard(comboBox_->currentText(), "\n");
 }
 
 QPushButton* XMLTreeButtons::makeDefaultButton(QIcon icon,
@@ -73,4 +92,32 @@ QComboBox* XMLTreeButtons::makeComboBox() {
   auto res = new QComboBox();
   res->hide();
   return res;
+}
+
+void XMLTreeButtons::resToClipboard(QString key, QString sep) {
+  if (result_ == nullptr) {
+    return;
+  }
+  QString toClipboard;
+  if (key == ALL_STRING) {
+    QStringList tmp;
+    for (auto& k : result_->keys()) {
+      tmp.push_back((*result_)[k].join(sep));
+    }
+    toClipboard = tmp.join(sep);
+  } else {
+    toClipboard = (*result_)[key].join(sep);
+  }
+  QGuiApplication::clipboard()->setText(toClipboard);
+}
+
+void XMLTreeButtons::propagateComboBox() {
+  comboBox_->clear();
+  comboBox_->addItem(ALL_STRING);
+  if (result_->empty()) {
+    return;
+  }
+  for (auto& key : result_->keys()) {
+    comboBox_->addItem(key);
+  }
 }

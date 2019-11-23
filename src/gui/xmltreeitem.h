@@ -50,6 +50,7 @@ class XMLTreeItem {
   bool setData(int col, const QVariant& value);
 
   std::string strID() const;
+  QString qstrID() const;
 
  signals:
   void dataChanged(QModelIndex*);

@@ -115,14 +115,14 @@ void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
   setText(newText);
 }
 
-void DXFLabel::onEndProcessingDXFSignal(int found) {
+void DXFLabel::onEndProcessingDXFSignal(std::shared_ptr<DXFResult> res) {
   BOOST_LOG_TRIVIAL(debug) << "DXFLabel::onEndProcessingDXFSignal: start";
   setDisabled(false);
   setText(text() +
           QString(tr("<div>Got <b><font color=red>%1</font></b> results. You "
                      "can copy them in clipboard "
                      "via buttons in top-right corner of treeview.</div>"))
-              .arg(found));
+              .arg(res->size()));
 }
 
 std::shared_ptr<rrt::Spatial> DXFLabel::spatial() const {

@@ -161,6 +161,10 @@ std::string XMLTreeItem::strID() const {
   return strID_;
 }
 
+QString XMLTreeItem::qstrID() const {
+  return QString::fromStdString(strID_);
+}
+
 bool XMLTreeItem::newFlag() const {
   return newFlag_;
 }

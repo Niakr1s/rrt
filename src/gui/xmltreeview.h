@@ -2,6 +2,7 @@
 #define XMLTREEVIEW_H
 
 #include <QFileInfo>
+#include <QHash>
 #include <QMenu>
 #include <QModelIndex>
 #include <QTreeView>
@@ -10,6 +11,7 @@
 #include <string>
 #include "boost/filesystem/path.hpp"
 #include "spatial.h"
+#include "typedefs.h"
 #include "xmltreeitem.h"
 #include "xmltreemodel.h"
 #include "xmltreesortfilterproxymodel.h"
@@ -22,8 +24,6 @@ class XMLTreeView : public QTreeView {
  public:
   XMLTreeView(QWidget* parent = nullptr);
 
-  QVector<std::string> intersectsResult() const;
-
   void expandUntilRoot(QModelIndex item);
   void collapseAll();
   void expand(QModelIndex idx, int count = 0);
@@ -34,15 +34,13 @@ class XMLTreeView : public QTreeView {
   void XMLtoDBStartSignal();
   void XMLtoDBEndSignal();
   void endProcessingXMLsSignal(QVector<QString> err);
-  void endProcessingDXFSignal(int found);
+  void endProcessingDXFSignal(std::shared_ptr<DXFResult>);
 
  public slots:
   void onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial);
   void onNewXMLFiles(QVector<QFileInfo> xmlFiles);
   void onDxfClose();
   void onRowsInserted(QModelIndex sourceParent, int first, int last);
-  void onCopySemicolonButtonClick();
-  void onCopyNewlineButtonClick();
   void onCustomContextMenuRequested(QPoint p);
   void onExportAction();
   void onExpandButtonToggled(bool expand);
@@ -56,7 +54,6 @@ class XMLTreeView : public QTreeView {
  private:
   XMLTreeModel* xmlModel();
   void initDirectories() const;
-  QVector<std::string> intersectsResult_;
   std::shared_ptr<rrt::Spatial> spatial_;
 };
 

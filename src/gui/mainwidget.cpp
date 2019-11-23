@@ -76,11 +76,6 @@ void MainWidget::connectAll() {
   connect(treeViewBtns_->btnExpand(), &QPushButton::toggled, treeView_,
           &XMLTreeView::onExpandButtonToggled);
 
-  connect(treeViewBtns_->btnCopySemicolon(), &QPushButton::clicked, treeView_,
-          &XMLTreeView::onCopySemicolonButtonClick);
-  connect(treeViewBtns_->btnCopyNewline(), &QPushButton::clicked, treeView_,
-          &XMLTreeView::onCopyNewlineButtonClick);
-
   connect(treeView_, &XMLTreeView::endProcessingDXFSignal, dxfLabel_,
           &DXFLabel::onEndProcessingDXFSignal, Qt::QueuedConnection);
   connect(treeView_, &XMLTreeView::endProcessingDXFSignal, treeViewBtns_,

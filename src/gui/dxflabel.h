@@ -7,6 +7,7 @@
 #include <QString>
 #include <QVector>
 #include "spatial.h"
+#include "typedefs.h"
 
 class DXFLabel : public QLabel {
   Q_OBJECT
@@ -34,7 +35,7 @@ class DXFLabel : public QLabel {
  public slots:
   void onDxfClose();
   void onNewDXFFile(const QFileInfo& fi);
-  void onEndProcessingDXFSignal(int found);
+  void onEndProcessingDXFSignal(std::shared_ptr<DXFResult> res);
 
  private:
   QRect closeButtonRect_;

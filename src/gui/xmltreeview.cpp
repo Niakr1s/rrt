@@ -1,8 +1,6 @@
 #include "xmltreeview.h"
 
-#include <QClipboard>
 #include <QFileDialog>
-#include <QGuiApplication>
 #include <QThread>
 #include <boost/date_time.hpp>
 #include <boost/filesystem/path.hpp>
@@ -53,21 +51,29 @@ XMLTreeView::XMLTreeView(QWidget* parent)
 }
 
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
+  auto res = std::make_shared<DXFResult>();
   spatial_ = spatial;
-  intersectsResult_.clear();
   if (spatial_->empty()) {
-    emit endProcessingDXFSignal(0);
+    emit endProcessingDXFSignal(res);
     return;
   }
   std::thread([=] {
     xmlModel()->forEach([&](XMLTreeItem* item) {
       if (item->intersects(*spatial)) {
-        intersectsResult_.push_back(item->strID());
+        auto key = item->parentItem()->qstrID();
+        (*res)[key].push_back(item->qstrID());
       }
     });
-    emit endProcessingDXFSignal(intersectsResult_.size());
+    for (auto& key : res->keys()) {
+      qSort((*res)[key].begin(), (*res)[key].end(),
+            [](const QString& lhs, const QString& rhs) {
+              return lhs.split(":").back().toInt() <
+                     rhs.split(":").back().toInt();
+            });
+    }
+    emit endProcessingDXFSignal(res);
     BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewDXFSpatial: end, got "
-                             << intersectsResult_.size() << " intersections";
+                             << res->size() << " intersections";
     model_->setFiltering(true);
     expandAll();
   }).detach();
@@ -129,16 +135,6 @@ void XMLTreeView::onRowsInserted(QModelIndex sourceParent,
   }
 }
 
-void XMLTreeView::onCopySemicolonButtonClick() {
-  QGuiApplication::clipboard()->setText(QString::fromStdString(
-      VecStr<std::string>(intersectsResult_).sepBySemicolon()));
-}
-
-void XMLTreeView::onCopyNewlineButtonClick() {
-  QGuiApplication::clipboard()->setText(QString::fromStdString(
-      VecStr<std::string>(intersectsResult_).sepByNewLine()));
-}
-
 void XMLTreeView::onCustomContextMenuRequested(QPoint p) {
   if (selectedIndexes().empty()) {
     return;
@@ -188,10 +184,6 @@ void XMLTreeView::initDirectories() const {
   if (!bf::exists(dataPath_)) {
     bf::create_directory(dataPath_);
   }
-}
-
-QVector<std::string> XMLTreeView::intersectsResult() const {
-  return intersectsResult_;
 }
 
 void XMLTreeView::expandUntilRoot(QModelIndex item) {

@@ -1,8 +1,16 @@
 #include <QApplication>
 #include <QTranslator>
 #include "mainwindow.h"
+#include "typedefs.h"
+
+void registerMetaTypes() {
+  qRegisterMetaType<DXFResult>("DXFResult");
+  qRegisterMetaType<std::shared_ptr<DXFResult>>("std::shared_ptr<DXFResult>");
+}
 
 int main(int argc, char* argv[]) {
+  registerMetaTypes();
+
   QApplication app(argc, argv);
   QTranslator myappTranslator;
   myappTranslator.load("i10n/ru");

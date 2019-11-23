@@ -29,6 +29,7 @@ set(SRC
     xmltreebuttons.cpp
     xmltreesortfilterproxymodel.h
     xmltreesortfilterproxymodel.cpp
+    typedefs.h
 )
 
 file(GLOB TS_FILES

@@ -3,8 +3,12 @@
 
 #include <QComboBox>
 #include <QFileInfo>
+#include <QHash>
 #include <QPushButton>
+#include <QString>
 #include <QWidget>
+#include <memory>
+#include "typedefs.h"
 
 class XMLTreeButtons : public QWidget {
   Q_OBJECT
@@ -20,14 +24,21 @@ class XMLTreeButtons : public QWidget {
 
  public slots:
   void onDXFClose();
-  void onEndProcessingDXF(int);
+  void onEndProcessingDXF(std::shared_ptr<DXFResult> res);
+
+  void onBtnCopySemicolonClicked();
+  void onBtnCopyNewlineClicked();
 
  private:
   QPushButton* btnExpand_;
 
   QComboBox* comboBox_;
+  const QString ALL_STRING = tr("All");
+
   QPushButton* btnCopySemicolon_;
   QPushButton* btnCopyNewline_;
+
+  std::shared_ptr<DXFResult> result_;
 
  private:
   static QPushButton* makeDefaultButton(QIcon icon,
@@ -35,7 +46,10 @@ class XMLTreeButtons : public QWidget {
                                         QString tooltip,
                                         bool hide = false);
 
-  QComboBox* makeComboBox();
+  static QComboBox* makeComboBox();
+
+  void resToClipboard(QString key, QString sep);
+  void propagateComboBox();
 };
 
 #endif  // XMLTREEBUTTONS_H
