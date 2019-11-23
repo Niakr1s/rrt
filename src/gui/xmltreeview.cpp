@@ -188,3 +188,19 @@ void XMLTreeView::expandUntilRoot(QModelIndex item) {
     item = item.parent();
   }
 }
+
+void XMLTreeView::collapseAll() {
+  QTreeView::collapseAll();
+  expand(QModelIndex(), 2);
+}
+
+void XMLTreeView::expand(QModelIndex idx, int count) {
+  QTreeView::expand(idx);
+  if (count == 0) {
+    return;
+  }
+  for (auto row = 0; row != model()->rowCount(idx); ++row) {
+    auto childIdx = model()->index(row, 0, idx);
+    expand(childIdx, count - 1);
+  }
+}

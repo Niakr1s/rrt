@@ -3,6 +3,7 @@
 
 #include <QFileInfo>
 #include <QMenu>
+#include <QModelIndex>
 #include <QTreeView>
 #include <QVector>
 #include <memory>
@@ -23,6 +24,8 @@ class XMLTreeView : public QTreeView {
   QVector<std::string> intersectsResult() const;
 
   void expandUntilRoot(QModelIndex item);
+  void collapseAll();
+  void expand(QModelIndex idx = QModelIndex(), int count = 0);
 
  signals:
   void startProcessingXMLsSignal(int size);
