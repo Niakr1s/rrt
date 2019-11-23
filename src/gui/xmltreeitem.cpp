@@ -1,5 +1,6 @@
 #include "xmltreeitem.h"
 
+#include <QObject>
 #include <boost/log/trivial.hpp>
 
 XMLTreeItem::XMLTreeItem(const std::string& strID, XMLTreeItem* parentItem)
@@ -25,6 +26,18 @@ int XMLTreeItem::childCount() const {
 
 int XMLTreeItem::columnCount() const {
   return Column::MAX;
+}
+
+int XMLTreeItem::childCountThatHaveSpatial() const {
+  int res = 0;
+  for (int i = 0; i != childs_.size(); ++i) {
+    if (childs_[i]->spatial() != nullptr) {
+      ++res;
+    } else {
+      res += childs_[i]->childCountThatHaveSpatial();
+    }
+  }
+  return res;
 }
 
 QVariant XMLTreeItem::data(int column) const {
@@ -68,7 +81,8 @@ std::shared_ptr<rrt::XMLSpatial> XMLTreeItem::spatial() const {
 QString XMLTreeItem::tooltipData() const {
   QString res;
   if (spatial_ == nullptr) {
-    return res;
+    return (
+        QObject::tr("%1 spatial elements").arg(childCountThatHaveSpatial()));
   }
   res = QString("XML: %1, %2, %3\nParent: %4: %5")
             .arg(QString::fromStdString(spatial_->xmlInfo().type()))

@@ -26,6 +26,7 @@ class XMLTreeItem {
 
   int childCount() const;
   int columnCount() const;
+  int childCountThatHaveSpatial() const;
   QVariant data(int column) const;
   int row() const;
   XMLTreeItem* parentItem();
