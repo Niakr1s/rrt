@@ -78,7 +78,7 @@ void DXFLabel::setDefaultText() {
           .arg(tr("Drag your DXF or XMLs here."))
           .arg(tr("DXF will be checked in all top window XMLs."))
           .arg(tr("All blocks in DXF will be ignored. Everything in %1 layer "
-                  "will be ignored.")
+                  "will be ignored. Any non-english layer will be ignored.")
                    .arg(QString(rrt::DXF::IGNORED)))
           .arg(tr("XMLs will be copied in %1/data.").arg(QDir::currentPath())));
 }
