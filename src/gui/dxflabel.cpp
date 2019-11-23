@@ -118,15 +118,11 @@ void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
 void DXFLabel::onEndProcessingDXFSignal(int found) {
   BOOST_LOG_TRIVIAL(debug) << "DXFLabel::onEndProcessingDXFSignal: start";
   setDisabled(false);
-  if (found == 0) {
-    setText(text() + QString("<br><font color=\"Red\">%1</font>")
-                         .arg(tr("Warninig: This file is empty")));
-  } else {
-    setText(text() +
-            QString(tr("<div>Got %1 results. You can copy them in clipboard "
-                       "via buttons in top-right corner of treeview.</div>"))
-                .arg(found));
-  }
+  setText(text() +
+          QString(tr("<div>Got <b><font color=red>%1</font></b> results. You "
+                     "can copy them in clipboard "
+                     "via buttons in top-right corner of treeview.</div>"))
+              .arg(found));
 }
 
 std::shared_ptr<rrt::Spatial> DXFLabel::spatial() const {
