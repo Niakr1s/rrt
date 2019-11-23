@@ -7,7 +7,7 @@
 #include "dxf.h"
 
 extern std::string PATH;
-static const std::string POLY = PATH + "poly.dwg";
+static const std::string POLY = PATH + "poly.dxf";
 
 TEST(dxf, constructor) {
   rrt::DXF dxf;

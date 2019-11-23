@@ -10,10 +10,10 @@
 extern std::string PATH;
 extern const std::string BLOCK;
 
-const std::string file = PATH + "intersects_false.dwg";
-const std::string file1 = PATH + "intersects_true1.dwg";
-const std::string file2 = PATH + "intersects_true2.dwg";
-const std::string file3 = PATH + "intersects_true3.dwg";
+const std::string file = PATH + "intersects_false.dxf";
+const std::string file1 = PATH + "intersects_true1.dxf";
+const std::string file2 = PATH + "intersects_true2.dxf";
+const std::string file3 = PATH + "intersects_true3.dxf";
 
 const auto xml = rrt::XML(BLOCK.c_str());
 
