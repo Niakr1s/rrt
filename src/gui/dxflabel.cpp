@@ -96,6 +96,9 @@ void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
     dxf.fileImport(fi.filePath().toStdString());
   } catch (std::exception& e) {
     BOOST_LOG_TRIVIAL(error) << "DXFLabel::onNewDXFFile: " << e.what();
+    setEnabled(true);
+    QMessageBox::critical(this, tr("Error"),
+                          tr("Can't parse dxf file %1").arg(fi.fileName()));
     return;
   }
   dxfFilePath_ = fi.filePath();
