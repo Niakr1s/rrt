@@ -52,6 +52,10 @@ XMLTreeView::XMLTreeView(QWidget* parent)
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
   spatial_ = spatial;
   intersectsResult_.clear();
+  if (spatial_->empty()) {
+    emit endProcessingDXFSignal(0);
+    return;
+  }
   std::thread([=] {
     xmlModel()->forEach([&](XMLTreeItem* item) {
       if (item->intersects(*spatial)) {
