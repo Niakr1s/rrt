@@ -36,7 +36,7 @@ XMLTreeView::XMLTreeView(QWidget* parent)
   setEditTriggers(QTreeView::NoEditTriggers);
   setMinimumHeight(400);
 
-  expandAll();
+  collapseAll();
 
   connect(model, &XMLTreeModel::rowsInserted, this,
           &XMLTreeView::onRowsInserted);
