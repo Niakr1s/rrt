@@ -27,6 +27,8 @@ set(SRC
     vecstr.cpp
     xmltreebuttons.h
     xmltreebuttons.cpp
+    xmltreesortfilterproxymodel.h
+    xmltreesortfilterproxymodel.cpp
 )
 
 file(GLOB TS_FILES

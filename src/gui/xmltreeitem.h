@@ -5,6 +5,7 @@
 #include <QVariant>
 #include <QVector>
 #include <functional>
+#include <iostream>
 #include <memory>
 #include <string>
 #include "spatial.h"
@@ -30,6 +31,8 @@ class XMLTreeItem {
   QVariant data(int column) const;
   int row() const;
   XMLTreeItem* parentItem();
+  std::ostream& dumpInfo(std::ostream& out = std::cout,
+                         std::string sep = "") const;
 
   void appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial, bool fromDB);
   std::shared_ptr<rrt::XMLSpatial> spatial() const;

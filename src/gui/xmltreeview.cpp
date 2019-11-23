@@ -26,8 +26,10 @@ XMLTreeView::XMLTreeView(QWidget* parent)
       new QAction(QIcon(":/icons/dxf.svg"), tr("Export to DXF"));
   exportMenu_->addAction(exportAction);
 
-  XMLTreeModel* model = new XMLTreeModel();
-  setModel(model);
+  XMLTreeModel* model = new XMLTreeModel(this);
+  model_ = new XMLTreeSortFilterProxyModel(this);
+  model_->setSourceModel(model);
+  setModel(model_);
 
   auto delegate = new XMLTreeDelegate();
   setItemDelegate(delegate);
@@ -38,7 +40,7 @@ XMLTreeView::XMLTreeView(QWidget* parent)
 
   collapseAll();
 
-  connect(model, &XMLTreeModel::rowsInserted, this,
+  connect(model, &XMLTreeSortFilterProxyModel::rowsInserted, this,
           &XMLTreeView::onRowsInserted);
 
   setContextMenuPolicy(Qt::CustomContextMenu);
@@ -69,44 +71,41 @@ void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
 }
 
 void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
-  std::thread([=] {
-    int sz = xmlFiles.size();
-    emit startProcessingXMLsSignal(sz);
-    QVector<QString> errPaths;
-    std::vector<std::thread> threads;
-    for (int i = 0; i != sz; ++i) {
-      auto t = std::thread([&errPaths, &xmlFiles, sz, i, this] {
-        try {
-          rrt::XML xml(xmlFiles[i].absoluteFilePath().toStdWString());
+  int sz = xmlFiles.size();
+  emit startProcessingXMLsSignal(sz);
+  QVector<QString> errPaths;
+  std::vector<std::thread> threads;
+  for (int i = 0; i != sz; ++i) {
+    try {
+      auto xml = std::make_shared<rrt::XML>(
+          xmlFiles[i].absoluteFilePath().toStdWString());
 
-          xmlModel()->mutex_.lock();
-          static_cast<XMLTreeModel*>(model())->appendSpatials(
-              xml.xmlSpatials());
-          xmlModel()->mutex_.unlock();
-          emit oneXMLProcessedSignal(i, sz);
+      xmlModel()->appendSpatials(xml->xmlSpatials());
+      emit XMLtoDBStartSignal();
+      std::thread([=] {
+        rrt::DB::get()->pushToDB(*xml);
+        emit XMLtoDBEndSignal();
+      }).detach();
 
-          rrt::DB::get()->pushToDB(xml);
-          try {
-            bf::path newPath = xml.renameFile();
-            bf::path dataPath = dataPath_ / newPath.filename();
-            if (!bf::exists(dataPath)) {
-              bf::copy(newPath, dataPath);
-            }
-          } catch (std::exception& e) {
-            BOOST_LOG_TRIVIAL(error) << e.what();
-          }
-        } catch (std::exception& e) {
-          BOOST_LOG_TRIVIAL(error) << e.what();
-          errPaths.push_back(xmlFiles[i].fileName());
+      try {
+        bf::path newPath = xml->renameFile();
+        bf::path dataPath = dataPath_ / newPath.filename();
+        if (!bf::exists(dataPath)) {
+          bf::copy(newPath, dataPath);
         }
-      });
-      threads.push_back(std::move(t));
+      } catch (std::exception& e) {
+        BOOST_LOG_TRIVIAL(error) << e.what();
+      }
+    } catch (std::exception& e) {
+      BOOST_LOG_TRIVIAL(error) << e.what();
+      errPaths.push_back(xmlFiles[i].fileName());
     }
-    for (auto& t : threads) {
-      t.join();
-    }
-    emit endProcessingXMLsSignal(errPaths);
-  }).detach();
+    emit oneXMLProcessedSignal(i, sz);
+  }
+
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewXMLFiles END, rootitem: ";
+  xmlModel()->rootItem_->dumpInfo();
+  emit endProcessingXMLsSignal(errPaths);
 }
 
 void XMLTreeView::onDxfClose() {
@@ -114,11 +113,14 @@ void XMLTreeView::onDxfClose() {
   spatial_ = nullptr;
 }
 
-void XMLTreeView::onRowsInserted(QModelIndex parent, int first, int last) {
+void XMLTreeView::onRowsInserted(QModelIndex sourceParent,
+                                 int first,
+                                 int last) {
   for (int i = first; i <= last; ++i) {
-    expand(model()->index(i, 0, parent));
-    QModelIndex parentInner = parent;
-    expandUntilRoot(parentInner);
+    auto elem = model_->mapFromSource(xmlModel()->index(i, 0, sourceParent));
+    expand(elem);
+    QModelIndex parent = model()->index(i, 0, elem.parent());
+    expandUntilRoot(parent);
   }
 }
 
@@ -144,6 +146,7 @@ void XMLTreeView::onExportAction() {
     return;
   }
   QModelIndex selected = selectedIndexes().first();
+  selected = model_->mapToSource(selected);
 
   rrt::DXF dxf;
   if (spatial_) {
@@ -173,7 +176,7 @@ void XMLTreeView::onExpandButtonToggled(bool expand) {
 }
 
 XMLTreeModel* XMLTreeView::xmlModel() {
-  return static_cast<XMLTreeModel*>(model());
+  return static_cast<XMLTreeModel*>(model_->sourceModel());
 }
 
 void XMLTreeView::initDirectories() const {

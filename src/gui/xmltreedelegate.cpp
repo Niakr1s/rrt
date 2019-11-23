@@ -5,6 +5,7 @@
 #include <QLinearGradient>
 #include <QPainter>
 #include "xmltreeitem.h"
+#include "xmltreesortfilterproxymodel.h"
 
 XMLTreeDelegate::XMLTreeDelegate(QObject* parent)
     : QStyledItemDelegate(parent) {}
@@ -12,9 +13,16 @@ XMLTreeDelegate::XMLTreeDelegate(QObject* parent)
 void XMLTreeDelegate::paint(QPainter* painter,
                             const QStyleOptionViewItem& option,
                             const QModelIndex& index) const {
-  XMLTreeItem* item = static_cast<XMLTreeItem*>(index.internalPointer());
+  auto idxCopy = index;
+
+  auto model = static_cast<const XMLTreeSortFilterProxyModel*>(idxCopy.model());
+  if (model != nullptr) {
+    idxCopy = model->mapToSource(idxCopy);
+  }
+
+  auto item = static_cast<XMLTreeItem*>(idxCopy.internalPointer());
   if (item == nullptr) {
-    return;
+    return QStyledItemDelegate::paint(painter, option, index);
   }
   auto optCopy = option;
   if (item->intersectsFlag()) {
@@ -29,5 +37,5 @@ void XMLTreeDelegate::paint(QPainter* painter,
     rect.setBottom(rect.bottom() - 2);
     painter->drawImage(rect, newIcon);
   }
-  QStyledItemDelegate::paint(painter, optCopy, index);
+  return QStyledItemDelegate::paint(painter, optCopy, index);
 }

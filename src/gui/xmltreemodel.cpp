@@ -16,13 +16,20 @@ XMLTreeModel::~XMLTreeModel() {
 void XMLTreeModel::appendSpatials(
     const rrt::XMLSpatial::xmlSpatials_t& spatials,
     bool fromDB) {
+  int counter = 1;
   for (auto& spatial : spatials) {
+    //    if (counter-- == 0)
+    //      break;
+
     auto path = spatial->xmlSpatialInfo().cadastralNumber().strings();
     while (path.size() != 3) {
       path.pop_back();
     }
     path.push_back(spatial->xmlSpatialInfo().type());
     path.push_back(spatial->xmlSpatialInfo().cadastralNumber().string());
+
+    //    BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::appendSpatials spatial
+    //    START"; rootItem_->dumpInfo();
 
     auto idx = QModelIndex();
     for (auto& str : path) {
@@ -42,6 +49,9 @@ void XMLTreeModel::appendSpatials(
       }
     }
     getItem(idx)->appendSpatial(spatial, fromDB);
+
+    //    BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::appendSpatials spatial
+    //    END"; rootItem_->dumpInfo();
   }
 }
 
@@ -181,6 +191,9 @@ bool XMLTreeModel::insertRows(int row, int count, const QModelIndex& parent) {
   if (!parentItem)
     return false;
 
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::insertRows: row = " << row
+                           << ", count = " << count << ", parent = "
+                           << parent.data().toString().toStdString();
   beginInsertRows(parent, row, row + count - 1);
   const bool success =
       parentItem->insertChildren(row, count, rootItem_->columnCount());

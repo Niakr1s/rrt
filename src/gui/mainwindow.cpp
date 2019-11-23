@@ -9,6 +9,7 @@
 #include <QMessageBox>
 #include <QStatusBar>
 #include <QVBoxLayout>
+#include <boost/log/trivial.hpp>
 #include "xmltreeview.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
@@ -54,33 +55,35 @@ If you see any bugs, please contact author via <a href="https://github.com/Niakr
 }
 
 void MainWindow::onStartProcessingXMLs(int size) {
-  ++dbProcesses;
-  dbIconLabel_->show();
   statusBarMessage_->setText(tr("Processing XMLs ..."));
   progressBar_->setRange(0, size);
   progressBar_->show();
 }
 
 void MainWindow::onOneXMLProcessed(int pos, int max) {
+  BOOST_LOG_TRIVIAL(debug) << "MainWindow::onOneXMLProcessed: pos = " << pos
+                           << ", max = " << max;
   if (++pos == max) {
     progressBar_->reset();
     progressBar_->hide();
-
-    if (dbProcesses == 0) {
-      statusBarMessage_->setText(tr("Ready"));
-    } else {
-      statusBarMessage_->setText(tr("Still working with DB ..."));
-    }
+    updateDBIcon();
   } else {
     progressBar_->setValue(pos);
   }
 }
 
 void MainWindow::onEndProcessingXMLs(QVector<QString> errXMlPaths) {
-  if (--dbProcesses == 0) {
-    dbIconLabel_->hide();
-    statusBarMessage_->setText(tr("Ready"));
-  }
+  updateDBIcon();
+}
+
+void MainWindow::onXMLtoDBStartSignal() {
+  ++dbProcesses_;
+  updateDBIcon();
+}
+
+void MainWindow::onXMLtoDBEndSignal() {
+  --dbProcesses_;
+  updateDBIcon();
 }
 
 void MainWindow::onErrDXF(QString errDXFPath) {}
@@ -136,8 +139,9 @@ void MainWindow::initStatusBar() {
   statusBar()->addPermanentWidget(dbIconLabel_);
   dbIconLabel_->hide();
 
-  statusBarMessage_ = new QLabel("Ready");
+  statusBarMessage_ = new QLabel();
   statusBar()->addWidget(statusBarMessage_);
+  statusBarSetReady();
 }
 
 void MainWindow::connectAll() {
@@ -152,10 +156,28 @@ void MainWindow::connectAll() {
           &MainWindow::onOneXMLProcessed);
   connect(mainWidget_->treeView(), &XMLTreeView::endProcessingXMLsSignal, this,
           &MainWindow::onEndProcessingXMLs);
+  connect(mainWidget_->treeView(), &XMLTreeView::XMLtoDBStartSignal, this,
+          &MainWindow::onXMLtoDBStartSignal);
+  connect(mainWidget_->treeView(), &XMLTreeView::XMLtoDBEndSignal, this,
+          &MainWindow::onXMLtoDBEndSignal);
+}
+
+void MainWindow::updateDBIcon() {
+  if (dbProcesses_ == 0) {
+    dbIconLabel_->hide();
+    statusBarSetReady();
+  } else {
+    dbIconLabel_->show();
+    statusBarMessage_->setText(tr("Working with DB ..."));
+  }
+}
+
+void MainWindow::statusBarSetReady() {
+  statusBarMessage_->setText(tr("Ready"));
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
-  if (dbProcesses == 0) {
+  if (dbProcesses_ == 0) {
     return QMainWindow::closeEvent(event);
   }
   auto btn = QMessageBox::warning(

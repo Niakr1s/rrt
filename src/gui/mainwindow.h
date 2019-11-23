@@ -29,6 +29,8 @@ class MainWindow : public QMainWindow {
   void onStartProcessingXMLs(int size);
   void onOneXMLProcessed(int pos, int max);
   void onEndProcessingXMLs(QVector<QString> errXMlPaths);
+  void onXMLtoDBStartSignal();
+  void onXMLtoDBEndSignal();
 
   void onErrDXF(QString errDXFPath);
 
@@ -44,7 +46,7 @@ class MainWindow : public QMainWindow {
   QProgressBar* progressBar_;
   QLabel* dbIconLabel_;
 
-  std::atomic<int> dbProcesses = 0;
+  std::atomic<int> dbProcesses_ = 0;
 
  private:
   QToolBar* createTopToolBar();
@@ -52,6 +54,8 @@ class MainWindow : public QMainWindow {
   void initActions();
   void initStatusBar();
   void connectAll();
+  void updateDBIcon();
+  void statusBarSetReady();
 
   // QWidget interface
  protected:

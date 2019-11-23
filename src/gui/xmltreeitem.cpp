@@ -63,6 +63,15 @@ XMLTreeItem* XMLTreeItem::parentItem() {
   return parent_;
 }
 
+std::ostream& XMLTreeItem::dumpInfo(std::ostream& out, std::string sep) const {
+  out << sep << strID() << "\n";
+  sep.append(" ");
+  for (auto& child : childs_) {
+    child->dumpInfo(out, sep);
+  }
+  return out;
+}
+
 void XMLTreeItem::appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial,
                                 bool fromDB) {
   if (spatial_ == nullptr) {

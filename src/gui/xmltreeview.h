@@ -12,6 +12,7 @@
 #include "spatial.h"
 #include "xmltreeitem.h"
 #include "xmltreemodel.h"
+#include "xmltreesortfilterproxymodel.h"
 
 namespace bf = boost::filesystem;
 
@@ -25,11 +26,13 @@ class XMLTreeView : public QTreeView {
 
   void expandUntilRoot(QModelIndex item);
   void collapseAll();
-  void expand(QModelIndex idx = QModelIndex(), int count = 0);
+  void expand(QModelIndex idx, int count = 0);
 
  signals:
   void startProcessingXMLsSignal(int size);
   void oneXMLProcessedSignal(int pos, int max);
+  void XMLtoDBStartSignal();
+  void XMLtoDBEndSignal();
   void endProcessingXMLsSignal(QVector<QString> err);
   void endProcessingDXFSignal(int found);
 
@@ -37,7 +40,7 @@ class XMLTreeView : public QTreeView {
   void onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial);
   void onNewXMLFiles(QVector<QFileInfo> xmlFiles);
   void onDxfClose();
-  void onRowsInserted(QModelIndex parent, int first, int last);
+  void onRowsInserted(QModelIndex sourceParent, int first, int last);
   void onCopySemicolonButtonClick();
   void onCopyNewlineButtonClick();
   void onCustomContextMenuRequested(QPoint p);
@@ -48,6 +51,7 @@ class XMLTreeView : public QTreeView {
   bf::path cwd_;
   bf::path dataPath_;
   QMenu* exportMenu_;
+  XMLTreeSortFilterProxyModel* model_;
 
  private:
   XMLTreeModel* xmlModel();
