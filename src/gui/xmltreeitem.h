@@ -40,6 +40,7 @@ class XMLTreeItem {
   bool intersects(const rrt::Spatial& spatial);
 
   bool intersectsFlag() const;
+  bool anyChildIntersectsFlag();
   void turnOffIntersectsFlag();
   bool newFlag() const;
   void setNewFlag(bool newFlag);
@@ -49,6 +50,9 @@ class XMLTreeItem {
   bool setData(int col, const QVariant& value);
 
   std::string strID() const;
+
+ signals:
+  void dataChanged(QModelIndex*);
 
  private:
   QVector<XMLTreeItem*> childs_;

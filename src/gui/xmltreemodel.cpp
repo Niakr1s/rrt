@@ -84,6 +84,8 @@ void XMLTreeModel::forEach(QModelIndex idx,
   getItem(idx)->forEach(fn);
 }
 
+void XMLTreeModel::onXmlTreeItemDataChanged(XMLTreeItem* item) {}
+
 QVariant XMLTreeModel::data(const QModelIndex& index, int role) const {
   if (!index.isValid())
     return QVariant();

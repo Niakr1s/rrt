@@ -28,6 +28,9 @@ class XMLTreeModel : public QAbstractItemModel {
   void forEach(std::function<void(XMLTreeItem*)> fn);
   void forEach(QModelIndex idx, std::function<void(XMLTreeItem*)> fn);
 
+ public slots:
+  void onXmlTreeItemDataChanged(XMLTreeItem* item);
+
  private:
   XMLTreeItem* rootItem_;
   std::mutex mutex_;

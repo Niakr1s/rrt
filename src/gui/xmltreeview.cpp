@@ -68,6 +68,8 @@ void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
     emit endProcessingDXFSignal(intersectsResult_.size());
     BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewDXFSpatial: end, got "
                              << intersectsResult_.size() << " intersections";
+    model_->setFiltering(true);
+    expandAll();
   }).detach();
 }
 
@@ -110,6 +112,8 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
 }
 
 void XMLTreeView::onDxfClose() {
+  model_->setFiltering(false);
+  collapseAll();
   xmlModel()->forEach([](XMLTreeItem* item) { item->turnOffIntersectsFlag(); });
   spatial_ = nullptr;
 }

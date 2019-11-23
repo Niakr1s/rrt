@@ -119,6 +119,14 @@ bool XMLTreeItem::intersectsFlag() const {
   return intersectsFlag_;
 }
 
+bool XMLTreeItem::anyChildIntersectsFlag() {
+  bool res = false;
+  forEach([&](XMLTreeItem* item) {
+    res |= item->intersectsFlag();
+  });  // TODO not effective, impl anyOf or smth
+  return res;
+}
+
 void XMLTreeItem::turnOffIntersectsFlag() {
   intersectsFlag_ = false;
 }
