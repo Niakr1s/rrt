@@ -141,7 +141,7 @@ void MainWindow::initStatusBar() {
 
   statusBarMessage_ = new QLabel();
   statusBar()->addWidget(statusBarMessage_);
-  statusBarSetReady();
+  statusBarMessage_->setText(READY);
 }
 
 void MainWindow::connectAll() {
@@ -165,15 +165,14 @@ void MainWindow::connectAll() {
 void MainWindow::updateDBIcon() {
   if (dbProcesses_ == 0) {
     dbIconLabel_->hide();
-    statusBarSetReady();
+    dbIconLabel_->setToolTip(READY);
+    statusBarMessage_->setText(READY);
   } else {
     dbIconLabel_->show();
-    statusBarMessage_->setText(tr("Working with DB ..."));
+    auto txt = tr("DB: %1 to go").arg(dbProcesses_);
+    statusBarMessage_->setText(txt);
+    dbIconLabel_->setToolTip(txt);
   }
-}
-
-void MainWindow::statusBarSetReady() {
-  statusBarMessage_->setText(tr("Ready"));
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {

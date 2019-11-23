@@ -48,6 +48,8 @@ class MainWindow : public QMainWindow {
 
   std::atomic<int> dbProcesses_ = 0;
 
+  const QString READY = tr("Ready");
+
  private:
   QToolBar* createTopToolBar();
   void createMenuBar();
@@ -55,7 +57,6 @@ class MainWindow : public QMainWindow {
   void initStatusBar();
   void connectAll();
   void updateDBIcon();
-  void statusBarSetReady();
 
   // QWidget interface
  protected:
