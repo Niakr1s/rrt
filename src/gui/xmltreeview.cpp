@@ -35,6 +35,7 @@ XMLTreeView::XMLTreeView(QWidget* parent)
   setItemDelegate(delegate);
 
   setSortingEnabled(true);
+  sortByColumn(0, Qt::SortOrder::AscendingOrder);
   setEditTriggers(QTreeView::NoEditTriggers);
   setMinimumHeight(400);
 
