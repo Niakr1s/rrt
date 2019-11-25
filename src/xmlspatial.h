@@ -2,6 +2,7 @@
 #define XMLSPATIAL_H
 
 #include <memory>
+#include <vector>
 #include "dxf.h"
 #include "spatial.h"
 #include "string"
@@ -34,10 +35,11 @@ struct XMLSpatialSerialized {
   std::string circles;
 };
 
+class XMLSpatial;
+typedef std::vector<std::shared_ptr<XMLSpatial>> xmlSpatials_t;
+
 class XMLSpatial {
  public:
-  typedef std::vector<std::shared_ptr<XMLSpatial>> xmlSpatials_t;
-
   XMLSpatial(const XMLSpatialInfo& xmlSpatialInfo);
   XMLSpatial(const XMLSpatialSerialized& serialized);
 
