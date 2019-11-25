@@ -10,7 +10,6 @@ class Updater : public QObject {
 
  public:
   Updater(QObject* parent = nullptr);
-  virtual ~Updater() {}
 
   void startUpdateQuery();
 
@@ -18,7 +17,7 @@ class Updater : public QObject {
   void onUpdateQueryFinished();
 
  private:
-  QNetworkAccessManager* manager;
+  QNetworkAccessManager* manager_;
 
   void parseJson(const QJsonDocument json);
   void showUpdateNotification(const QString& updateUrl);

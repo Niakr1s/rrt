@@ -17,6 +17,8 @@ class MainWindow : public QMainWindow {
  public:
   explicit MainWindow(QWidget* parent = nullptr);
 
+  const QString READY = tr("Ready");
+
  signals:
   void newDXFFileSignal(QFileInfo);
   void newXMLFilesSignal(QVector<QFileInfo>);
@@ -37,16 +39,11 @@ class MainWindow : public QMainWindow {
   QAction* actionOpenDxf_;
   QAction* actionAbout_;
   QAction* actionExit_;
-
   MainWidget* mainWidget_;
-
   QLabel* statusBarMessage_;
   QProgressBar* progressBar_;
   QLabel* dbIconLabel_;
-
   std::atomic<int> dbProcesses_ = 0;
-
-  const QString READY = tr("Ready");
 
  private:
   QToolBar* createTopToolBar();

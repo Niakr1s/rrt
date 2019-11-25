@@ -14,11 +14,11 @@
 Updater::Updater(QObject* parent) : QObject(parent) {}
 
 void Updater::startUpdateQuery() {
-  manager = new QNetworkAccessManager(this);
+  manager_ = new QNetworkAccessManager();
   QNetworkRequest request;
   QUrl url("https://api.github.com/repos/Niakr1s/rrt/releases/latest");
   request.setUrl(url);
-  QNetworkReply* reply = manager->get(request);
+  QNetworkReply* reply = manager_->get(request);
 
   connect(reply, &QNetworkReply::finished, this,
           &Updater::onUpdateQueryFinished);
@@ -32,6 +32,7 @@ void Updater::onUpdateQueryFinished() {
     return;
   }
   reply->deleteLater();
+  manager_->deleteLater();
   auto json = QJsonDocument::fromJson(reply->readAll());
   parseJson(json);
 }
