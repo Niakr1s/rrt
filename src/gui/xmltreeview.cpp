@@ -236,7 +236,7 @@ void XMLTreeView::expandUntilRoot(QModelIndex item) {
 
 void XMLTreeView::collapseAll() {
   QTreeView::collapseAll();
-  expand(QModelIndex(), 2);
+  expand(QModelIndex(), 1);
 }
 
 void XMLTreeView::expand(QModelIndex idx, int count) {
