@@ -13,6 +13,7 @@
 
 class XMLTreeItem {
   friend class XMLTreeModel;
+  friend class XMLRootTreeItem;
 
  public:
   enum Column : int { CadastralNumber = 0, MAX };

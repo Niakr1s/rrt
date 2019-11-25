@@ -65,7 +65,7 @@ XMLTreeItem* XMLTreeItem::parentItem() {
 
 std::ostream& XMLTreeItem::dumpInfo(std::ostream& out, std::string sep) const {
   out << sep << strID() << "\n";
-  sep.append(" ");
+  sep.append("    ");
   for (auto& child : childs_) {
     child->dumpInfo(out, sep);
   }

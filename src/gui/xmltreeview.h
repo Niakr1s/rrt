@@ -62,7 +62,6 @@ class XMLTreeView : public QTreeView {
 
  private:
   XMLTreeModel* xmlModel();
-  void loadDBSpatials();
   void initDirectories() const;
   void initModel();
   void initRightClickMenu();

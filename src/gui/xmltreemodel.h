@@ -7,15 +7,16 @@
 #include <QVariant>
 #include <QVector>
 #include <mutex>
+#include "xmlroottreeitem.h"
 #include "xmlspatial.h"
 #include "xmltreeitem.h"
 
 class XMLTreeModel : public QAbstractItemModel {
+  Q_OBJECT
   friend class XMLTreeView;
 
  public:
   XMLTreeModel(QObject* parent = nullptr);
-  ~XMLTreeModel() override;
 
   void appendSpatials(const rrt::xmlSpatials_t& spatials, bool fromDB = false);
   int size() const;
@@ -26,13 +27,21 @@ class XMLTreeModel : public QAbstractItemModel {
   void forEach(std::function<void(XMLTreeItem*)> fn);
   void forEach(QModelIndex idx, std::function<void(XMLTreeItem*)> fn);
 
+ signals:
+  void initFromDBFinishedSignal();
+
  public slots:
   void onXmlTreeItemDataChanged(XMLTreeItem* item);
   void onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB);
+  void onInitFromDBFinished();
 
  private:
-  XMLTreeItem* rootItem_;
   std::mutex mutex_;
+  XMLTreeItem* root_;
+
+ private:
+  void connectAll();
+  void initFromDB();
 
   // QAbstractItemModel interface
  public:

@@ -10,6 +10,7 @@ void registerMetaTypes() {
   qRegisterMetaType<DXFResult>("DXFResult");
   qRegisterMetaType<std::shared_ptr<DXFResult>>("std::shared_ptr<DXFResult>");
   qRegisterMetaType<rrt::xmlSpatials_t>("rrt::xmlSpatials_t");
+  qRegisterMetaType<QVector<int>>("QVector<int>");
 }
 
 void logToFile() {

@@ -6,11 +6,10 @@
 #include "util.h"
 
 XMLTreeModel::XMLTreeModel(QObject* parent) : QAbstractItemModel(parent) {
-  rootItem_ = new XMLTreeItem();
-}
-
-XMLTreeModel::~XMLTreeModel() {
-  delete rootItem_;
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::XMLTreeModel";
+  root_ = XMLRootTreeItem::get();
+  connectAll();
+  initFromDB();
 }
 
 void XMLTreeModel::appendSpatials(const rrt::xmlSpatials_t& spatials,
@@ -57,11 +56,11 @@ XMLTreeItem* XMLTreeModel::getItem(const QModelIndex& index) const {
     if (item)
       return item;
   }
-  return rootItem_;
+  return XMLRootTreeItem::get();
 }
 
 XMLTreeItem* XMLTreeModel::getRootItem() const {
-  return rootItem_;
+  return XMLRootTreeItem::get();
 }
 
 void XMLTreeModel::forEach(std::function<void(XMLTreeItem*)> fn) {
@@ -79,6 +78,28 @@ void XMLTreeModel::onXmlTreeItemDataChanged(XMLTreeItem* item) {}
 
 void XMLTreeModel::onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB) {
   appendSpatials(spatials, fromDB);
+}
+
+void XMLTreeModel::onInitFromDBFinished() {
+  endResetModel();
+}
+
+void XMLTreeModel::connectAll() {
+  connect(this, &XMLTreeModel::initFromDBFinishedSignal, this,
+          &XMLTreeModel::onInitFromDBFinished);
+}
+
+void XMLTreeModel::initFromDB() {
+  //  beginResetModel();
+  //  std::thread([this] {
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::initFromDB: begin";
+  auto spatials = rrt::DB::get()->getAllLastFromDB();
+  XMLRootTreeItem::appendSpatials(spatials, true);
+  emit layoutChanged();
+  //  emit dataChanged(QModelIndex(), QModelIndex());
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::initFromDB: end";
+  //  emit initFromDBFinishedSignal();
+  //  }).detach();
 }
 
 QVariant XMLTreeModel::data(const QModelIndex& index, int role) const {
@@ -128,7 +149,7 @@ QModelIndex XMLTreeModel::index(int row,
   XMLTreeItem* parentItem;
 
   if (!parent.isValid()) {
-    parentItem = rootItem_;
+    parentItem = XMLRootTreeItem::get();
   } else {
     parentItem = static_cast<XMLTreeItem*>(parent.internalPointer());
   }
@@ -146,9 +167,11 @@ QModelIndex XMLTreeModel::parent(const QModelIndex& index) const {
     return QModelIndex();
 
   XMLTreeItem* childItem = static_cast<XMLTreeItem*>(index.internalPointer());
+  //  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::parent: " <<
+  //  childItem->strID();
   XMLTreeItem* parentItem = childItem->parentItem();
 
-  if (parentItem == rootItem_)
+  if (/*parentItem == XMLRootTreeItem::get() || */ parentItem == nullptr)
     return QModelIndex();
 
   return createIndex(parentItem->row(), 0, parentItem);
@@ -160,7 +183,7 @@ int XMLTreeModel::rowCount(const QModelIndex& parent) const {
   //    return 0;
 
   if (!parent.isValid())
-    parentItem = rootItem_;
+    parentItem = XMLRootTreeItem::get();
   else
     parentItem = static_cast<XMLTreeItem*>(parent.internalPointer());
 
@@ -170,7 +193,7 @@ int XMLTreeModel::rowCount(const QModelIndex& parent) const {
 int XMLTreeModel::columnCount(const QModelIndex& parent) const {
   if (parent.isValid())
     return static_cast<XMLTreeItem*>(parent.internalPointer())->columnCount();
-  return rootItem_->columnCount();
+  return XMLRootTreeItem::get()->columnCount();
 }
 
 bool XMLTreeModel::insertRows(int row, int count, const QModelIndex& parent) {
@@ -179,8 +202,8 @@ bool XMLTreeModel::insertRows(int row, int count, const QModelIndex& parent) {
     return false;
 
   beginInsertRows(parent, row, row + count - 1);
-  const bool success =
-      parentItem->insertChildren(row, count, rootItem_->columnCount());
+  const bool success = parentItem->insertChildren(
+      row, count, XMLRootTreeItem::get()->columnCount());
   endInsertRows();
 
   return success;

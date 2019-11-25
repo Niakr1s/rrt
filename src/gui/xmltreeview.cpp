@@ -25,8 +25,6 @@ XMLTreeView::XMLTreeView(QWidget* parent)
   setMinimumHeight(400);
 
   connectAll();
-
-  loadDBSpatials();
 }
 
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
@@ -185,16 +183,6 @@ XMLTreeModel* XMLTreeView::xmlModel() {
   return static_cast<XMLTreeModel*>(proxyModel_->sourceModel());
 }
 
-void XMLTreeView::loadDBSpatials() {
-  std::thread([this] {
-    BOOST_LOG_TRIVIAL(info) << "Fetching data from DB...";
-    emit DBBeginSignal();
-    auto spatials = rrt::DB::get()->getAllLastFromDB();
-    emit DBEndSignal();
-    emit newXMLSpatialsSignal(spatials, true);
-  }).detach();
-}
-
 void XMLTreeView::initDirectories() const {
   if (!bf::exists(dataPath_)) {
     bf::create_directory(dataPath_);
@@ -202,6 +190,7 @@ void XMLTreeView::initDirectories() const {
 }
 
 void XMLTreeView::initModel() {
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::initModel";
   model_ = new XMLTreeModel(this);
   proxyModel_ = new XMLTreeSortFilterProxyModel(this);
   proxyModel_->setSourceModel(model_);
