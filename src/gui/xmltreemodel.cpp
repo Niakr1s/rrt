@@ -1,11 +1,11 @@
 #include "xmltreemodel.h"
 
 #include <boost/log/trivial.hpp>
+#include <thread>
 #include "db.h"
 
 XMLTreeModel::XMLTreeModel(QObject* parent) : QAbstractItemModel(parent) {
   rootItem_ = new XMLTreeItem();
-  appendSpatialsFromDB();
 }
 
 XMLTreeModel::~XMLTreeModel() {
@@ -44,11 +44,6 @@ void XMLTreeModel::appendSpatials(
   }
 }
 
-void XMLTreeModel::appendSpatialsFromDB() {
-  auto spatials = rrt::DB::get()->getAllLastFromDB();
-  appendSpatials(spatials, true);
-}
-
 int XMLTreeModel::size() const {
   int res = 0;
   getRootItem()->forEach([&res](XMLTreeItem* item) {
@@ -85,8 +80,11 @@ void XMLTreeModel::forEach(QModelIndex idx,
 
 void XMLTreeModel::onXmlTreeItemDataChanged(XMLTreeItem* item) {}
 
-void XMLTreeModel::onNewXMLSpatials(rrt::XMLSpatial::xmlSpatials_t spatials) {
-  appendSpatials(spatials, false);
+void XMLTreeModel::onNewXMLSpatials(rrt::XMLSpatial::xmlSpatials_t spatials,
+                                    bool fromDB) {
+  BOOST_LOG_TRIVIAL(debug) << "Model got " << spatials.size()
+                           << " spatials, fromDB = " << fromDB;
+  appendSpatials(spatials, fromDB);
 }
 
 QVariant XMLTreeModel::data(const QModelIndex& index, int role) const {

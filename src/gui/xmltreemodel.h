@@ -19,7 +19,6 @@ class XMLTreeModel : public QAbstractItemModel {
 
   void appendSpatials(const rrt::XMLSpatial::xmlSpatials_t& spatials,
                       bool fromDB = false);
-  void appendSpatialsFromDB();
   int size() const;
 
   XMLTreeItem* getItem(const QModelIndex& index) const;
@@ -30,7 +29,7 @@ class XMLTreeModel : public QAbstractItemModel {
 
  public slots:
   void onXmlTreeItemDataChanged(XMLTreeItem* item);
-  void onNewXMLSpatials(rrt::XMLSpatial::xmlSpatials_t spatials);
+  void onNewXMLSpatials(rrt::XMLSpatial::xmlSpatials_t spatials, bool fromDB);
 
  private:
   XMLTreeItem* rootItem_;

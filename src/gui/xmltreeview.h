@@ -32,7 +32,7 @@ class XMLTreeView : public QTreeView {
 
  signals:
   void startProcessingXMLsSignal(int size);
-  void newXMLSpatials(rrt::XML::xmlSpatials_t);
+  void newXMLSpatialsSignal(rrt::XML::xmlSpatials_t, bool fromDB);
   void oneXMLProcessedSignal(int pos, int max);
   void XMLtoDBStartSignal();
   void XMLtoDBEndSignal();
@@ -53,11 +53,13 @@ class XMLTreeView : public QTreeView {
   bf::path cwd_;
   bf::path dataPath_;
   QMenu* rightClickMenu_;
-  XMLTreeSortFilterProxyModel* model_;
+  XMLTreeModel* model_;
+  XMLTreeSortFilterProxyModel* proxyModel_;
   std::shared_ptr<rrt::Spatial> spatial_;
 
  private:
   XMLTreeModel* xmlModel();
+  void loadDBSpatials();
   void initDirectories() const;
   void initModel();
   void initRightClickMenu();

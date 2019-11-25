@@ -30,6 +30,14 @@ XMLTreeView::XMLTreeView(QWidget* parent)
 
   connect(this, &XMLTreeView::endProcessingDXFSignal, this,
           &XMLTreeView::onEndProcessingDXF);
+
+  connect(model_, &XMLTreeSortFilterProxyModel::rowsInserted, this,
+          &XMLTreeView::onRowsInserted);
+
+  connect(this, &XMLTreeView::newXMLSpatialsSignal, model_,
+          &XMLTreeModel::onNewXMLSpatials);
+
+  loadDBSpatials();
 }
 
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
@@ -72,7 +80,7 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
               xmlFiles[i].absoluteFilePath().toStdWString());
 
           emit oneXMLProcessedSignal(i, sz);
-          emit newXMLSpatials(xml->xmlSpatials());
+          emit newXMLSpatialsSignal(xml->xmlSpatials(), false);
           try {
             bf::path newPath = xml->renameFile();
             bf::path dataPath = dataPath_ / newPath.filename();
@@ -104,12 +112,12 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
 }
 
 void XMLTreeView::onEndProcessingDXF(std::shared_ptr<DXFResult>) {
-  model_->setFiltering(true);
+  proxyModel_->setFiltering(true);
   expandAll();
 }
 
 void XMLTreeView::onDxfClose() {
-  model_->setFiltering(false);
+  proxyModel_->setFiltering(false);
   collapseAll();
   xmlModel()->forEach([](XMLTreeItem* item) { item->turnOffIntersectsFlag(); });
   spatial_ = nullptr;
@@ -119,7 +127,8 @@ void XMLTreeView::onRowsInserted(QModelIndex sourceParent,
                                  int first,
                                  int last) {
   for (int i = first; i <= last; ++i) {
-    auto elem = model_->mapFromSource(xmlModel()->index(i, 0, sourceParent));
+    auto elem =
+        proxyModel_->mapFromSource(xmlModel()->index(i, 0, sourceParent));
     expand(elem);
     QModelIndex parent = model()->index(i, 0, elem.parent());
     expandUntilRoot(parent);
@@ -138,7 +147,7 @@ void XMLTreeView::onExportAction() {
     return;
   }
   QModelIndex selected = selectedIndexes().first();
-  selected = model_->mapToSource(selected);
+  selected = proxyModel_->mapToSource(selected);
 
   rrt::DXF dxf;
   if (spatial_) {
@@ -168,7 +177,15 @@ void XMLTreeView::onExpandButtonToggled(bool expand) {
 }
 
 XMLTreeModel* XMLTreeView::xmlModel() {
-  return static_cast<XMLTreeModel*>(model_->sourceModel());
+  return static_cast<XMLTreeModel*>(proxyModel_->sourceModel());
+}
+
+void XMLTreeView::loadDBSpatials() {
+  std::thread([this] {
+    BOOST_LOG_TRIVIAL(info) << "Fetching data from DB...";
+    auto spatials = rrt::DB::get()->getAllLastFromDB();
+    emit newXMLSpatialsSignal(spatials, true);
+  }).detach();
 }
 
 void XMLTreeView::initDirectories() const {
@@ -178,17 +195,12 @@ void XMLTreeView::initDirectories() const {
 }
 
 void XMLTreeView::initModel() {
-  XMLTreeModel* model = new XMLTreeModel(this);
-  model_ = new XMLTreeSortFilterProxyModel(this);
-  model_->setSourceModel(model);
-  setModel(model_);
+  model_ = new XMLTreeModel(this);
+  proxyModel_ = new XMLTreeSortFilterProxyModel(this);
+  proxyModel_->setSourceModel(model_);
+  setModel(proxyModel_);
   auto delegate = new XMLTreeDelegate();
   setItemDelegate(delegate);
-
-  connect(model, &XMLTreeSortFilterProxyModel::rowsInserted, this,
-          &XMLTreeView::onRowsInserted);
-  connect(this, &XMLTreeView::newXMLSpatials, model,
-          &XMLTreeModel::onNewXMLSpatials);
 }
 
 void XMLTreeView::initRightClickMenu() {
