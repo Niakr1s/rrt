@@ -56,13 +56,13 @@ void MainWindow::onActionAbout() {
 If you see any bugs, please contact author via <a href="https://github.com/Niakr1s/rrt/issues">github</a>.<br></address>)***"));
 }
 
-void MainWindow::onStartProcessingXMLs(int size) {
+void MainWindow::onStartProcessing(int size) {
   statusBarMessage_->setText(tr("Processing XMLs ..."));
   progressBar_->setRange(0, size);
   progressBar_->show();
 }
 
-void MainWindow::onOneXMLProcessed(int pos, int max) {
+void MainWindow::onOneProcessed(int pos, int max) {
   BOOST_LOG_TRIVIAL(debug) << "MainWindow::onOneXMLProcessed: pos = " << pos
                            << ", max = " << max;
   if (++pos == max) {
@@ -143,9 +143,9 @@ void MainWindow::connectAll() {
           &DXFLabel::newXMLFilesSignal);
 
   connect(mainWidget_->treeView(), &XMLTreeView::startProcessingXMLsSignal,
-          this, &MainWindow::onStartProcessingXMLs);
+          this, &MainWindow::onStartProcessing);
   connect(mainWidget_->treeView(), &XMLTreeView::oneXMLProcessedSignal, this,
-          &MainWindow::onOneXMLProcessed);
+          &MainWindow::onOneProcessed);
   connect(mainWidget_->treeView(), &XMLTreeView::endProcessingXMLsSignal, this,
           &MainWindow::onEndProcessingXMLs);
   connect(mainWidget_->treeView(), &XMLTreeView::DBBeginSignal, this,

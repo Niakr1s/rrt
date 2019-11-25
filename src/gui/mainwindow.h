@@ -28,8 +28,8 @@ class MainWindow : public QMainWindow {
   void onActionOpenDxf();
   void onActionAbout();
 
-  void onStartProcessingXMLs(int size);
-  void onOneXMLProcessed(int pos, int max);
+  void onStartProcessing(int size);
+  void onOneProcessed(int pos, int max);
   void onEndProcessingXMLs(QStringList);
   void onDBBeginSignal();
   void onDBEndSignal();
