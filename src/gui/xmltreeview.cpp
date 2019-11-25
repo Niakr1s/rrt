@@ -30,11 +30,15 @@ XMLTreeView::XMLTreeView(QWidget* parent)
 }
 
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewDXFSpatial";
   spatial_ = spatial;
   if (spatial_->empty()) {
+    BOOST_LOG_TRIVIAL(debug)
+        << "XMLTreeView::onNewDXFSpatial: spatial is nullptr";
     emit endProcessingDXFSignal(std::make_shared<DXFResult>());
     return;
   }
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewDXFSpatial: processing...";
   std::thread([=] {
     auto res = std::make_shared<DXFResult>();
     xmlModel()->forEach([&](XMLTreeItem* item) {
@@ -51,12 +55,14 @@ void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
             });
     }
     emit endProcessingDXFSignal(res);
-    BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewDXFSpatial: end, got "
-                             << res->size() << " intersections";
+    BOOST_LOG_TRIVIAL(debug)
+        << "XMLTreeView::onNewDXFSpatial: done processing dxf";
   }).detach();
 }
 
 void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewXMLFiles: got "
+                           << xmlFiles.size() << " files";
   std::thread([=] {
     int sz = xmlFiles.size();
     emit startProcessingXMLsSignal(sz);
@@ -94,18 +100,20 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
     for (auto& t : threads) {
       t.join();
     }
-    BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewXMLFiles END, rootitem: ";
-    xmlModel()->rootItem_->dumpInfo();
     emit endProcessingXMLsSignal(errPaths);
+    BOOST_LOG_TRIVIAL(debug)
+        << "XMLTreeView::onNewXMLFiles: got " << errPaths.size() << " errors";
   }).detach();
 }
 
 void XMLTreeView::onEndProcessingDXF(std::shared_ptr<DXFResult>) {
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onEndProcessingDXF";
   proxyModel_->setFiltering(true);
   expandAll();
 }
 
 void XMLTreeView::onDxfClose() {
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onDxfClose";
   proxyModel_->setFiltering(false);
   collapseAll();
   xmlModel()->forEach([](XMLTreeItem* item) { item->turnOffIntersectsFlag(); });
@@ -132,6 +140,7 @@ void XMLTreeView::onCustomContextMenuRequested(QPoint p) {
 }
 
 void XMLTreeView::onExportAction() {
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onExportAction";
   if (selectedIndexes().empty()) {
     return;
   }
@@ -157,7 +166,7 @@ void XMLTreeView::onExportAction() {
   try {
     dxf.fileExport(path);
   } catch (std::exception& e) {
-    BOOST_LOG_TRIVIAL(error) << e.what();
+    BOOST_LOG_TRIVIAL(error) << "Error while export to DXF: " << e.what();
   }
 }
 

@@ -15,6 +15,8 @@ XMLTreeModel::~XMLTreeModel() {
 void XMLTreeModel::appendSpatials(
     const rrt::XMLSpatial::xmlSpatials_t& spatials,
     bool fromDB) {
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::appendSpatials: spatials = "
+                           << spatials.size() << ", fromDB = " << fromDB;
   for (auto& spatial : spatials) {
     auto path = spatial->xmlSpatialInfo().cadastralNumber().strings();
     while (path.size() != 3) {
@@ -82,8 +84,6 @@ void XMLTreeModel::onXmlTreeItemDataChanged(XMLTreeItem* item) {}
 
 void XMLTreeModel::onNewXMLSpatials(rrt::XMLSpatial::xmlSpatials_t spatials,
                                     bool fromDB) {
-  BOOST_LOG_TRIVIAL(debug) << "Model got " << spatials.size()
-                           << " spatials, fromDB = " << fromDB;
   appendSpatials(spatials, fromDB);
 }
 

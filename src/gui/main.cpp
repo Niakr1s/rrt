@@ -19,6 +19,8 @@ void logToFile() {
 }
 
 int main(int argc, char* argv[]) {
+  BOOST_LOG_TRIVIAL(info) << "Initializing...";
+
   logToFile();
   registerMetaTypes();
 
@@ -30,5 +32,8 @@ int main(int argc, char* argv[]) {
 
   MainWindow mw;
   mw.show();
+
+  BOOST_LOG_TRIVIAL(info) << "Starting application";
+
   return app.exec();
 }

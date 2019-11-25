@@ -23,6 +23,8 @@ MainWidget::MainWidget(QWidget* parent) : QWidget(parent) {
 }
 
 void MainWidget::onEndProcessingXMLs(QStringList errXMLPaths) {
+  BOOST_LOG_TRIVIAL(debug) << "MainWidget::onEndProcessingXMLs: errors = "
+                           << errXMLPaths.size();
   if (!errXMLPaths.empty()) {
     QMessageBox* errXmlMessageBox = new QMessageBox(this);
     errXmlMessageBox->setMinimumWidth(600);
@@ -35,6 +37,8 @@ void MainWidget::onEndProcessingXMLs(QStringList errXMLPaths) {
 }
 
 void MainWidget::onErrDXF(QString errDXFPath) {
+  BOOST_LOG_TRIVIAL(debug) << "MainWidget::onErrDXF: errors = "
+                           << errDXFPath.size();
   QMessageBox* errXmlMessageBox = new QMessageBox(this);
   errXmlMessageBox->setMinimumWidth(600);
   errXmlMessageBox->setWindowTitle(tr("Couldn't parse DXF"));

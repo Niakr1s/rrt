@@ -90,8 +90,6 @@ void MainWindow::onXMLtoDBEndSignal() {
   updateDBIcon();
 }
 
-void MainWindow::onErrDXF(QString errDXFPath) {}
-
 QToolBar* MainWindow::createTopToolBar() {
   QToolBar* ttb = new QToolBar();
   ttb->addAction(actionOpenXmls_);
@@ -118,7 +116,6 @@ void MainWindow::initActions() {
       new QAction(QIcon(":/icons/xml.svg"), tr("Add &XMLs"), this);
   actionOpenDxf_ = new QAction(QIcon(":/icons/dxf.svg"), tr("Open &DXF"), this);
   actionAbout_ = new QAction(QIcon(":/icons/about.svg"), tr("&About"), this);
-
   actionExit_ = new QAction(QIcon(":/icons/exit.svg"), tr("&Exit"), this);
 }
 
@@ -181,6 +178,7 @@ void MainWindow::updateDBIcon() {
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
+  BOOST_LOG_TRIVIAL(debug) << "MainWindow::closeEvent";
   if (dbProcesses_ == 0) {
     return QMainWindow::closeEvent(event);
   }

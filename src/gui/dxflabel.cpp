@@ -85,6 +85,7 @@ void DXFLabel::setDefaultText() {
 }
 
 void DXFLabel::onDxfClose() {
+  BOOST_LOG_TRIVIAL(debug) << "DXFLabel::onDxfClose";
   dxfFilePath_.clear();
   spatial_ = nullptr;
   setDefaultText();
@@ -93,11 +94,13 @@ void DXFLabel::onDxfClose() {
 void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
   setDisabled(true);
   bf::path path = bf::path(fi.filePath().toStdWString());
+  BOOST_LOG_TRIVIAL(debug) << "DXFLabel::onNewDXFFile: got " << path.filename();
   rrt::DXF dxf;
   try {
     dxf.fileImport(path);
   } catch (std::exception& e) {
-    BOOST_LOG_TRIVIAL(error) << "DXFLabel::onNewDXFFile: " << e.what();
+    BOOST_LOG_TRIVIAL(error)
+        << "Couldn't import " << path.filename() << ", reason: " << e.what();
     setEnabled(true);
     QMessageBox::critical(this, tr("Error"),
                           tr("Can't parse dxf file %1").arg(fi.fileName()));
@@ -114,13 +117,16 @@ void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
 }
 
 void DXFLabel::onEndProcessingDXFSignal(std::shared_ptr<DXFResult> res) {
-  BOOST_LOG_TRIVIAL(debug) << "DXFLabel::onEndProcessingDXFSignal: start";
+  auto sz = res->size();
+  BOOST_LOG_TRIVIAL(debug) << "DXFLabel::onEndProcessingDXFSignal: got " << sz
+                           << " results";
+  // TODO: need size of all spatials, not QHash size
   setDisabled(false);
   setText(text() +
           QString(tr("<div>Got <b><font color=red>%1</font></b> results. You "
                      "can copy them in clipboard "
                      "via buttons in top-right corner of treeview.</div>"))
-              .arg(res->size()));
+              .arg(sz));
 }
 
 void DXFLabel::connectAll() {

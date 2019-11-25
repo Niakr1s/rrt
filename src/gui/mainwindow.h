@@ -32,8 +32,6 @@ class MainWindow : public QMainWindow {
   void onXMLtoDBStartSignal();
   void onXMLtoDBEndSignal();
 
-  void onErrDXF(QString errDXFPath);
-
  private:
   QAction* actionOpenXmls_;
   QAction* actionOpenDxf_;
