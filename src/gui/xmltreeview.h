@@ -42,6 +42,7 @@ class XMLTreeView : public QTreeView {
  public slots:
   void onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial);
   void onNewXMLFiles(QVector<QFileInfo> xmlFiles);
+  void onEndProcessingDXF(std::shared_ptr<DXFResult>);
   void onDxfClose();
   void onRowsInserted(QModelIndex sourceParent, int first, int last);
   void onCustomContextMenuRequested(QPoint p);

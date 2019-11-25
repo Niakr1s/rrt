@@ -49,16 +49,19 @@ XMLTreeView::XMLTreeView(QWidget* parent)
 
   connect(this, &XMLTreeView::newXMLSpatials, model,
           &XMLTreeModel::onNewXMLSpatials);
+
+  connect(this, &XMLTreeView::endProcessingDXFSignal, this,
+          &XMLTreeView::onEndProcessingDXF);
 }
 
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
-  auto res = std::make_shared<DXFResult>();
   spatial_ = spatial;
   if (spatial_->empty()) {
-    emit endProcessingDXFSignal(res);
+    emit endProcessingDXFSignal(std::make_shared<DXFResult>());
     return;
   }
   std::thread([=] {
+    auto res = std::make_shared<DXFResult>();
     xmlModel()->forEach([&](XMLTreeItem* item) {
       if (item->intersects(*spatial)) {
         auto key = item->parentItem()->qstrID();
@@ -75,8 +78,6 @@ void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
     emit endProcessingDXFSignal(res);
     BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewDXFSpatial: end, got "
                              << res->size() << " intersections";
-    model_->setFiltering(true);
-    expandAll();
   }).detach();
 }
 
@@ -122,6 +123,11 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
     xmlModel()->rootItem_->dumpInfo();
     emit endProcessingXMLsSignal(errPaths);
   }).detach();
+}
+
+void XMLTreeView::onEndProcessingDXF(std::shared_ptr<DXFResult>) {
+  model_->setFiltering(true);
+  expandAll();
 }
 
 void XMLTreeView::onDxfClose() {
