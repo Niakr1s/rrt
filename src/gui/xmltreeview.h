@@ -34,8 +34,8 @@ class XMLTreeView : public QTreeView {
   void startProcessingXMLsSignal(int size);
   void newXMLSpatialsSignal(rrt::XML::xmlSpatials_t, bool fromDB);
   void oneXMLProcessedSignal(int pos, int max);
-  void XMLtoDBStartSignal();
-  void XMLtoDBEndSignal();
+  void DBBeginSignal();
+  void DBEndSignal();
   void endProcessingXMLsSignal(QStringList err);
   void endProcessingDXFSignal(std::shared_ptr<DXFResult>);
 

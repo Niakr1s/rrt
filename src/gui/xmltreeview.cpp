@@ -86,9 +86,9 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
             BOOST_LOG_TRIVIAL(error) << e.what();
           }
 
-          emit XMLtoDBStartSignal();
+          emit DBBeginSignal();
           rrt::DB::get()->pushToDB(*xml);
-          emit XMLtoDBEndSignal();
+          emit DBEndSignal();
 
         } catch (std::exception& e) {
           BOOST_LOG_TRIVIAL(error) << e.what();
@@ -188,7 +188,9 @@ XMLTreeModel* XMLTreeView::xmlModel() {
 void XMLTreeView::loadDBSpatials() {
   std::thread([this] {
     BOOST_LOG_TRIVIAL(info) << "Fetching data from DB...";
+    emit DBBeginSignal();
     auto spatials = rrt::DB::get()->getAllLastFromDB();
+    emit DBEndSignal();
     emit newXMLSpatialsSignal(spatials, true);
   }).detach();
 }

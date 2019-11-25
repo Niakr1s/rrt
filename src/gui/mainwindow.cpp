@@ -78,12 +78,12 @@ void MainWindow::onEndProcessingXMLs(QStringList) {
   updateDBIcon();
 }
 
-void MainWindow::onXMLtoDBStartSignal() {
+void MainWindow::onDBBeginSignal() {
   ++dbProcesses_;
   updateDBIcon();
 }
 
-void MainWindow::onXMLtoDBEndSignal() {
+void MainWindow::onDBEndSignal() {
   --dbProcesses_;
   updateDBIcon();
 }
@@ -148,10 +148,10 @@ void MainWindow::connectAll() {
           &MainWindow::onOneXMLProcessed);
   connect(mainWidget_->treeView(), &XMLTreeView::endProcessingXMLsSignal, this,
           &MainWindow::onEndProcessingXMLs);
-  connect(mainWidget_->treeView(), &XMLTreeView::XMLtoDBStartSignal, this,
-          &MainWindow::onXMLtoDBStartSignal);
-  connect(mainWidget_->treeView(), &XMLTreeView::XMLtoDBEndSignal, this,
-          &MainWindow::onXMLtoDBEndSignal);
+  connect(mainWidget_->treeView(), &XMLTreeView::DBBeginSignal, this,
+          &MainWindow::onDBBeginSignal);
+  connect(mainWidget_->treeView(), &XMLTreeView::DBEndSignal, this,
+          &MainWindow::onDBEndSignal);
 
   connect(actionExit_, &QAction::triggered, this, &QApplication::quit);
 

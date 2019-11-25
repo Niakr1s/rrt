@@ -31,8 +31,8 @@ class MainWindow : public QMainWindow {
   void onStartProcessingXMLs(int size);
   void onOneXMLProcessed(int pos, int max);
   void onEndProcessingXMLs(QStringList);
-  void onXMLtoDBStartSignal();
-  void onXMLtoDBEndSignal();
+  void onDBBeginSignal();
+  void onDBEndSignal();
 
  private:
   QAction* actionOpenXmls_;
