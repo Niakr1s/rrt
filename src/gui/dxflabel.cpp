@@ -117,10 +117,12 @@ void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
 }
 
 void DXFLabel::onEndProcessingDXFSignal(std::shared_ptr<DXFResult> res) {
-  auto sz = res->size();
+  int sz = 0;
+  for (auto& k : *res) {
+    sz += k.size();
+  }
   BOOST_LOG_TRIVIAL(debug) << "DXFLabel::onEndProcessingDXFSignal: got " << sz
                            << " results";
-  // TODO: need size of all spatials, not QHash size
   setDisabled(false);
   setText(text() +
           QString(tr("<div>Got results:<b><font color=red>%1</font></b>. You "
