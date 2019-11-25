@@ -72,8 +72,7 @@ std::ostream& XMLTreeItem::dumpInfo(std::ostream& out, std::string sep) const {
   return out;
 }
 
-void XMLTreeItem::appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial,
-                                bool fromDB) {
+void XMLTreeItem::appendSpatial(rrt::xmlSpatial_t spatial, bool fromDB) {
   if (spatial_ == nullptr) {
     spatial_ = spatial;
     newFlag_ = !fromDB;
@@ -83,7 +82,7 @@ void XMLTreeItem::appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial,
   }
 }
 
-std::shared_ptr<rrt::XMLSpatial> XMLTreeItem::spatial() const {
+rrt::xmlSpatial_t XMLTreeItem::spatial() const {
   return spatial_;
 }
 

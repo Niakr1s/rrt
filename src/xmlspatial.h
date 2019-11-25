@@ -58,7 +58,8 @@ class XMLSpatial {
   std::shared_ptr<Spatial> spatial_;
 };
 
-typedef std::vector<std::shared_ptr<XMLSpatial>> xmlSpatials_t;
+typedef std::shared_ptr<XMLSpatial> xmlSpatial_t;
+typedef std::vector<xmlSpatial_t> xmlSpatials_t;
 
 }  // namespace rrt
 

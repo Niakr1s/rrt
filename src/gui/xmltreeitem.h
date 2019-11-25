@@ -34,8 +34,8 @@ class XMLTreeItem {
   std::ostream& dumpInfo(std::ostream& out = std::cout,
                          std::string sep = "") const;
 
-  void appendSpatial(std::shared_ptr<rrt::XMLSpatial> spatial, bool fromDB);
-  std::shared_ptr<rrt::XMLSpatial> spatial() const;
+  void appendSpatial(rrt::xmlSpatial_t spatial, bool fromDB);
+  rrt::xmlSpatial_t spatial() const;
   QString tooltipData() const;
   bool intersects(const rrt::Spatial& spatial);
 
@@ -60,7 +60,7 @@ class XMLTreeItem {
   XMLTreeItem* parent_;
 
   std::string strID_;
-  std::shared_ptr<rrt::XMLSpatial> spatial_;
+  rrt::xmlSpatial_t spatial_;
 
   bool intersectsFlag_ = false;
   bool newFlag_ = false;
