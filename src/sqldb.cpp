@@ -167,7 +167,7 @@ int SqlDB::execCallback(void* NotUsed,
   return 0;
 }
 
-IDB::xmlSpatials_t rrt::SqlDB::getAllLastFromDB() {
+xmlSpatials_t rrt::SqlDB::getAllLastFromDB() {
   BOOST_LOG_TRIVIAL(debug) << "rrt::SqlDB::getAllLastFromDB";
   std::vector<XMLSpatialSerialized> xmlSpatialSerialized;
   std::string queue;
@@ -177,7 +177,7 @@ IDB::xmlSpatials_t rrt::SqlDB::getAllLastFromDB() {
                 )***");
   exec(queue, &makeXMLSpatialSerialized, &xmlSpatialSerialized);
 
-  IDB::xmlSpatials_t res;
+  xmlSpatials_t res;
 
   for (auto& xss : xmlSpatialSerialized) {
     auto spa = std::make_shared<XMLSpatial>(xss);

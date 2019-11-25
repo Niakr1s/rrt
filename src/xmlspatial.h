@@ -2,6 +2,7 @@
 #define XMLSPATIAL_H
 
 #include <memory>
+#include <vector>
 #include "dxf.h"
 #include "spatial.h"
 #include "string"
@@ -36,8 +37,6 @@ struct XMLSpatialSerialized {
 
 class XMLSpatial {
  public:
-  typedef std::vector<std::shared_ptr<XMLSpatial>> xmlSpatials_t;
-
   XMLSpatial(const XMLSpatialInfo& xmlSpatialInfo);
   XMLSpatial(const XMLSpatialSerialized& serialized);
 
@@ -58,6 +57,8 @@ class XMLSpatial {
   std::shared_ptr<XMLInfo> xmlInfo_;
   std::shared_ptr<Spatial> spatial_;
 };
+
+typedef std::vector<std::shared_ptr<XMLSpatial>> xmlSpatials_t;
 
 }  // namespace rrt
 

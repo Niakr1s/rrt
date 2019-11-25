@@ -15,8 +15,6 @@ namespace rrt {
 
 class XML {
  public:
-  using xmlSpatials_t = XMLSpatial::xmlSpatials_t;
-
   XML(const std::string& path);
   XML(const std::wstring& path);
   const xmlSpatials_t& xmlSpatials() const;

@@ -14,6 +14,7 @@
 #include "spatial.h"
 #include "typedefs.h"
 #include "xml.h"
+#include "xmlspatial.h"
 #include "xmltreeitem.h"
 #include "xmltreemodel.h"
 #include "xmltreesortfilterproxymodel.h"
@@ -32,7 +33,7 @@ class XMLTreeView : public QTreeView {
 
  signals:
   void startProcessingXMLsSignal(int size);
-  void newXMLSpatialsSignal(rrt::XML::xmlSpatials_t, bool fromDB);
+  void newXMLSpatialsSignal(rrt::xmlSpatials_t, bool fromDB);
   void oneXMLProcessedSignal(int pos, int max);
   void DBBeginSignal();
   void DBEndSignal();
@@ -48,7 +49,7 @@ class XMLTreeView : public QTreeView {
   void onCustomContextMenuRequested(QPoint p);
   void onExportAction();
   void onExpandButtonToggled(bool expand);
-  void onNewXMLSpatials(rrt::XML::xmlSpatials_t, bool fromDB);
+  void onNewXMLSpatials(rrt::xmlSpatials_t, bool fromDB);
 
  private:
   bf::path cwd_;
