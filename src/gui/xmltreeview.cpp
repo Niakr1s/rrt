@@ -23,7 +23,6 @@ XMLTreeView::XMLTreeView(QWidget* parent)
   sortByColumn(0, Qt::SortOrder::AscendingOrder);
   setEditTriggers(QTreeView::NoEditTriggers);
   setMinimumHeight(400);
-  collapseAll();
 
   connectAll();
 
@@ -166,6 +165,13 @@ void XMLTreeView::onExpandButtonToggled(bool expand) {
   expand ? expandAll() : collapseAll();
 }
 
+void XMLTreeView::onNewXMLSpatials(rrt::XML::xmlSpatials_t, bool fromDB) {
+  if (!fromDB) {
+    return;
+  }
+  collapseAll();
+}
+
 XMLTreeModel* XMLTreeView::xmlModel() {
   return static_cast<XMLTreeModel*>(proxyModel_->sourceModel());
 }
@@ -216,6 +222,9 @@ void XMLTreeView::connectAll() {
 
   connect(exportAction_, &QAction::triggered, this,
           &XMLTreeView::onExportAction);
+
+  connect(this, &XMLTreeView::newXMLSpatialsSignal, this,
+          &XMLTreeView::onNewXMLSpatials);
 }
 
 void XMLTreeView::expandUntilRoot(QModelIndex item) {

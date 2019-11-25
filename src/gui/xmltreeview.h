@@ -48,6 +48,7 @@ class XMLTreeView : public QTreeView {
   void onCustomContextMenuRequested(QPoint p);
   void onExportAction();
   void onExpandButtonToggled(bool expand);
+  void onNewXMLSpatials(rrt::XML::xmlSpatials_t, bool fromDB);
 
  private:
   bf::path cwd_;
