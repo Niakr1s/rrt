@@ -19,6 +19,7 @@ void Updater::startUpdateQuery() {
   QUrl url("https://api.github.com/repos/Niakr1s/rrt/releases/latest");
   request.setUrl(url);
   QNetworkReply* reply = manager->get(request);
+
   connect(reply, &QNetworkReply::finished, this,
           &Updater::onUpdateQueryFinished);
 }

@@ -50,6 +50,7 @@ class XMLTreeButtons : public QWidget {
 
   void resToClipboard(QString key, QString sep);
   void propagateComboBox();
+  void connectAll();
 };
 
 #endif  // XMLTREEBUTTONS_H

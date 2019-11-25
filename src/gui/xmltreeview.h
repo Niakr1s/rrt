@@ -53,6 +53,7 @@ class XMLTreeView : public QTreeView {
   bf::path cwd_;
   bf::path dataPath_;
   QMenu* rightClickMenu_;
+  QAction* exportAction_;
   XMLTreeModel* model_;
   XMLTreeSortFilterProxyModel* proxyModel_;
   std::shared_ptr<rrt::Spatial> spatial_;
@@ -63,6 +64,7 @@ class XMLTreeView : public QTreeView {
   void initDirectories() const;
   void initModel();
   void initRightClickMenu();
+  void connectAll();
 };
 
 #endif  // XMLTREEVIEW_H

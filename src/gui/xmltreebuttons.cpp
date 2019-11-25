@@ -20,10 +20,7 @@ XMLTreeButtons::XMLTreeButtons(QWidget* parent)
       makeDefaultButton(QIcon(":/icons/semicolon.png"), tr(""),
                         tr("Copy with semicolon separator"), true);
 
-  connect(btnCopySemicolon_, &QPushButton::clicked, this,
-          &XMLTreeButtons::onBtnCopySemicolonClicked);
-  connect(btnCopyNewline_, &QPushButton::clicked, this,
-          &XMLTreeButtons::onBtnCopyNewlineClicked);
+  connectAll();
 
   auto hbox = new QHBoxLayout();
   hbox->addWidget(btnExpand_);
@@ -120,4 +117,11 @@ void XMLTreeButtons::propagateComboBox() {
   for (auto& key : result_->keys()) {
     comboBox_->addItem(key);
   }
+}
+
+void XMLTreeButtons::connectAll() {
+  connect(btnCopySemicolon_, &QPushButton::clicked, this,
+          &XMLTreeButtons::onBtnCopySemicolonClicked);
+  connect(btnCopyNewline_, &QPushButton::clicked, this,
+          &XMLTreeButtons::onBtnCopyNewlineClicked);
 }

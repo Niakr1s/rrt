@@ -41,6 +41,9 @@ class DXFLabel : public QLabel {
   QRect closeButtonRect_;
   QString dxfFilePath_;
   std::shared_ptr<rrt::Spatial> spatial_ = nullptr;
+
+ private:
+  void connectAll();
 };
 
 #endif  // DXFLABEL_H

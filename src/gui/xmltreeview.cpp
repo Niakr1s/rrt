@@ -25,17 +25,7 @@ XMLTreeView::XMLTreeView(QWidget* parent)
   setMinimumHeight(400);
   collapseAll();
 
-  connect(this, &XMLTreeView::customContextMenuRequested, this,
-          &XMLTreeView::onCustomContextMenuRequested);
-
-  connect(this, &XMLTreeView::endProcessingDXFSignal, this,
-          &XMLTreeView::onEndProcessingDXF);
-
-  connect(model_, &XMLTreeSortFilterProxyModel::rowsInserted, this,
-          &XMLTreeView::onRowsInserted);
-
-  connect(this, &XMLTreeView::newXMLSpatialsSignal, model_,
-          &XMLTreeModel::onNewXMLSpatials);
+  connectAll();
 
   loadDBSpatials();
 }
@@ -207,11 +197,24 @@ void XMLTreeView::initRightClickMenu() {
   setContextMenuPolicy(Qt::CustomContextMenu);
 
   rightClickMenu_ = new QMenu();
-  QAction* exportAction =
-      new QAction(QIcon(":/icons/dxf.svg"), tr("Export to DXF"));
-  rightClickMenu_->addAction(exportAction);
+  exportAction_ = new QAction(QIcon(":/icons/dxf.svg"), tr("Export to DXF"));
+  rightClickMenu_->addAction(exportAction_);
+}
 
-  connect(exportAction, &QAction::triggered, this,
+void XMLTreeView::connectAll() {
+  connect(this, &XMLTreeView::customContextMenuRequested, this,
+          &XMLTreeView::onCustomContextMenuRequested);
+
+  connect(this, &XMLTreeView::endProcessingDXFSignal, this,
+          &XMLTreeView::onEndProcessingDXF);
+
+  connect(model_, &XMLTreeSortFilterProxyModel::rowsInserted, this,
+          &XMLTreeView::onRowsInserted);
+
+  connect(this, &XMLTreeView::newXMLSpatialsSignal, model_,
+          &XMLTreeModel::onNewXMLSpatials);
+
+  connect(exportAction_, &QAction::triggered, this,
           &XMLTreeView::onExportAction);
 }
 

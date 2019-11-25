@@ -24,8 +24,7 @@ DXFLabel::DXFLabel(QWidget* parent) : QLabel(parent) {
   setTextInteractionFlags(Qt::TextSelectableByMouse |
                           Qt::TextSelectableByKeyboard);
 
-  connect(this, &DXFLabel::dxfCloseSignal, this, &DXFLabel::onDxfClose);
-  connect(this, &DXFLabel::newDXFFileSignal, this, &DXFLabel::onNewDXFFile);
+  connectAll();
 }
 
 void DXFLabel::paintEvent(QPaintEvent* event) {
@@ -122,6 +121,11 @@ void DXFLabel::onEndProcessingDXFSignal(std::shared_ptr<DXFResult> res) {
                      "can copy them in clipboard "
                      "via buttons in top-right corner of treeview.</div>"))
               .arg(res->size()));
+}
+
+void DXFLabel::connectAll() {
+  connect(this, &DXFLabel::dxfCloseSignal, this, &DXFLabel::onDxfClose);
+  connect(this, &DXFLabel::newDXFFileSignal, this, &DXFLabel::onNewDXFFile);
 }
 
 std::shared_ptr<rrt::Spatial> DXFLabel::spatial() const {

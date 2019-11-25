@@ -120,13 +120,6 @@ void MainWindow::initActions() {
   actionAbout_ = new QAction(QIcon(":/icons/about.svg"), tr("&About"), this);
 
   actionExit_ = new QAction(QIcon(":/icons/exit.svg"), tr("&Exit"), this);
-  connect(actionExit_, &QAction::triggered, this, &QApplication::quit);
-
-  connect(actionOpenXmls_, &QAction::triggered, this,
-          &MainWindow::onActionOpenXmls);
-  connect(actionOpenDxf_, &QAction::triggered, this,
-          &MainWindow::onActionOpenDxf);
-  connect(actionAbout_, &QAction::triggered, this, &MainWindow::onActionAbout);
 }
 
 void MainWindow::initStatusBar() {
@@ -164,6 +157,14 @@ void MainWindow::connectAll() {
           &MainWindow::onXMLtoDBStartSignal);
   connect(mainWidget_->treeView(), &XMLTreeView::XMLtoDBEndSignal, this,
           &MainWindow::onXMLtoDBEndSignal);
+
+  connect(actionExit_, &QAction::triggered, this, &QApplication::quit);
+
+  connect(actionOpenXmls_, &QAction::triggered, this,
+          &MainWindow::onActionOpenXmls);
+  connect(actionOpenDxf_, &QAction::triggered, this,
+          &MainWindow::onActionOpenDxf);
+  connect(actionAbout_, &QAction::triggered, this, &MainWindow::onActionAbout);
 }
 
 void MainWindow::updateDBIcon() {
