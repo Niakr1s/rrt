@@ -86,6 +86,10 @@ void XMLTreeModel::forEach(QModelIndex idx,
 
 void XMLTreeModel::onXmlTreeItemDataChanged(XMLTreeItem* item) {}
 
+void XMLTreeModel::onNewXMLSpatials(rrt::XMLSpatial::xmlSpatials_t spatials) {
+  appendSpatials(spatials, false);
+}
+
 QVariant XMLTreeModel::data(const QModelIndex& index, int role) const {
   if (!index.isValid())
     return QVariant();

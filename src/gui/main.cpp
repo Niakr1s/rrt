@@ -6,6 +6,7 @@
 void registerMetaTypes() {
   qRegisterMetaType<DXFResult>("DXFResult");
   qRegisterMetaType<std::shared_ptr<DXFResult>>("std::shared_ptr<DXFResult>");
+  qRegisterMetaType<rrt::XML::xmlSpatials_t>("rrt::XML::xmlSpatials_t");
 }
 
 int main(int argc, char* argv[]) {

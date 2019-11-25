@@ -10,7 +10,6 @@
 #include "boost/filesystem.hpp"
 #include "db.h"
 #include "dxf.h"
-#include "xml.h"
 #include "xmltreedelegate.h"
 #include "xmltreemodel.h"
 
@@ -47,6 +46,9 @@ XMLTreeView::XMLTreeView(QWidget* parent)
 
   connect(exportAction, &QAction::triggered, this,
           &XMLTreeView::onExportAction);
+
+  connect(this, &XMLTreeView::newXMLSpatials, model,
+          &XMLTreeModel::onNewXMLSpatials);
 }
 
 void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
@@ -79,41 +81,47 @@ void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
 }
 
 void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
-  int sz = xmlFiles.size();
-  emit startProcessingXMLsSignal(sz);
-  QStringList errPaths;
-  std::vector<std::thread> threads;
-  for (int i = 0; i != sz; ++i) {
-    try {
-      auto xml = std::make_shared<rrt::XML>(
-          xmlFiles[i].absoluteFilePath().toStdWString());
+  std::thread([=] {
+    int sz = xmlFiles.size();
+    emit startProcessingXMLsSignal(sz);
+    QStringList errPaths;
+    std::vector<std::thread> threads;
+    for (int i = 0; i != sz; ++i) {
+      auto t = std::thread([=, &errPaths, &xmlFiles] {
+        try {
+          auto xml = std::make_shared<rrt::XML>(
+              xmlFiles[i].absoluteFilePath().toStdWString());
 
-      xmlModel()->appendSpatials(xml->xmlSpatials());
-      emit XMLtoDBStartSignal();
-      std::thread([=] {
-        rrt::DB::get()->pushToDB(*xml);
-        emit XMLtoDBEndSignal();
-      }).detach();
+          emit oneXMLProcessedSignal(i, sz);
+          emit newXMLSpatials(xml->xmlSpatials());
+          try {
+            bf::path newPath = xml->renameFile();
+            bf::path dataPath = dataPath_ / newPath.filename();
+            if (!bf::exists(dataPath)) {
+              bf::copy(newPath, dataPath);
+            }
+          } catch (std::exception& e) {
+            BOOST_LOG_TRIVIAL(error) << e.what();
+          }
 
-      try {
-        bf::path newPath = xml->renameFile();
-        bf::path dataPath = dataPath_ / newPath.filename();
-        if (!bf::exists(dataPath)) {
-          bf::copy(newPath, dataPath);
+          emit XMLtoDBStartSignal();
+          rrt::DB::get()->pushToDB(*xml);
+          emit XMLtoDBEndSignal();
+
+        } catch (std::exception& e) {
+          BOOST_LOG_TRIVIAL(error) << e.what();
+          errPaths.push_back(xmlFiles[i].fileName());
         }
-      } catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << e.what();
-      }
-    } catch (std::exception& e) {
-      BOOST_LOG_TRIVIAL(error) << e.what();
-      errPaths.push_back(xmlFiles[i].fileName());
+      });
+      threads.push_back(std::move(t));
     }
-    emit oneXMLProcessedSignal(i, sz);
-  }
-
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewXMLFiles END, rootitem: ";
-  xmlModel()->rootItem_->dumpInfo();
-  emit endProcessingXMLsSignal(errPaths);
+    for (auto& t : threads) {
+      t.join();
+    }
+    BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewXMLFiles END, rootitem: ";
+    xmlModel()->rootItem_->dumpInfo();
+    emit endProcessingXMLsSignal(errPaths);
+  }).detach();
 }
 
 void XMLTreeView::onDxfClose() {

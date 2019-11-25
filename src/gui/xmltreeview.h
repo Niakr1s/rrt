@@ -13,6 +13,7 @@
 #include "boost/filesystem/path.hpp"
 #include "spatial.h"
 #include "typedefs.h"
+#include "xml.h"
 #include "xmltreeitem.h"
 #include "xmltreemodel.h"
 #include "xmltreesortfilterproxymodel.h"
@@ -31,6 +32,7 @@ class XMLTreeView : public QTreeView {
 
  signals:
   void startProcessingXMLsSignal(int size);
+  void newXMLSpatials(rrt::XML::xmlSpatials_t);
   void oneXMLProcessedSignal(int pos, int max);
   void XMLtoDBStartSignal();
   void XMLtoDBEndSignal();

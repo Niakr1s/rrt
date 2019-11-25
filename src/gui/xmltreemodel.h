@@ -30,6 +30,7 @@ class XMLTreeModel : public QAbstractItemModel {
 
  public slots:
   void onXmlTreeItemDataChanged(XMLTreeItem* item);
+  void onNewXMLSpatials(rrt::XMLSpatial::xmlSpatials_t spatials);
 
  private:
   XMLTreeItem* rootItem_;
