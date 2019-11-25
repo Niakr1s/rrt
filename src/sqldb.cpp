@@ -18,14 +18,18 @@ SqlDB::SqlDB() : IDB() {
 }
 
 SqlDB::~SqlDB() {
+  BOOST_LOG_TRIVIAL(debug) << "SqlDB::~SqlDB: begin";
   sqlite3_close(db_);
+  BOOST_LOG_TRIVIAL(debug) << "SqlDB::~SqlDB: end";
 }
 
 void SqlDB::clearDB() {
+  BOOST_LOG_TRIVIAL(debug) << "SqlDB::clearDB";
   exec("DELETE FROM spatial");
 }
 
 void rrt::SqlDB::pushToDB(const rrt::XMLSpatial& xmlSpatial) {
+  BOOST_LOG_TRIVIAL(debug) << "SqlDB::pushToDB";
   auto xss = xmlSpatial.serialize();
   exec(fmt::format(
       R"***(
@@ -47,6 +51,7 @@ std::shared_ptr<rrt::XMLSpatial> rrt::SqlDB::getFromDB(
     const rrt::CadastralNumber& cadastralNumber,
     const std::string& date,
     const std::string& orderNumber) {
+  BOOST_LOG_TRIVIAL(debug) << "SqlDB::getFromDB";
   std::vector<XMLSpatialSerialized> xmlSpatialSerialized;
 
   std::string orderQueue =
@@ -97,8 +102,8 @@ int SqlDB::makeXMLSpatialSerialized(void* xmlSpatialSerialized,
 }
 
 void rrt::SqlDB::init() {
+  BOOST_LOG_TRIVIAL(trace) << "SqlDB::init";
   open();
-  BOOST_LOG_TRIVIAL(info) << "SqlDB::initDB";
 
   XMLSpatialSerialized xmlSpatialInit;
   exec(
@@ -129,6 +134,7 @@ void rrt::SqlDB::init() {
 }
 
 void SqlDB::open() {
+  BOOST_LOG_TRIVIAL(trace) << "SqlDB::open";
   int rc;
   rc = sqlite3_open(DB_FILE_PATH.string().c_str(), &db_);
   if (rc) {
@@ -141,9 +147,10 @@ void SqlDB::open() {
 void SqlDB::exec(const std::string& cmd,
                  int (*cb)(void*, int, char**, char**) /*= &execCallback*/,
                  void* arg /*= nullptr*/) {
+  BOOST_LOG_TRIVIAL(trace) << "SqlDB::exec";
   int rc = sqlite3_exec(db_, cmd.c_str(), cb, arg, &zErrMsg);
   if (rc != SQLITE_OK) {
-    BOOST_LOG_TRIVIAL(error) << "SqlDB::exec: SQL Error: " << zErrMsg;
+    BOOST_LOG_TRIVIAL(trace) << "SqlDB::exec: error: " << zErrMsg;
     sqlite3_free(zErrMsg);
   }
 }
@@ -152,17 +159,17 @@ int SqlDB::execCallback(void* NotUsed,
                         int argc,
                         char** argv,
                         char** azColName) {
-  int i;
-  for (i = 0; i < argc; i++) {
-    BOOST_LOG_TRIVIAL(debug)
-        << fmt::format("{} = {}", azColName[i], argv[i] ? argv[i] : "NULL");
+  BOOST_LOG_TRIVIAL(trace) << "SqlDB::execCallback";
+  for (int i = 0; i < argc; i++) {
+    BOOST_LOG_TRIVIAL(trace) << azColName[i] << "SqlDB::execCallback"
+                             << (argv[i] ? argv[i] : "NULL");
   }
   return 0;
 }
 
 IDB::xmlSpatials_t rrt::SqlDB::getAllLastFromDB() {
+  BOOST_LOG_TRIVIAL(debug) << "rrt::SqlDB::getAllLastFromDB";
   std::vector<XMLSpatialSerialized> xmlSpatialSerialized;
-
   std::string queue;
   queue = (R"***(
            SELECT *, max(xml_date) FROM spatial
@@ -176,7 +183,7 @@ IDB::xmlSpatials_t rrt::SqlDB::getAllLastFromDB() {
     auto spa = std::make_shared<XMLSpatial>(xss);
     res.push_back(spa);
   }
-
+  BOOST_LOG_TRIVIAL(info) << "Got " << res.size() << " items from DB";
   return res;
 }
 

@@ -19,9 +19,7 @@ void logToFile() {
 }
 
 int main(int argc, char* argv[]) {
-  BOOST_LOG_TRIVIAL(info) << "Initializing...";
-
-  logToFile();
+  // logToFile();
   registerMetaTypes();
 
   QApplication app(argc, argv);

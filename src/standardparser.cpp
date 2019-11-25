@@ -127,6 +127,7 @@ XMLParser::xmlSpatials_t StandardParser::getXMLSpatials() {
 }
 
 XMLInfo StandardParser::getXMLInfo() {
+  BOOST_LOG_TRIVIAL(debug) << "StandardParser::getXMLInfo";
   auto firstChild = *root_.children().begin();
   std::string type(firstChild.name());
 
