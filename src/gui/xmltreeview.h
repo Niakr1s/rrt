@@ -52,13 +52,15 @@ class XMLTreeView : public QTreeView {
  private:
   bf::path cwd_;
   bf::path dataPath_;
-  QMenu* exportMenu_;
+  QMenu* rightClickMenu_;
   XMLTreeSortFilterProxyModel* model_;
+  std::shared_ptr<rrt::Spatial> spatial_;
 
  private:
   XMLTreeModel* xmlModel();
   void initDirectories() const;
-  std::shared_ptr<rrt::Spatial> spatial_;
+  void initModel();
+  void initRightClickMenu();
 };
 
 #endif  // XMLTREEVIEW_H
