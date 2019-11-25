@@ -13,13 +13,13 @@ void registerMetaTypes() {
 }
 
 void logToFile() {
-  boost::log::add_file_log(boost::log::keywords::file_name = "logs/rrt.log");
+  boost::log::add_file_log(boost::log::keywords::file_name = "logs/rrt_%N.log");
   boost::log::core::get()->set_filter(boost::log::trivial::severity >=
                                       boost::log::trivial::debug);
 }
 
 int main(int argc, char* argv[]) {
-  //  logToFile();
+  logToFile();
   registerMetaTypes();
 
   QApplication app(argc, argv);
