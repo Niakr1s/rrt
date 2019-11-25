@@ -18,7 +18,10 @@ class XMLTreeModel : public QAbstractItemModel {
  public:
   XMLTreeModel(QObject* parent = nullptr);
 
+  void appendSpatialsSlow(const rrt::xmlSpatials_t& spatials,
+                          bool fromDB = false);
   void appendSpatials(const rrt::xmlSpatials_t& spatials, bool fromDB = false);
+
   int size() const;
 
   XMLTreeItem* getItem(const QModelIndex& index) const;
@@ -28,12 +31,13 @@ class XMLTreeModel : public QAbstractItemModel {
   void forEach(QModelIndex idx, std::function<void(XMLTreeItem*)> fn);
 
  signals:
-  void initFromDBFinishedSignal();
+  void appendSpatialsFinishedSignal();
+  void newXMLSpatialsSignal(rrt::xmlSpatials_t spatials, bool fromDB);
 
  public slots:
   void onXmlTreeItemDataChanged(XMLTreeItem* item);
   void onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB);
-  void onInitFromDBFinished();
+  void endReset();
 
  private:
   std::mutex mutex_;

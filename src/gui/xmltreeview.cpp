@@ -225,6 +225,9 @@ void XMLTreeView::connectAll() {
 
   connect(this, &XMLTreeView::newXMLSpatialsSignal, this,
           &XMLTreeView::onNewXMLSpatials);
+
+  connect(model_, &XMLTreeModel::newXMLSpatialsSignal, this,
+          &XMLTreeView::onNewXMLSpatials);
 }
 
 void XMLTreeView::expandUntilRoot(QModelIndex item) {

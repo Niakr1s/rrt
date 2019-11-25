@@ -10,8 +10,8 @@ class XMLRootTreeItem {
 
   static XMLTreeItem* get();
 
-  static void appendSpatials(const rrt::xmlSpatials_t& spatials,
-                             bool fromDB = false);
+  static void appendSpatial(const rrt::xmlSpatial_t& spatials,
+                            bool fromDB = false);
 
  private:
   static XMLTreeItem* root_;

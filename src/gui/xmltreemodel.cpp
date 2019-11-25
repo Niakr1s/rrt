@@ -12,8 +12,9 @@ XMLTreeModel::XMLTreeModel(QObject* parent) : QAbstractItemModel(parent) {
   initFromDB();
 }
 
-void XMLTreeModel::appendSpatials(const rrt::xmlSpatials_t& spatials,
-                                  bool fromDB) {
+// deprecated
+void XMLTreeModel::appendSpatialsSlow(const rrt::xmlSpatials_t& spatials,
+                                      bool fromDB) {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::appendSpatials: spatials = "
                            << spatials.size() << ", fromDB = " << fromDB;
   for (auto& spatial : spatials) {
@@ -38,6 +39,15 @@ void XMLTreeModel::appendSpatials(const rrt::xmlSpatials_t& spatials,
     }
     getItem(idx)->appendSpatial(spatial, fromDB);
   }
+}
+
+void XMLTreeModel::appendSpatials(const rrt::xmlSpatials_t& spatials,
+                                  bool fromDB) {
+  beginResetModel();
+  for (auto& spatial : spatials) {
+    XMLRootTreeItem::appendSpatial(spatial, fromDB);
+  }
+  endResetModel();
 }
 
 int XMLTreeModel::size() const {
@@ -80,26 +90,22 @@ void XMLTreeModel::onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB) {
   appendSpatials(spatials, fromDB);
 }
 
-void XMLTreeModel::onInitFromDBFinished() {
+void XMLTreeModel::endReset() {
   endResetModel();
 }
 
 void XMLTreeModel::connectAll() {
-  connect(this, &XMLTreeModel::initFromDBFinishedSignal, this,
-          &XMLTreeModel::onInitFromDBFinished);
+  connect(this, &XMLTreeModel::appendSpatialsFinishedSignal, this,
+          &XMLTreeModel::endReset);
+  connect(this, &XMLTreeModel::newXMLSpatialsSignal, this,
+          &XMLTreeModel::onNewXMLSpatials);
 }
 
 void XMLTreeModel::initFromDB() {
-  //  beginResetModel();
-  //  std::thread([this] {
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::initFromDB: begin";
-  auto spatials = rrt::DB::get()->getAllLastFromDB();
-  XMLRootTreeItem::appendSpatials(spatials, true);
-  emit layoutChanged();
-  //  emit dataChanged(QModelIndex(), QModelIndex());
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::initFromDB: end";
-  //  emit initFromDBFinishedSignal();
-  //  }).detach();
+  std::thread([this] {
+    auto spatials = rrt::DB::get()->getAllLastFromDB();
+    emit newXMLSpatialsSignal(spatials, true);
+  }).detach();
 }
 
 QVariant XMLTreeModel::data(const QModelIndex& index, int role) const {
@@ -167,11 +173,9 @@ QModelIndex XMLTreeModel::parent(const QModelIndex& index) const {
     return QModelIndex();
 
   XMLTreeItem* childItem = static_cast<XMLTreeItem*>(index.internalPointer());
-  //  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::parent: " <<
-  //  childItem->strID();
   XMLTreeItem* parentItem = childItem->parentItem();
 
-  if (/*parentItem == XMLRootTreeItem::get() || */ parentItem == nullptr)
+  if (parentItem == XMLRootTreeItem::get() || parentItem == nullptr)
     return QModelIndex();
 
   return createIndex(parentItem->row(), 0, parentItem);
