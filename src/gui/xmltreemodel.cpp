@@ -3,6 +3,7 @@
 #include <boost/log/trivial.hpp>
 #include <thread>
 #include "db.h"
+#include "util.h"
 
 XMLTreeModel::XMLTreeModel(QObject* parent) : QAbstractItemModel(parent) {
   rootItem_ = new XMLTreeItem();
@@ -17,12 +18,7 @@ void XMLTreeModel::appendSpatials(const rrt::xmlSpatials_t& spatials,
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::appendSpatials: spatials = "
                            << spatials.size() << ", fromDB = " << fromDB;
   for (auto& spatial : spatials) {
-    auto path = spatial->xmlSpatialInfo().cadastralNumber().strings();
-    while (path.size() != 3) {
-      path.pop_back();
-    }
-    path.push_back(spatial->xmlSpatialInfo().type());
-    path.push_back(spatial->xmlSpatialInfo().cadastralNumber().string());
+    auto path = preparePath(spatial);
 
     auto idx = QModelIndex();
     for (auto& str : path) {

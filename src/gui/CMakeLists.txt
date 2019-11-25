@@ -29,6 +29,10 @@ set(SRC
     xmltreesortfilterproxymodel.cpp
     updater.h
     updater.cpp
+    xmlroottreeitem.h
+    xmlroottreeitem.cpp
+    util.h
+    util.cpp
     typedefs.h
 )
 
