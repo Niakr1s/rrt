@@ -12,11 +12,14 @@ void registerMetaTypes() {
   qRegisterMetaType<rrt::XML::xmlSpatials_t>("rrt::XML::xmlSpatials_t");
 }
 
-int main(int argc, char* argv[]) {
+void logToFile() {
   boost::log::add_file_log(boost::log::keywords::file_name = "logs/rrt.log");
   boost::log::core::get()->set_filter(boost::log::trivial::severity >=
                                       boost::log::trivial::debug);
+}
 
+int main(int argc, char* argv[]) {
+  //  logToFile();
   registerMetaTypes();
 
   QApplication app(argc, argv);
