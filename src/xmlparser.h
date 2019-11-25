@@ -11,6 +11,8 @@ namespace rrt {
 
 class XMLParser {
  public:
+  using xmlSpatials_t = XMLSpatial::xmlSpatials_t;
+
   XMLParser(pugi::xml_document& root);
   virtual ~XMLParser() = default;
 

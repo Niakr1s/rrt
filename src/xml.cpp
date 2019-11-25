@@ -35,11 +35,11 @@ XML::XML(const std::wstring& path) : path_(path) {
   BOOST_LOG_TRIVIAL(info) << "XML: succesfully parsed: " << path_;
 }
 
-const xmlSpatials_t& XML::xmlSpatials() const {
+const XML::xmlSpatials_t& XML::xmlSpatials() const {
   return spatials_;
 }
 
-xmlSpatials_t& XML::xmlSpatials() {
+XML::xmlSpatials_t& XML::xmlSpatials() {
   return spatials_;
 }
 
@@ -77,7 +77,7 @@ const XMLInfo& XML::xmlInfo() const {
   return *xmlInfo_;
 }
 
-xmlSpatials_t XML::intersects(const Spatial& spatial) const {
+XML::xmlSpatials_t XML::intersects(const Spatial& spatial) const {
   xmlSpatials_t res;
   for (auto& it : spatials_) {
     if (it->spatial()->intersects(spatial)) {

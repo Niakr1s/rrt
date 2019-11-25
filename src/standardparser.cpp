@@ -114,7 +114,7 @@ std::vector<Point> StandardParser::getSpatialElementItems(
   return res;
 }
 
-xmlSpatials_t StandardParser::getXMLSpatials() {
+XMLParser::xmlSpatials_t StandardParser::getXMLSpatials() {
   xmlSpatials_t res;
   for (auto& cadastral : getCadastralNumberNodes()) {
     auto spatialInfo = getSpatialInfo(cadastral.node());

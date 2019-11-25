@@ -174,7 +174,7 @@ void XMLTreeView::onExpandButtonToggled(bool expand) {
   expand ? expandAll() : collapseAll();
 }
 
-void XMLTreeView::onNewXMLSpatials(rrt::xmlSpatials_t, bool fromDB) {
+void XMLTreeView::onNewXMLSpatials(rrt::XML::xmlSpatials_t, bool fromDB) {
   if (!fromDB) {
     return;
   }

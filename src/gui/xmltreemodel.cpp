@@ -12,8 +12,9 @@ XMLTreeModel::~XMLTreeModel() {
   delete rootItem_;
 }
 
-void XMLTreeModel::appendSpatials(const rrt::xmlSpatials_t& spatials,
-                                  bool fromDB) {
+void XMLTreeModel::appendSpatials(
+    const rrt::XMLSpatial::xmlSpatials_t& spatials,
+    bool fromDB) {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::appendSpatials: spatials = "
                            << spatials.size() << ", fromDB = " << fromDB;
   for (auto& spatial : spatials) {
@@ -81,7 +82,8 @@ void XMLTreeModel::forEach(QModelIndex idx,
 
 void XMLTreeModel::onXmlTreeItemDataChanged(XMLTreeItem* item) {}
 
-void XMLTreeModel::onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB) {
+void XMLTreeModel::onNewXMLSpatials(rrt::XMLSpatial::xmlSpatials_t spatials,
+                                    bool fromDB) {
   appendSpatials(spatials, fromDB);
 }
 

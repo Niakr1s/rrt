@@ -6,12 +6,12 @@
 #include <QString>
 #include <QStringList>
 #include <memory>
-#include "xmlspatial.h"
+#include "xml.h"
 
 typedef QHash<QString, QStringList> DXFResult;
 
 Q_DECLARE_METATYPE(DXFResult);
 Q_DECLARE_METATYPE(std::shared_ptr<DXFResult>);
-Q_DECLARE_METATYPE(rrt::xmlSpatials_t);
+Q_DECLARE_METATYPE(rrt::XML::xmlSpatials_t);
 
 #endif  // TYPEDEFS_H

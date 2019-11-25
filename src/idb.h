@@ -11,6 +11,8 @@ namespace rrt {
 
 class IDB {
  public:
+  using xmlSpatials_t = XMLSpatial::xmlSpatials_t;
+
   IDB();
   virtual ~IDB() = default;
 
