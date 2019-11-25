@@ -1,6 +1,5 @@
 #include "xmltreedelegate.h"
 
-#include <QDebug>
 #include <QIcon>
 #include <QLinearGradient>
 #include <QPainter>

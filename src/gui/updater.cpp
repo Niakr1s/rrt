@@ -8,6 +8,7 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
+#include <boost/log/trivial.hpp>
 #include "version.h"
 
 Updater::Updater(QObject* parent) : QObject(parent) {}
@@ -25,8 +26,8 @@ void Updater::startUpdateQuery() {
 void Updater::onUpdateQueryFinished() {
   QNetworkReply* reply = qobject_cast<QNetworkReply*>(QObject::sender());
   if (reply->error() != QNetworkReply::NoError) {
-    qDebug() << "MainWindow::onUpdateQueryFinished error: "
-             << reply->errorString();
+    BOOST_LOG_TRIVIAL(error) << "MainWindow::onUpdateQueryFinished error: "
+                             << reply->errorString().toStdString();
     return;
   }
   reply->deleteLater();
@@ -37,7 +38,7 @@ void Updater::onUpdateQueryFinished() {
 void Updater::parseJson(const QJsonDocument json) {
   auto netVer = json["tag_name"].toString();
   if (netVer.isNull()) {
-    qDebug() << "Updater::parseJson: tag_name is empty";
+    BOOST_LOG_TRIVIAL(warning) << "Updater::parseJson: tag_name is empty";
     return;
   }
   while (netVer[0].isLetter()) {
@@ -49,8 +50,9 @@ void Updater::parseJson(const QJsonDocument json) {
   QVersionNumber localVerNum(std::stoi(PROJECT_VER_MAJOR),
                              std::stoi(PROJECT_VER_MINOR),
                              std::stoi(PROJECT_VER_PATCH));
-  qDebug() << "Updater::parseJson: got versions: local = " << localVerNum
-           << ", net = " << netVerNum;
+  BOOST_LOG_TRIVIAL(info) << "Updater::parseJson: got versions: local = "
+                          << localVerNum.toString().toStdString()
+                          << ", net = " << netVerNum.toString().toStdString();
   if (netVerNum > localVerNum) {
     showUpdateNotification(json["html_url"].toString());
   }

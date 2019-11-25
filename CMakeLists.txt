@@ -16,9 +16,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/a")
 
 configure_file(src/version.h.in ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/version.h)
 
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
+add_definitions( -DBOOST_ALL_DYN_LINK )
 
 if (CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)")
     set(Boost_ARCHITECTURE "-x64")

@@ -1,6 +1,5 @@
 #include "dxflabel.h"
 
-#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 #include <QList>

@@ -1,5 +1,8 @@
 #include <QApplication>
+#include <QFile>
+#include <QTextStream>
 #include <QTranslator>
+#include <boost/log/utility/setup/file.hpp>
 #include "mainwindow.h"
 #include "typedefs.h"
 
@@ -10,6 +13,10 @@ void registerMetaTypes() {
 }
 
 int main(int argc, char* argv[]) {
+  boost::log::add_file_log(boost::log::keywords::file_name = "logs/rrt.log");
+  boost::log::core::get()->set_filter(boost::log::trivial::severity >=
+                                      boost::log::trivial::debug);
+
   registerMetaTypes();
 
   QApplication app(argc, argv);

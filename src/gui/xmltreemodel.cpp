@@ -1,6 +1,5 @@
 #include "xmltreemodel.h"
 
-#include <QDebug>
 #include <boost/log/trivial.hpp>
 #include "db.h"
 
