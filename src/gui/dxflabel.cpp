@@ -123,7 +123,7 @@ void DXFLabel::onEndProcessingDXFSignal(std::shared_ptr<DXFResult> res) {
   // TODO: need size of all spatials, not QHash size
   setDisabled(false);
   setText(text() +
-          QString(tr("<div>Got <b><font color=red>%1</font></b> results. You "
+          QString(tr("<div>Got results:<b><font color=red>%1</font></b>. You "
                      "can copy them in clipboard "
                      "via buttons in top-right corner of treeview.</div>"))
               .arg(sz));

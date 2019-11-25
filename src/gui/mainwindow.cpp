@@ -53,8 +53,7 @@ void MainWindow::onActionAbout() {
 <div>It can open, rename and export to dxf rosreestr xml files. Besides, it can check intersection of dxf files in them.</div>
 <br>
 <address>
-If you see any bugs, please contact author via <a href="https://github.com/Niakr1s/rrt/issues">github</a>.<br>
-         </address>)***"));
+If you see any bugs, please contact author via <a href="https://github.com/Niakr1s/rrt/issues">github</a>.<br></address>)***"));
 }
 
 void MainWindow::onStartProcessingXMLs(int size) {
