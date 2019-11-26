@@ -29,18 +29,11 @@ add_library(xml SHARED
     xmlparser.cpp
     standardparser.h
     standardparser.cpp
-    idb.h
-    idb.cpp
-    db.h
-    db.cpp
-    sqldb.h
-    sqldb.cpp
 )
 
 target_include_directories(xml PUBLIC
     ${Boost_INCLUDE_DIRS}
     pugixml_INCLUDE_DIRS
-    ../libs/sqlite
 )
 
 target_link_libraries(xml
@@ -51,7 +44,6 @@ target_link_libraries(xml
     spatial
     dxf
     cadastral_info
-    sqlite
 )
 
 # spatial

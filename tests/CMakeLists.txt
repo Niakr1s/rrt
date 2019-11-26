@@ -42,7 +42,6 @@ add_executable(tests
     rect_tests.h
     dxf_tests.h
     cadastralnumber_tests.h
-    sqllite_tests.h
     serialize_tests.h
     intersects_tests.h
 )

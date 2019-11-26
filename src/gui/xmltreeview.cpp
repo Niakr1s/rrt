@@ -7,7 +7,6 @@
 #include <boost/log/trivial.hpp>
 #include <exception>
 #include <thread>
-#include "db.h"
 #include "dxf.h"
 #include "xmltreedelegate.h"
 #include "xmltreemodel.h"
