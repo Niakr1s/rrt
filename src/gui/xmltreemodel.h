@@ -2,14 +2,21 @@
 #define XMLTREEMODEL_H
 
 #include <QAbstractItemModel>
+#include <QFileInfo>
 #include <QModelIndex>
 #include <QObject>
 #include <QVariant>
 #include <QVector>
-#include <mutex>
+#include <boost/filesystem/path.hpp>
 #include "xmlroottreeitem.h"
 #include "xmlspatial.h"
 #include "xmltreeitem.h"
+
+namespace bf = boost::filesystem;
+
+namespace {
+const char* DATA_PATH = "data";
+}
 
 class XMLTreeModel : public QAbstractItemModel {
   Q_OBJECT
@@ -36,19 +43,25 @@ class XMLTreeModel : public QAbstractItemModel {
   void startProcessingSignal(int size);
   void oneProcessedSignal(int pos, int max);
   void endProcessingSignal();
+  void DBBeginSignal();
+  void DBEndSignal();
+  void endProcessingXMLsSignal(QStringList err);
 
  public slots:
   void onXmlTreeItemDataChanged(XMLTreeItem* item);
+  void onNewXMLFiles(QVector<QFileInfo> xmlFiles);
   void onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB);
   void endReset();
 
  private:
-  std::mutex mutex_;
+  bf::path dataPath_;
   XMLTreeItem* root_;
 
  private:
   void connectAll();
+  void initDirectories() const;
   void initFromDB();
+  void initFromDataDir();
 
   // QAbstractItemModel interface
  public:

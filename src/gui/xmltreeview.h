@@ -10,7 +10,6 @@
 #include <QVector>
 #include <memory>
 #include <string>
-#include "boost/filesystem/path.hpp"
 #include "spatial.h"
 #include "typedefs.h"
 #include "xml.h"
@@ -18,8 +17,6 @@
 #include "xmltreeitem.h"
 #include "xmltreemodel.h"
 #include "xmltreesortfilterproxymodel.h"
-
-namespace bf = boost::filesystem;
 
 class XMLTreeView : public QTreeView {
   Q_OBJECT
@@ -32,18 +29,16 @@ class XMLTreeView : public QTreeView {
   void collapseAll();
   void expand(QModelIndex idx, int count = 0);
 
+  XMLTreeModel* xmlModel();
+
  signals:
   void startProcessingXMLsSignal(int size);
   void newXMLSpatialsSignal(rrt::xmlSpatials_t, bool fromDB);
   void oneXMLProcessedSignal(int pos, int max);
-  void DBBeginSignal();
-  void DBEndSignal();
-  void endProcessingXMLsSignal(QStringList err);
   void endProcessingDXFSignal(std::shared_ptr<DXFResult>);
 
  public slots:
   void onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial);
-  void onNewXMLFiles(QVector<QFileInfo> xmlFiles);
   void onEndAppendingXMLs();
   void onEndProcessingDXF(std::shared_ptr<DXFResult>);
   void onDxfClose();
@@ -54,8 +49,6 @@ class XMLTreeView : public QTreeView {
   void onNewXMLSpatials(rrt::xmlSpatials_t, bool fromDB);
 
  private:
-  bf::path cwd_;
-  bf::path dataPath_;
   QMenu* rightClickMenu_;
   QAction* exportAction_;
   XMLTreeModel* model_;
@@ -63,8 +56,6 @@ class XMLTreeView : public QTreeView {
   std::shared_ptr<rrt::Spatial> spatial_;
 
  private:
-  XMLTreeModel* xmlModel();
-  void initDirectories() const;
   void initModel();
   void initRightClickMenu();
   void connectAll();

@@ -1,13 +1,16 @@
 #include "xmltreemodel.h"
 
+#include <boost/filesystem.hpp>
 #include <boost/log/trivial.hpp>
 #include <thread>
 #include "db.h"
 #include "util.h"
 
-XMLTreeModel::XMLTreeModel(QObject* parent) : QAbstractItemModel(parent) {
+XMLTreeModel::XMLTreeModel(QObject* parent)
+    : QAbstractItemModel(parent), dataPath_(bf::current_path() / DATA_PATH) {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::XMLTreeModel";
   root_ = XMLRootTreeItem::get();
+  initDirectories();
   connectAll();
   initFromDB();
 }
@@ -90,6 +93,56 @@ void XMLTreeModel::forEach(QModelIndex idx,
 
 void XMLTreeModel::onXmlTreeItemDataChanged(XMLTreeItem* item) {}
 
+void XMLTreeModel::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::onNewXMLFiles: got "
+                           << xmlFiles.size() << " files";
+  std::thread([=] {
+    int sz = xmlFiles.size();
+    //    emit startProcessingXMLsSignal(sz);
+    QStringList errPaths;
+    rrt::xmlSpatials_t allSpatials;
+    std::vector<std::thread> threads;
+    for (int i = 0; i != sz; ++i) {
+      try {
+        auto xml = std::make_shared<rrt::XML>(
+            xmlFiles[i].absoluteFilePath().toStdWString());
+        auto xmlSpatials = xml->xmlSpatials();
+        allSpatials.insert(allSpatials.end(), xmlSpatials.begin(),
+                           xmlSpatials.end());
+        //        emit oneXMLProcessedSignal(i, sz);
+        try {
+          bf::path newPath = xml->renameFile();
+          bf::path dataPath = dataPath_ / newPath.filename();
+          if (!bf::exists(dataPath)) {
+            bf::copy(newPath, dataPath);
+          }
+        } catch (std::exception& e) {
+          BOOST_LOG_TRIVIAL(error) << e.what();
+        }
+
+        auto t = std::thread([=] {
+          emit DBBeginSignal();
+          rrt::DB::get()->pushToDB(*xml);
+          emit DBEndSignal();
+        });
+        threads.push_back(std::move(t));
+
+      } catch (std::exception& e) {
+        BOOST_LOG_TRIVIAL(error) << e.what();
+        errPaths.push_back(xmlFiles[i].fileName());
+      }
+    }
+    emit newXMLSpatialsSignal(allSpatials, false);
+
+    for (auto& t : threads) {
+      t.join();
+    }
+    emit endProcessingXMLsSignal(errPaths);
+    BOOST_LOG_TRIVIAL(debug)
+        << "XMLTreeView::onNewXMLFiles: got " << errPaths.size() << " errors";
+  }).detach();
+}
+
 void XMLTreeModel::onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB) {
   appendSpatials(spatials, fromDB);
 }
@@ -103,6 +156,12 @@ void XMLTreeModel::connectAll() {
           &XMLTreeModel::endReset);
   connect(this, &XMLTreeModel::newXMLSpatialsSignal, this,
           &XMLTreeModel::onNewXMLSpatials);
+}
+
+void XMLTreeModel::initDirectories() const {
+  if (!bf::exists(dataPath_)) {
+    bf::create_directory(dataPath_);
+  }
 }
 
 void XMLTreeModel::initFromDB() {

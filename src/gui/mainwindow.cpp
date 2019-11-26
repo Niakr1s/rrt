@@ -147,11 +147,13 @@ void MainWindow::connectAll() {
           this, &MainWindow::onStartProcessing);
   connect(mainWidget_->treeView(), &XMLTreeView::oneXMLProcessedSignal, this,
           &MainWindow::onOneProcessed);
-  connect(mainWidget_->treeView(), &XMLTreeView::endProcessingXMLsSignal, this,
+  connect(mainWidget_->treeView()->xmlModel(),
+          &XMLTreeModel::endProcessingXMLsSignal, this,
           &MainWindow::onEndProcessingXMLs);
-  connect(mainWidget_->treeView(), &XMLTreeView::DBBeginSignal, this,
-          &MainWindow::onDBBeginSignal);
-  connect(mainWidget_->treeView(), &XMLTreeView::DBEndSignal, this,
+
+  connect(mainWidget_->treeView()->xmlModel(), &XMLTreeModel::DBBeginSignal,
+          this, &MainWindow::onDBBeginSignal);
+  connect(mainWidget_->treeView()->xmlModel(), &XMLTreeModel::DBEndSignal, this,
           &MainWindow::onDBEndSignal);
 
   connect(actionExit_, &QAction::triggered, this, &MainWindow::close);

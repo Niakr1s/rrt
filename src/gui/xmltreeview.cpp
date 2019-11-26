@@ -3,19 +3,15 @@
 #include <QFileDialog>
 #include <QThread>
 #include <boost/date_time.hpp>
-#include <boost/filesystem/path.hpp>
 #include <boost/log/trivial.hpp>
 #include <exception>
 #include <thread>
-#include "boost/filesystem.hpp"
 #include "db.h"
 #include "dxf.h"
 #include "xmltreedelegate.h"
 #include "xmltreemodel.h"
 
-XMLTreeView::XMLTreeView(QWidget* parent)
-    : QTreeView(parent), cwd_(bf::current_path()), dataPath_(cwd_ / "data") {
-  initDirectories();
+XMLTreeView::XMLTreeView(QWidget* parent) : QTreeView(parent) {
   initRightClickMenu();
 
   setSortingEnabled(true);
@@ -56,56 +52,6 @@ void XMLTreeView::onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial) {
     emit endProcessingDXFSignal(res);
     BOOST_LOG_TRIVIAL(debug)
         << "XMLTreeView::onNewDXFSpatial: done processing dxf";
-  }).detach();
-}
-
-void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onNewXMLFiles: got "
-                           << xmlFiles.size() << " files";
-  std::thread([=] {
-    int sz = xmlFiles.size();
-    //    emit startProcessingXMLsSignal(sz);
-    QStringList errPaths;
-    rrt::xmlSpatials_t allSpatials;
-    std::vector<std::thread> threads;
-    for (int i = 0; i != sz; ++i) {
-      try {
-        auto xml = std::make_shared<rrt::XML>(
-            xmlFiles[i].absoluteFilePath().toStdWString());
-        auto xmlSpatials = xml->xmlSpatials();
-        allSpatials.insert(allSpatials.end(), xmlSpatials.begin(),
-                           xmlSpatials.end());
-        //        emit oneXMLProcessedSignal(i, sz);
-        try {
-          bf::path newPath = xml->renameFile();
-          bf::path dataPath = dataPath_ / newPath.filename();
-          if (!bf::exists(dataPath)) {
-            bf::copy(newPath, dataPath);
-          }
-        } catch (std::exception& e) {
-          BOOST_LOG_TRIVIAL(error) << e.what();
-        }
-
-        auto t = std::thread([=] {
-          emit DBBeginSignal();
-          rrt::DB::get()->pushToDB(*xml);
-          emit DBEndSignal();
-        });
-        threads.push_back(std::move(t));
-
-      } catch (std::exception& e) {
-        BOOST_LOG_TRIVIAL(error) << e.what();
-        errPaths.push_back(xmlFiles[i].fileName());
-      }
-    }
-    emit newXMLSpatialsSignal(allSpatials, false);
-
-    for (auto& t : threads) {
-      t.join();
-    }
-    emit endProcessingXMLsSignal(errPaths);
-    BOOST_LOG_TRIVIAL(debug)
-        << "XMLTreeView::onNewXMLFiles: got " << errPaths.size() << " errors";
   }).detach();
 }
 
@@ -190,12 +136,6 @@ void XMLTreeView::onNewXMLSpatials(rrt::xmlSpatials_t, bool fromDB) {
 
 XMLTreeModel* XMLTreeView::xmlModel() {
   return static_cast<XMLTreeModel*>(proxyModel_->sourceModel());
-}
-
-void XMLTreeView::initDirectories() const {
-  if (!bf::exists(dataPath_)) {
-    bf::create_directory(dataPath_);
-  }
 }
 
 void XMLTreeView::initModel() {

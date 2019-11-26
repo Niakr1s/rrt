@@ -65,10 +65,10 @@ void MainWidget::connectAll() {
   connect(dxfLabel_, &DXFLabel::dxfCloseSignal, treeViewBtns_,
           &XMLTreeButtons::onDXFClose);
 
-  connect(dxfLabel_, &DXFLabel::newXMLFilesSignal, treeView_,
-          &XMLTreeView::onNewXMLFiles);
+  connect(dxfLabel_, &DXFLabel::newXMLFilesSignal, treeView_->xmlModel(),
+          &XMLTreeModel::onNewXMLFiles);
 
-  connect(treeView_, &XMLTreeView::endProcessingXMLsSignal, this,
+  connect(treeView_->xmlModel(), &XMLTreeModel::endProcessingXMLsSignal, this,
           &MainWidget::onEndProcessingXMLs, Qt::QueuedConnection);
 
   connect(dxfLabel_, &DXFLabel::errDXFSignal, this, &MainWidget::onErrDXF);
