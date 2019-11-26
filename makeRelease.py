@@ -24,9 +24,9 @@ IGNORED_FILES = ["D3Dcompiler_47.dll",
 
 
 def cmake(clean=False):
-    if clean:
-        if Path(BIN_DIR).exists():
-            shutil.rmtree(BIN_DIR)
+    if Path(BIN_DIR).exists():
+        print("removing " + BIN_DIR + "dir")
+        shutil.rmtree(BIN_DIR)
     os.system(CMAKE_PRE_BUILD_CMD)
     os.system(CMAKE_BUILD_CMD)
 
@@ -80,10 +80,7 @@ def getProjectVersion():
 
 
 if __name__ == "__main__":
-    if (len(sys.argv) == 0):
-        cmake(clean=False)
-    elif (sys.argv[0] == "--clean"):
-        cmake(clean=True)
+    cmake()
 
     prepareReleaseDir()
     os.system(findFile(os.getenv("QT_DIR", "c:/Qt"),
