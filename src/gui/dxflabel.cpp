@@ -68,9 +68,10 @@ void DXFLabel::dropEvent(QDropEvent* event) {
     }
   }
   if (!xmlFiles.empty()) {
-    emit newXMLFilesSignal(xmlFiles);
+    emit newXMLs(xmlFiles);
   } else if (dxfFileFound) {
-    emit newDXFFileSignal(dxfFile);
+    emit newDXF(dxfFile);
+    openDXF(dxfFile);
   }
 }
 
@@ -86,16 +87,16 @@ void DXFLabel::setDefaultText() {
 }
 
 void DXFLabel::closeDXF() {
-  BOOST_LOG_TRIVIAL(debug) << "DXFLabel::onDxfClose";
+  BOOST_LOG_TRIVIAL(debug) << "DXFLabel::closeDXF";
   dxfFilePath_.clear();
   spatial_ = nullptr;
   setDefaultText();
 }
 
-void DXFLabel::onNewDXFFile(const QFileInfo& fi) {
+void DXFLabel::openDXF(const QFileInfo& fi) {
   setDisabled(true);
   bf::path path = bf::path(fi.filePath().toStdWString());
-  BOOST_LOG_TRIVIAL(debug) << "DXFLabel::onNewDXFFile: got " << path.filename();
+  BOOST_LOG_TRIVIAL(debug) << "DXFLabel::openDXF: got " << path.filename();
   rrt::DXF dxf;
   try {
     dxf.fileImport(path);
@@ -132,9 +133,7 @@ void DXFLabel::onEndProcessingDXFSignal(std::shared_ptr<DXFResult> res) {
               .arg(sz));
 }
 
-void DXFLabel::connectAll() {
-  connect(this, &DXFLabel::newDXFFileSignal, this, &DXFLabel::onNewDXFFile);
-}
+void DXFLabel::connectAll() {}
 
 std::shared_ptr<rrt::Spatial> DXFLabel::spatial() const {
   return spatial_;

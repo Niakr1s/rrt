@@ -20,8 +20,8 @@ class MainWindow : public QMainWindow {
   const QString READY = tr("Ready");
 
  signals:
-  void newDXFFileSignal(QFileInfo);
-  void newXMLFilesSignal(QVector<QFileInfo>);
+  void newDXF(QFileInfo);
+  void newXMLs(QVector<QFileInfo>);
 
  public slots:
   void onActionOpenXmls();

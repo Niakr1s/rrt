@@ -49,7 +49,7 @@ class XMLTreeModel : public QAbstractItemModel {
 
  public slots:
   void onXmlTreeItemDataChanged(XMLTreeItem* item);
-  void onNewXMLFiles(QVector<QFileInfo> xmlFiles);
+  void appendXMLs(QVector<QFileInfo> xmlFiles);
   void onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB);
   void endReset();
 

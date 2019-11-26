@@ -53,8 +53,8 @@ void MainWidget::connectAll() {
   connect(dxfLabel_, &DXFLabel::dxfClosed, treeViewBtns_,
           &XMLTreeButtons::hideCopyElements);
 
-  connect(dxfLabel_, &DXFLabel::newXMLFilesSignal, treeView_->xmlModel(),
-          &XMLTreeModel::onNewXMLFiles);
+  connect(dxfLabel_, &DXFLabel::newXMLs, treeView_->xmlModel(),
+          &XMLTreeModel::appendXMLs);
 
   connect(treeView_->xmlModel(), &XMLTreeModel::endProcessingXMLsSignal, this,
           &MainWidget::onEndProcessingXMLs, Qt::QueuedConnection);

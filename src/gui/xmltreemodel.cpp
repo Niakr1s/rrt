@@ -93,7 +93,7 @@ void XMLTreeModel::forEach(QModelIndex idx,
 
 void XMLTreeModel::onXmlTreeItemDataChanged(XMLTreeItem* item) {}
 
-void XMLTreeModel::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
+void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles) {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::onNewXMLFiles: got "
                            << xmlFiles.size() << " files";
   std::thread([=] {

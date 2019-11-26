@@ -37,13 +37,13 @@ void MainWindow::onActionOpenXmls() {
   for (auto& f : fileName) {
     res.push_back(QFileInfo(f));
   }
-  emit newXMLFilesSignal(res);
+  emit newXMLs(res);
 }
 
 void MainWindow::onActionOpenDxf() {
   QString fileName = QFileDialog::getOpenFileName(this, tr("Open DXF"), "",
                                                   "Autocad drawing (*.dxf)");
-  emit newDXFFileSignal(QFileInfo(fileName));
+  emit newDXF(QFileInfo(fileName));
 }
 
 void MainWindow::onActionAbout() {
@@ -138,10 +138,10 @@ void MainWindow::initStatusBar() {
 }
 
 void MainWindow::connectAll() {
-  connect(this, &MainWindow::newDXFFileSignal, mainWidget_->dxfLabel(),
-          &DXFLabel::newDXFFileSignal);
-  connect(this, &MainWindow::newXMLFilesSignal, mainWidget_->dxfLabel(),
-          &DXFLabel::newXMLFilesSignal);
+  connect(this, &MainWindow::newDXF, mainWidget_->dxfLabel(),
+          &DXFLabel::newDXF);
+  connect(this, &MainWindow::newXMLs, mainWidget_->dxfLabel(),
+          &DXFLabel::newXMLs);
 
   connect(mainWidget_->treeView(), &XMLTreeView::startProcessingXMLsSignal,
           this, &MainWindow::onStartProcessing);
