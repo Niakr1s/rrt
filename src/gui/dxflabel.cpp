@@ -70,7 +70,6 @@ void DXFLabel::dropEvent(QDropEvent* event) {
   if (!xmlFiles.empty()) {
     emit newXMLs(xmlFiles);
   } else if (dxfFileFound) {
-    emit newDXF(dxfFile);
     openDXF(dxfFile);
   }
 }
@@ -93,7 +92,7 @@ void DXFLabel::closeDXF() {
   setDefaultText();
 }
 
-void DXFLabel::openDXF(const QFileInfo& fi) {
+void DXFLabel::openDXF(QFileInfo fi) {
   setDisabled(true);
   bf::path path = bf::path(fi.filePath().toStdWString());
   BOOST_LOG_TRIVIAL(debug) << "DXFLabel::openDXF: got " << path.filename();

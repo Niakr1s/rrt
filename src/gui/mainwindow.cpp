@@ -135,7 +135,7 @@ void MainWindow::initStatusBar() {
 
 void MainWindow::connectAll() {
   connect(this, &MainWindow::newDXF, mainWidget_->dxfLabel(),
-          &DXFLabel::newDXF);
+          &DXFLabel::openDXF);
   connect(this, &MainWindow::newXMLs, mainWidget_->dxfLabel(),
           &DXFLabel::newXMLs);
 

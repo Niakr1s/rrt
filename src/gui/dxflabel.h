@@ -27,12 +27,12 @@ class DXFLabel : public QLabel {
 
  signals:
   void dxfClosed();
-  void newDXF(QFileInfo);
   void newXMLs(QVector<QFileInfo>);
   void newDXFSpatial(std::shared_ptr<rrt::Spatial>);
 
  public slots:
   void onEndProcessingDXFSignal(std::shared_ptr<DXFResult> res);
+  void openDXF(QFileInfo fi);
 
  private:
   QRect closeButtonRect_;
@@ -42,7 +42,6 @@ class DXFLabel : public QLabel {
  private:
   void connectAll();
   void closeDXF();
-  void openDXF(const QFileInfo& fi);
 };
 
 #endif  // DXFLABEL_H
