@@ -43,7 +43,7 @@
         <translation>Текущий файл</translation>
     </message>
     <message>
-        <location filename="../dxflabel.cpp" line="126"/>
+        <location filename="../dxflabel.cpp" line="128"/>
         <source>&lt;div&gt;Got results:&lt;b&gt;&lt;font color=red&gt;%1&lt;/font&gt;&lt;/b&gt;. You can copy them in clipboard via buttons in top-right corner of treeview.&lt;/div&gt;</source>
         <translation>&lt;div&gt;Получено результатов: &lt;b&gt;&lt;font color=red&gt;%1&lt;/font&gt;&lt;/b&gt;. Вы можете скопировать их в буфер обмена при помощи кнопок в правом верхнем углу.&lt;/div&gt;</translation>
     </message>
@@ -138,52 +138,61 @@ If you see any bugs, please contact author via &lt;a href=&quot;https://github.c
 Если вы нашли ошибки, пожалуйста, свяжитесь с автором через  &lt;a href=&quot;https://github.com/Niakr1s/rrt/issues&quot;&gt;github&lt;/a&gt;.&lt;br&gt;&lt;/address&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="60"/>
         <source>Processing XMLs ...</source>
-        <translation>Обрабатываю XML файлы...</translation>
+        <translation type="vanished">Обрабатываю XML файлы...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="100"/>
+        <location filename="../mainwindow.cpp" line="63"/>
+        <source>Processing ...</source>
+        <translation>Обрабатываю...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="101"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="107"/>
+        <location filename="../mainwindow.cpp" line="108"/>
         <source>&amp;Help</source>
         <translation>&amp;Помощь</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="114"/>
+        <location filename="../mainwindow.cpp" line="115"/>
         <source>Add &amp;XMLs</source>
         <translation>Открыть XML файлы</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="115"/>
+        <location filename="../mainwindow.cpp" line="116"/>
         <source>Open &amp;DXF</source>
         <translation>Открыть DXF файл</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="116"/>
+        <location filename="../mainwindow.cpp" line="117"/>
         <source>&amp;About</source>
         <translation>&amp;О программе</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="117"/>
+        <location filename="../mainwindow.cpp" line="118"/>
         <source>&amp;Exit</source>
         <translation>&amp;Выход</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="172"/>
+        <location filename="../mainwindow.cpp" line="137"/>
+        <source>Initializing...</source>
+        <translation>Инициализирую...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="173"/>
         <source>DB: %1 to go</source>
         <translation>БД: осталось: %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="184"/>
+        <location filename="../mainwindow.cpp" line="185"/>
         <source>Are you sure?</source>
         <translation>Вы уверены?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="185"/>
+        <location filename="../mainwindow.cpp" line="186"/>
         <source>Application is still updating DB, please wait until DB indicator in toolbar turns off. Closing app will cause DB inconsistence. Are you still want to exit?</source>
         <translation>Приложение всё еще обновляет БД (базу данных), пожалуйста подождите, пока индикатор БД не отключится. Выход из программы приведет к инконсинсентности БД. Вы всё еще хотите выйти?</translation>
     </message>
@@ -196,7 +205,7 @@ If you see any bugs, please contact author via &lt;a href=&quot;https://github.c
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../xmltreeitem.cpp" line="94"/>
+        <location filename="../xmltreeitem.cpp" line="93"/>
         <source>%1 spatial elements</source>
         <translation>Пространственных элементов: %1</translation>
     </message>
@@ -258,7 +267,7 @@ If you see any bugs, please contact author via &lt;a href=&quot;https://github.c
         <translation>Экспортировать в DXF</translation>
     </message>
     <message>
-        <location filename="../xmltreeview.cpp" line="163"/>
+        <location filename="../xmltreeview.cpp" line="170"/>
         <source>Save DXF File</source>
         <translation>Сохранить DXF файл</translation>
     </message>
