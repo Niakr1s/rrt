@@ -29,7 +29,6 @@ void SqlDB::clearDB() {
 }
 
 void rrt::SqlDB::pushToDB(const rrt::XMLSpatial& xmlSpatial) {
-  BOOST_LOG_TRIVIAL(debug) << "SqlDB::pushToDB";
   auto xss = xmlSpatial.serialize();
   exec(fmt::format(
       R"***(
@@ -147,7 +146,6 @@ void SqlDB::open() {
 void SqlDB::exec(const std::string& cmd,
                  int (*cb)(void*, int, char**, char**) /*= &execCallback*/,
                  void* arg /*= nullptr*/) {
-  BOOST_LOG_TRIVIAL(trace) << "SqlDB::exec";
   int rc = sqlite3_exec(db_, cmd.c_str(), cb, arg, &zErrMsg);
   if (rc != SQLITE_OK) {
     BOOST_LOG_TRIVIAL(trace) << "SqlDB::exec: error: " << zErrMsg;

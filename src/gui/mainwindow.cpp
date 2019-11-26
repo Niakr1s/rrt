@@ -81,15 +81,11 @@ void MainWindow::onEndProcessingXMLs(QStringList) {
 
 void MainWindow::onDBBeginSignal() {
   ++dbProcesses_;
-  BOOST_LOG_TRIVIAL(debug) << "MainWindow::onDBBeginSignal: dbProcesses = "
-                           << dbProcesses_;
   updateDBIcon();
 }
 
 void MainWindow::onDBEndSignal() {
   --dbProcesses_;
-  BOOST_LOG_TRIVIAL(debug) << "MainWindow::onDBEndSignal: dbProcesses = "
-                           << dbProcesses_;
   updateDBIcon();
 }
 
