@@ -75,10 +75,10 @@ std::ostream& XMLTreeItem::dumpInfo(std::ostream& out, std::string sep) const {
 void XMLTreeItem::appendSpatial(rrt::xmlSpatial_t spatial, bool fromDB) {
   if (spatial_ == nullptr) {
     spatial_ = spatial;
-    newFlag_ = !fromDB;
+    setNewFlag(!fromDB);
   } else if (spatial->xmlInfo().date() > spatial_->xmlInfo().date()) {
     spatial_ = spatial;
-    newFlag_ = true;
+    setNewFlag(true);
   }
 }
 
@@ -168,5 +168,9 @@ bool XMLTreeItem::newFlag() const {
   return newFlag_;
 }
 void XMLTreeItem::setNewFlag(bool newFlag) {
-  newFlag_ = newFlag;
+  auto it = this;
+  do {
+    it->newFlag_ |= newFlag;
+    it = it->parent_;
+  } while (it != nullptr);
 }
