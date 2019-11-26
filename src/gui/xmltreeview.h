@@ -4,6 +4,7 @@
 #include <QFileInfo>
 #include <QHash>
 #include <QMenu>
+#include <QMessageBox>
 #include <QModelIndex>
 #include <QStringList>
 #include <QTreeView>
@@ -41,6 +42,7 @@ class XMLTreeView : public QTreeView {
   void expandIf(bool expand);
   void exportSelectedToDXF();
   void showErrXMLsMessageBox(QStringList errXMLPaths);
+  void showMessageBox(QString title, QString msg, QMessageBox::Icon icon);
 
  private:
   QMenu* rightClickMenu_;

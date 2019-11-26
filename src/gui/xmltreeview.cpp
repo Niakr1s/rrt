@@ -83,6 +83,16 @@ void XMLTreeView::showErrXMLsMessageBox(QStringList errXMLPaths) {
   }
 }
 
+void XMLTreeView::showMessageBox(QString title,
+                                 QString msg,
+                                 QMessageBox::Icon icon) {
+  QMessageBox* errXmlMessageBox = new QMessageBox(this);
+  errXmlMessageBox->setWindowTitle(title);
+  errXmlMessageBox->setText(msg);
+  errXmlMessageBox->setIcon(icon);
+  errXmlMessageBox->show();
+}
+
 void XMLTreeView::expandIf(bool expand) {
   expand ? expandAll() : collapseAll();
 }
@@ -130,6 +140,9 @@ void XMLTreeView::connectAll() {
 
   connect(xmlModel(), &XMLTreeModel::endAppendingXMLs, this,
           &XMLTreeView::showErrXMLsMessageBox);
+
+  connect(xmlModel(), &XMLTreeModel::DXFExportDone, this,
+          &XMLTreeView::showMessageBox);
 }
 
 void XMLTreeView::expandUntilRoot(QModelIndex item) {

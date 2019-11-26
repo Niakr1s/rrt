@@ -178,11 +178,12 @@ void XMLTreeModel::exportToDXF(QModelIndex idx, QString fileName) {
 
   auto path = boost::filesystem::path(fileName.toStdWString());
 
-  // TODO maybe success alert
   try {
     dxf.fileExport(path);
   } catch (std::exception& e) {
     BOOST_LOG_TRIVIAL(error) << "Error while export to DXF: " << e.what();
+    DXFExportDone(tr("DXF export failure"), e.what(),
+                  QMessageBox::Icon::Critical);
   }
 }
 

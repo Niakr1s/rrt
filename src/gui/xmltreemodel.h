@@ -3,8 +3,10 @@
 
 #include <QAbstractItemModel>
 #include <QFileInfo>
+#include <QMessageBox>
 #include <QModelIndex>
 #include <QObject>
+#include <QString>
 #include <QVariant>
 #include <QVector>
 #include <string>
@@ -42,6 +44,7 @@ class XMLTreeModel : public QAbstractItemModel {
   void DBEnd();
   void endAppendingXMLs(QStringList err);
   void gotIntersections(std::shared_ptr<DXFResult>);
+  void DXFExportDone(QString title, QString msg, QMessageBox::Icon icon);
 
  public slots:
   void appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB);
