@@ -21,21 +21,23 @@ XMLTreeModel::XMLTreeModel(QObject* parent)
 #ifdef WITH_DB
   initFromDB();
 #else
-  initFromDataDir();
+  initFromDB();
 #endif
 }
 
 void XMLTreeModel::appendSpatials(const rrt::xmlSpatials_t& spatials,
                                   bool fromDB) {
-  int len = static_cast<int>(spatials.size());
-  emit startProcessing(len);
-  beginResetModel();
-  for (int i = 0; i != len; ++i) {
-    XMLRootTreeItem::appendSpatial(spatials[static_cast<size_t>(i)], fromDB);
-    emit oneProcessed(i, len);
-  }
-  endResetModel();
-  emit endProcessing();
+  std::thread([=] {
+    int len = static_cast<int>(spatials.size());
+    emit startProcessing(len);
+    beginResetModel();
+    for (int i = 0; i != len; ++i) {
+      XMLRootTreeItem::appendSpatial(spatials[static_cast<size_t>(i)], fromDB);
+      emit oneProcessed(i, len);
+    }
+    endResetModel();
+    emit endProcessing();
+  }).detach();
 }
 
 int XMLTreeModel::size() const {
@@ -208,7 +210,7 @@ void XMLTreeModel::initFromDB() {
   }).detach();
 }
 #else
-void XMLTreeModel::initFromDataDir() {
+void XMLTreeModel::initFromDB() {
   std::thread([this] {
     QVector<QFileInfo> found;
     QDir dir(QString::fromStdWString(dataPath_));

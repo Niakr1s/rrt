@@ -61,7 +61,7 @@ class XMLTreeModel : public QAbstractItemModel {
 #ifdef WITH_DB
   void initFromDB();
 #else
-  void initFromDataDir();
+  void initFromDB();
 #endif
 
   // QAbstractItemModel interface
