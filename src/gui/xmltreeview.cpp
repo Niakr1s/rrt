@@ -17,12 +17,17 @@ XMLTreeView::XMLTreeView(QWidget* parent)
     : QTreeView(parent), cwd_(bf::current_path()), dataPath_(cwd_ / "data") {
   initDirectories();
   initRightClickMenu();
-  initModel();
 
   setSortingEnabled(true);
   sortByColumn(0, Qt::SortOrder::AscendingOrder);
   setEditTriggers(QTreeView::NoEditTriggers);
   setMinimumHeight(400);
+
+  connect(model_, &XMLTreeModel::DBBeginSignal, this,
+          &XMLTreeView::DBBeginSignal);
+  connect(model_, &XMLTreeModel::DBEndSignal, this, &XMLTreeView::DBEndSignal);
+
+  initModel();  // should be before DBSignals relays, but before connectAll
 
   connectAll();
 }
@@ -238,10 +243,6 @@ void XMLTreeView::connectAll() {
   connect(model_, &XMLTreeModel::oneProcessedSignal, this,
           &XMLTreeView::oneXMLProcessedSignal);
 
-  connect(model_, &XMLTreeModel::DBBeginSignal, this,
-          &XMLTreeView::DBBeginSignal);
-  connect(model_, &XMLTreeModel::DBEndSignal, this, &XMLTreeView::DBEndSignal);
-
   connect(model_, &XMLTreeModel::endProcessingSignal, this,
           &XMLTreeView::onEndAppendingXMLs);
 }
@@ -255,7 +256,7 @@ void XMLTreeView::expandUntilRoot(QModelIndex item) {
 
 void XMLTreeView::collapseAll() {
   QTreeView::collapseAll();
-  expand(QModelIndex(), 1);
+  expand(QModelIndex(), 2);
 }
 
 void XMLTreeView::expand(QModelIndex idx, int count) {
