@@ -1,18 +1,29 @@
 #include "xmltreemodel.h"
 
+#include <QDir>
 #include <boost/filesystem.hpp>
+#include <boost/filesystem/path.hpp>
 #include <boost/log/trivial.hpp>
 #include <thread>
-#include "db.h"
 #include "util.h"
 
+//#ifdef WITH_DB
+#include "db.h"
+//#endif
+
+namespace bf = boost::filesystem;
+
 XMLTreeModel::XMLTreeModel(QObject* parent)
-    : QAbstractItemModel(parent), dataPath_(bf::current_path() / DATA_PATH) {
+    : QAbstractItemModel(parent), dataPath_(L"data") {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::XMLTreeModel";
   root_ = XMLRootTreeItem::get();
   initDirectories();
   connectAll();
+#ifdef WITH_DB
   initFromDB();
+#else
+  initFromDataDir();
+#endif
 }
 
 // deprecated
@@ -93,7 +104,7 @@ void XMLTreeModel::forEach(QModelIndex idx,
 
 void XMLTreeModel::onXmlTreeItemDataChanged(XMLTreeItem* item) {}
 
-void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles) {
+void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB) {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::onNewXMLFiles: got "
                            << xmlFiles.size() << " files";
   std::thread([=] {
@@ -110,7 +121,7 @@ void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles) {
                            xmlSpatials.end());
         try {
           bf::path newPath = xml->renameFile();
-          bf::path dataPath = dataPath_ / newPath.filename();
+          bf::path dataPath = bf::path(dataPath_) / newPath.filename();
           if (!bf::exists(dataPath)) {
             bf::copy(newPath, dataPath);
           }
@@ -130,7 +141,7 @@ void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles) {
         errPaths.push_back(xmlFiles[i].fileName());
       }
     }
-    emit newXMLSpatials(allSpatials, false);
+    emit newXMLSpatials(allSpatials, fromDB);
 
     for (auto& t : threads) {
       t.join();
@@ -208,18 +219,31 @@ void XMLTreeModel::endReset() {
 void XMLTreeModel::connectAll() {
   connect(this, &XMLTreeModel::newXMLSpatials, this,
           &XMLTreeModel::onNewXMLSpatials);
+  connect(this, &XMLTreeModel::newXMLs, this, &XMLTreeModel::appendXMLs);
 }
 
-void XMLTreeModel::initDirectories() const {
-  if (!bf::exists(dataPath_)) {
-    bf::create_directory(dataPath_);
-  }
-}
+void XMLTreeModel::initDirectories() const {}
 
 void XMLTreeModel::initFromDB() {
   std::thread([this] {
     auto spatials = rrt::DB::get()->getAllLastFromDB();
     emit newXMLSpatials(spatials, true);
+  }).detach();
+}
+
+void XMLTreeModel::initFromDataDir() {
+  std::thread([this] {
+    QVector<QFileInfo> found;
+    QDir dir(QString::fromStdWString(dataPath_));
+    auto list = dir.entryInfoList();
+    for (auto& entry : list) {
+      if (entry.isFile() && entry.suffix().toLower() == "xml") {
+        found.push_back(entry);
+      }
+    }
+    BOOST_LOG_TRIVIAL(debug)
+        << "XMLTreeModel::initFromDataDir: got " << found.size() << " xmls";
+    emit newXMLs(found, true);
   }).detach();
 }
 

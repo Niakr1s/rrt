@@ -21,7 +21,7 @@ class MainWindow : public QMainWindow {
 
  signals:
   void newDXF(QFileInfo);
-  void newXMLs(QVector<QFileInfo>);
+  void newXMLs(QVector<QFileInfo>, bool fromDB = false);
 
  public slots:
   void openXMLs();

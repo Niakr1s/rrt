@@ -14,5 +14,6 @@ Q_DECLARE_METATYPE(DXFResult);
 Q_DECLARE_METATYPE(std::shared_ptr<DXFResult>);
 Q_DECLARE_METATYPE(rrt::xmlSpatials_t);
 Q_DECLARE_METATYPE(QVector<int>);
+Q_DECLARE_METATYPE(QVector<QFileInfo>);
 
 #endif  // TYPEDEFS_H

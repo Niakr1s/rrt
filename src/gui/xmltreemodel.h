@@ -7,17 +7,11 @@
 #include <QObject>
 #include <QVariant>
 #include <QVector>
-#include <boost/filesystem/path.hpp>
+#include <string>
 #include "typedefs.h"
 #include "xmlroottreeitem.h"
 #include "xmlspatial.h"
 #include "xmltreeitem.h"
-
-namespace bf = boost::filesystem;
-
-namespace {
-const char* DATA_PATH = "data";
-}
 
 class XMLTreeModel : public QAbstractItemModel {
   Q_OBJECT
@@ -39,6 +33,7 @@ class XMLTreeModel : public QAbstractItemModel {
   void forEach(QModelIndex idx, std::function<void(XMLTreeItem*)> fn);
 
  signals:
+  void newXMLs(QVector<QFileInfo> xmlFiles, bool fromDB);
   void newXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB);
   void startProcessing(int size);
   void oneProcessed(int pos, int max);
@@ -50,14 +45,14 @@ class XMLTreeModel : public QAbstractItemModel {
 
  public slots:
   void onXmlTreeItemDataChanged(XMLTreeItem* item);
-  void appendXMLs(QVector<QFileInfo> xmlFiles);
+  void appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB);
   void onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB);
   void getIntersections(std::shared_ptr<rrt::Spatial> spatial);
   void exportToDXF(QModelIndex idx, QString fileName);
   void endReset();
 
  private:
-  bf::path dataPath_;
+  std::wstring dataPath_;
   XMLTreeItem* root_;
   std::shared_ptr<rrt::Spatial> spatial_ = std::make_shared<rrt::Spatial>();
 
