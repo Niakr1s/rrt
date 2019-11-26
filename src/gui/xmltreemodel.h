@@ -58,8 +58,11 @@ class XMLTreeModel : public QAbstractItemModel {
  private:
   void connectAll();
   void initDirectories() const;
+#ifdef WITH_DB
   void initFromDB();
+#else
   void initFromDataDir();
+#endif
 
   // QAbstractItemModel interface
  public:

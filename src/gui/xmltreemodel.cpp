@@ -1,15 +1,15 @@
 #include "xmltreemodel.h"
 
+#ifdef WITH_DB
+#include "db.h"
+#endif
 #include <QDir>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/log/trivial.hpp>
 #include <thread>
 #include "util.h"
-
-//#ifdef WITH_DB
-#include "db.h"
-//#endif
+#include "xml.h"
 
 namespace bf = boost::filesystem;
 
@@ -80,7 +80,9 @@ void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB) {
     int sz = xmlFiles.size();
     QStringList errPaths;
     rrt::xmlSpatials_t allSpatials;
+#ifdef WITH_DB
     std::vector<std::thread> threads;
+#endif
     for (int i = 0; i != sz; ++i) {
       try {
         auto xml = std::make_shared<rrt::XML>(
@@ -98,23 +100,25 @@ void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB) {
           BOOST_LOG_TRIVIAL(error) << e.what();
         }
 
+#ifdef WITH_DB
         auto t = std::thread([=] {
           emit DBBegin();
           rrt::DB::get()->pushToDB(*xml);
           emit DBEnd();
         });
         threads.push_back(std::move(t));
-
+#endif
       } catch (std::exception& e) {
         BOOST_LOG_TRIVIAL(error) << e.what();
         errPaths.push_back(xmlFiles[i].fileName());
       }
     }
     emit newXMLSpatials(allSpatials, fromDB);
-
+#ifdef WITH_DB
     for (auto& t : threads) {
       t.join();
     }
+#endif
     emit endAppendingXMLs(errPaths);
     BOOST_LOG_TRIVIAL(debug)
         << "XMLTreeView::onNewXMLFiles: got " << errPaths.size() << " errors";
@@ -197,13 +201,14 @@ void XMLTreeModel::initDirectories() const {
   }
 }
 
+#ifdef WITH_DB
 void XMLTreeModel::initFromDB() {
   std::thread([this] {
     auto spatials = rrt::DB::get()->getAllLastFromDB();
     emit newXMLSpatials(spatials, true);
   }).detach();
 }
-
+#else
 void XMLTreeModel::initFromDataDir() {
   std::thread([this] {
     QVector<QFileInfo> found;
@@ -219,6 +224,7 @@ void XMLTreeModel::initFromDataDir() {
     emit newXMLs(found, true);
   }).detach();
 }
+#endif
 
 QVariant XMLTreeModel::data(const QModelIndex& index, int role) const {
   if (!index.isValid())
