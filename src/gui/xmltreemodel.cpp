@@ -26,48 +26,6 @@ XMLTreeModel::XMLTreeModel(QObject* parent)
 #endif
 }
 
-// deprecated
-void XMLTreeModel::appendSpatialsSlow(const rrt::xmlSpatials_t& spatials,
-                                      bool fromDB) {
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::appendSpatials: spatials = "
-                           << spatials.size() << ", fromDB = " << fromDB;
-  for (auto& spatial : spatials) {
-    auto path = preparePath(spatial);
-
-    auto idx = QModelIndex();
-    for (auto& str : path) {
-      bool found = false;
-      for (int i = 0; i != rowCount(idx); ++i) {
-        auto child = index(i, 0, idx);
-        if (getItem(child)->strID() == str) {
-          idx = child;
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
-        insertRow(rowCount(idx), idx);
-        idx = index(rowCount(idx) - 1, 0, idx);
-        setData(idx, QString::fromStdString(str), Qt::DisplayRole);
-      }
-    }
-    getItem(idx)->appendSpatial(spatial, fromDB);
-  }
-}
-
-void XMLTreeModel::appendSpatials(const rrt::xmlSpatials_t& spatials,
-                                  bool fromDB) {
-  int len = static_cast<int>(spatials.size());
-  emit startProcessing(len);
-  beginResetModel();
-  for (int i = 0; i != len; ++i) {
-    XMLRootTreeItem::appendSpatial(spatials[static_cast<size_t>(i)], fromDB);
-    emit oneProcessed(i, len);
-  }
-  endResetModel();
-  emit endProcessing();
-}
-
 int XMLTreeModel::size() const {
   int res = 0;
   getRootItem()->forEach([&res](XMLTreeItem* item) {

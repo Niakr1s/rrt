@@ -20,8 +20,6 @@ class XMLTreeModel : public QAbstractItemModel {
  public:
   XMLTreeModel(QObject* parent = nullptr);
 
-  void appendSpatialsSlow(const rrt::xmlSpatials_t& spatials,
-                          bool fromDB = false);
   void appendSpatials(const rrt::xmlSpatials_t& spatials, bool fromDB = false);
 
   int size() const;
