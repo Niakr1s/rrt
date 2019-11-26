@@ -162,29 +162,30 @@ void XMLTreeModel::getIntersections(std::shared_ptr<rrt::Spatial> spatial) {
 void XMLTreeModel::exportToDXF(QModelIndex idx, QString fileName) {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::exportToDXF";
 
-  // TODO move to thread
-  rrt::DXF dxf;
-  if (spatial_) {
-    dxf.drawSpatial(spatial_, rrt::DXF::Color::LIGHTGREEN);
-  }
-  forEach(idx, [&](XMLTreeItem* item) {
-    auto spa = item->spatial();
-    if (spa != nullptr) {
-      dxf.drawSpatial(spa->xmlSpatialInfo().cadastralNumber().string(),
-                      spa->xmlSpatialInfo().type(), spa->spatial(),
-                      spa->color());
+  std::thread([=] {
+    rrt::DXF dxf;
+    if (spatial_) {
+      dxf.drawSpatial(spatial_, rrt::DXF::Color::LIGHTGREEN);
     }
-  });
+    forEach(idx, [&](XMLTreeItem* item) {
+      auto spa = item->spatial();
+      if (spa != nullptr) {
+        dxf.drawSpatial(spa->xmlSpatialInfo().cadastralNumber().string(),
+                        spa->xmlSpatialInfo().type(), spa->spatial(),
+                        spa->color());
+      }
+    });
 
-  auto path = boost::filesystem::path(fileName.toStdWString());
+    auto path = boost::filesystem::path(fileName.toStdWString());
 
-  try {
-    dxf.fileExport(path);
-  } catch (std::exception& e) {
-    BOOST_LOG_TRIVIAL(error) << "Error while export to DXF: " << e.what();
-    DXFExportDone(tr("DXF export failure"), e.what(),
-                  QMessageBox::Icon::Critical);
-  }
+    try {
+      dxf.fileExport(path);
+    } catch (std::exception& e) {
+      BOOST_LOG_TRIVIAL(error) << "Error while export to DXF: " << e.what();
+      emit DXFExportDone(tr("DXF export failure"), e.what(),
+                         QMessageBox::Icon::Critical);
+    }
+  }).detach();
 }
 
 void XMLTreeModel::endReset() {
