@@ -65,7 +65,7 @@ void XMLTreeView::onEndProcessingDXF(std::shared_ptr<DXFResult>) {
   expandAll();
 }
 
-void XMLTreeView::onDxfClose() {
+void XMLTreeView::disableIntersectionsFiltering() {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onDxfClose";
   proxyModel_->setFiltering(false);
   collapseAll();

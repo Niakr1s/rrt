@@ -26,14 +26,13 @@ class DXFLabel : public QLabel {
   std::shared_ptr<rrt::Spatial> spatial() const;
 
  signals:
-  void dxfCloseSignal();
+  void dxfClosed();
   void errDXFSignal(QString);
   void newDXFFileSignal(QFileInfo);
   void newXMLFilesSignal(QVector<QFileInfo>);
   void newDXFSpatialSignal(std::shared_ptr<rrt::Spatial>);
 
  public slots:
-  void onDxfClose();
   void onNewDXFFile(const QFileInfo& fi);
   void onEndProcessingDXFSignal(std::shared_ptr<DXFResult> res);
 
@@ -44,6 +43,7 @@ class DXFLabel : public QLabel {
 
  private:
   void connectAll();
+  void closeDXF();
 };
 
 #endif  // DXFLABEL_H

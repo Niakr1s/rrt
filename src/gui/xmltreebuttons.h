@@ -23,7 +23,7 @@ class XMLTreeButtons : public QWidget {
   QComboBox* comboBox() const;
 
  public slots:
-  void onDXFClose();
+  void hideCopyElements();
   void onEndProcessingDXF(std::shared_ptr<DXFResult> res);
 
   void onBtnCopySemicolonClicked();

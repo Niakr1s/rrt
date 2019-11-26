@@ -50,7 +50,7 @@ QComboBox* XMLTreeButtons::comboBox() const {
   return comboBox_;
 }
 
-void XMLTreeButtons::onDXFClose() {
+void XMLTreeButtons::hideCopyElements() {
   comboBox_->hide();
   btnCopySemicolon_->hide();
   btnCopyNewline_->hide();

@@ -60,10 +60,10 @@ void MainWidget::connectAll() {
   connect(dxfLabel_, &DXFLabel::newDXFSpatialSignal, treeView_,
           &XMLTreeView::onNewDXFSpatial);
 
-  connect(dxfLabel_, &DXFLabel::dxfCloseSignal, treeView_,
-          &XMLTreeView::onDxfClose);
-  connect(dxfLabel_, &DXFLabel::dxfCloseSignal, treeViewBtns_,
-          &XMLTreeButtons::onDXFClose);
+  connect(dxfLabel_, &DXFLabel::dxfClosed, treeView_,
+          &XMLTreeView::disableIntersectionsFiltering);
+  connect(dxfLabel_, &DXFLabel::dxfClosed, treeViewBtns_,
+          &XMLTreeButtons::hideCopyElements);
 
   connect(dxfLabel_, &DXFLabel::newXMLFilesSignal, treeView_->xmlModel(),
           &XMLTreeModel::onNewXMLFiles);

@@ -39,7 +39,8 @@ void DXFLabel::paintEvent(QPaintEvent* event) {
 
 void DXFLabel::mousePressEvent(QMouseEvent* event) {
   if (!dxfFilePath_.isEmpty() && closeButtonRect_.contains(event->pos())) {
-    emit dxfCloseSignal();
+    emit dxfClosed();
+    closeDXF();
     event->accept();
   }
   QLabel::mousePressEvent(event);
@@ -84,7 +85,7 @@ void DXFLabel::setDefaultText() {
           .arg(tr("XMLs will be copied in %1/data.").arg(QDir::currentPath())));
 }
 
-void DXFLabel::onDxfClose() {
+void DXFLabel::closeDXF() {
   BOOST_LOG_TRIVIAL(debug) << "DXFLabel::onDxfClose";
   dxfFilePath_.clear();
   spatial_ = nullptr;
@@ -132,7 +133,6 @@ void DXFLabel::onEndProcessingDXFSignal(std::shared_ptr<DXFResult> res) {
 }
 
 void DXFLabel::connectAll() {
-  connect(this, &DXFLabel::dxfCloseSignal, this, &DXFLabel::onDxfClose);
   connect(this, &DXFLabel::newDXFFileSignal, this, &DXFLabel::onNewDXFFile);
 }
 
