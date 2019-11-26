@@ -25,33 +25,27 @@ class XMLTreeView : public QTreeView {
   XMLTreeView(QWidget* parent = nullptr);
 
   void expandUntilRoot(QModelIndex item);
-  void expandUntilRootNew(QModelIndex item = QModelIndex());
-  void collapseAll();
   void expand(QModelIndex idx, int count = 0);
 
   XMLTreeModel* xmlModel();
 
  signals:
-  void startProcessingXMLsSignal(int size);
-  void newXMLSpatialsSignal(rrt::xmlSpatials_t, bool fromDB);
-  void oneXMLProcessedSignal(int pos, int max);
+  void exportToDXF(QModelIndex sourceIndex, QString fileName);
 
  public slots:
-  void onEndAppendingXMLs();
+  void collapseAll();
   void showIntersected(std::shared_ptr<DXFResult>);
   void disableIntersectionsFiltering();
-  void onRowsInserted(QModelIndex sourceParent, int first, int last);
-  void onCustomContextMenuRequested(QPoint p);
+  void expandChildsUntilRoot(QModelIndex sourceParent, int first, int last);
+  void showCustomContextMenu(QPoint p);
+  void expandIf(bool expand);
   void onExportAction();
-  void onExpandButtonToggled(bool expand);
-  void onNewXMLSpatials(rrt::xmlSpatials_t, bool fromDB);
 
  private:
   QMenu* rightClickMenu_;
   QAction* exportAction_;
   XMLTreeModel* model_;
   XMLTreeSortFilterProxyModel* proxyModel_;
-  std::shared_ptr<rrt::Spatial> spatial_;
 
  private:
   void initModel();

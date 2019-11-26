@@ -143,10 +143,11 @@ void MainWindow::connectAll() {
   connect(this, &MainWindow::newXMLs, mainWidget_->dxfLabel(),
           &DXFLabel::newXMLs);
 
-  connect(mainWidget_->treeView(), &XMLTreeView::startProcessingXMLsSignal,
-          this, &MainWindow::onStartProcessing);
-  connect(mainWidget_->treeView(), &XMLTreeView::oneXMLProcessedSignal, this,
-          &MainWindow::onOneProcessed);
+  connect(mainWidget_->treeView()->xmlModel(),
+          &XMLTreeModel::startProcessingSignal, this,
+          &MainWindow::onStartProcessing);
+  connect(mainWidget_->treeView()->xmlModel(),
+          &XMLTreeModel::oneProcessedSignal, this, &MainWindow::onOneProcessed);
   connect(mainWidget_->treeView()->xmlModel(),
           &XMLTreeModel::endProcessingXMLsSignal, this,
           &MainWindow::onEndProcessingXMLs);

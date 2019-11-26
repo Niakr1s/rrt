@@ -54,11 +54,13 @@ class XMLTreeModel : public QAbstractItemModel {
   void appendXMLs(QVector<QFileInfo> xmlFiles);
   void onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB);
   void getIntersections(std::shared_ptr<rrt::Spatial> spatial);
+  void exportToDXF(QModelIndex idx, QString fileName);
   void endReset();
 
  private:
   bf::path dataPath_;
   XMLTreeItem* root_;
+  std::shared_ptr<rrt::Spatial> spatial_ = std::make_shared<rrt::Spatial>();
 
  private:
   void connectAll();

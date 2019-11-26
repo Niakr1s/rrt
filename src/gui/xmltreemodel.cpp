@@ -176,6 +176,33 @@ void XMLTreeModel::getIntersections(std::shared_ptr<rrt::Spatial> spatial) {
   }).detach();
 }
 
+void XMLTreeModel::exportToDXF(QModelIndex idx, QString fileName) {
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::exportToDXF";
+
+  // TODO move to thread
+  rrt::DXF dxf;
+  if (spatial_) {
+    dxf.drawSpatial(spatial_, rrt::DXF::Color::LIGHTGREEN);
+  }
+  forEach(idx, [&](XMLTreeItem* item) {
+    auto spa = item->spatial();
+    if (spa != nullptr) {
+      dxf.drawSpatial(spa->xmlSpatialInfo().cadastralNumber().string(),
+                      spa->xmlSpatialInfo().type(), spa->spatial(),
+                      spa->color());
+    }
+  });
+
+  auto path = boost::filesystem::path(fileName.toStdWString());
+
+  // TODO maybe success alert
+  try {
+    dxf.fileExport(path);
+  } catch (std::exception& e) {
+    BOOST_LOG_TRIVIAL(error) << "Error while export to DXF: " << e.what();
+  }
+}
+
 void XMLTreeModel::endReset() {
   endResetModel();
 }

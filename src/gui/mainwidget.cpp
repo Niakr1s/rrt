@@ -60,9 +60,9 @@ void MainWidget::connectAll() {
           &MainWidget::onEndProcessingXMLs, Qt::QueuedConnection);
 
   connect(treeViewBtns_->btnExpand(), &QPushButton::toggled, treeView_,
-          &XMLTreeView::onExpandButtonToggled);
+          &XMLTreeView::expandIf);
   connect(treeViewBtns_->btnExpand(), &QPushButton::toggled, treeView_,
-          &XMLTreeView::onExpandButtonToggled);
+          &XMLTreeView::expandIf);
 
   connect(treeView_->xmlModel(), &XMLTreeModel::gotIntersections, dxfLabel_,
           &DXFLabel::onEndProcessingDXFSignal, Qt::QueuedConnection);

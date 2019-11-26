@@ -24,10 +24,6 @@ XMLTreeView::XMLTreeView(QWidget* parent) : QTreeView(parent) {
   connectAll();
 }
 
-void XMLTreeView::onEndAppendingXMLs() {
-  collapseAll();
-}
-
 void XMLTreeView::showIntersected(std::shared_ptr<DXFResult>) {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onEndProcessingDXF";
   proxyModel_->setFiltering(true);
@@ -39,12 +35,11 @@ void XMLTreeView::disableIntersectionsFiltering() {
   proxyModel_->setFiltering(false);
   collapseAll();
   xmlModel()->forEach([](XMLTreeItem* item) { item->turnOffIntersectsFlag(); });
-  spatial_ = nullptr;
 }
 
-void XMLTreeView::onRowsInserted(QModelIndex sourceParent,
-                                 int first,
-                                 int last) {
+void XMLTreeView::expandChildsUntilRoot(QModelIndex sourceParent,
+                                        int first,
+                                        int last) {
   for (int i = first; i <= last; ++i) {
     auto elem =
         proxyModel_->mapFromSource(xmlModel()->index(i, 0, sourceParent));
@@ -54,7 +49,7 @@ void XMLTreeView::onRowsInserted(QModelIndex sourceParent,
   }
 }
 
-void XMLTreeView::onCustomContextMenuRequested(QPoint p) {
+void XMLTreeView::showCustomContextMenu(QPoint p) {
   if (selectedIndexes().empty()) {
     return;
   }
@@ -68,39 +63,13 @@ void XMLTreeView::onExportAction() {
   }
   QModelIndex selected = selectedIndexes().first();
   selected = proxyModel_->mapToSource(selected);
-
-  rrt::DXF dxf;
-  if (spatial_) {
-    dxf.drawSpatial(spatial_, rrt::DXF::Color::LIGHTGREEN);
-  }
-  xmlModel()->forEach(selected, [&](XMLTreeItem* item) {
-    auto spa = item->spatial();
-    if (spa != nullptr) {
-      dxf.drawSpatial(spa->xmlSpatialInfo().cadastralNumber().string(),
-                      spa->xmlSpatialInfo().type(), spa->spatial(),
-                      spa->color());
-    }
-  });
-
   QString fileName = QFileDialog::getSaveFileName(this, tr("Save DXF File"), "",
                                                   "DXF (*.dxf)");
-  auto path = boost::filesystem::path(fileName.toStdWString());
-  try {
-    dxf.fileExport(path);
-  } catch (std::exception& e) {
-    BOOST_LOG_TRIVIAL(error) << "Error while export to DXF: " << e.what();
-  }
+  emit exportToDXF(selected, fileName);
 }
 
-void XMLTreeView::onExpandButtonToggled(bool expand) {
+void XMLTreeView::expandIf(bool expand) {
   expand ? expandAll() : collapseAll();
-}
-
-void XMLTreeView::onNewXMLSpatials(rrt::xmlSpatials_t, bool fromDB) {
-  //  if (!fromDB) {
-  //    return;
-  //  }
-  //  collapseAll();
 }
 
 XMLTreeModel* XMLTreeView::xmlModel() {
@@ -127,33 +96,22 @@ void XMLTreeView::initRightClickMenu() {
 
 void XMLTreeView::connectAll() {
   connect(this, &XMLTreeView::customContextMenuRequested, this,
-          &XMLTreeView::onCustomContextMenuRequested);
+          &XMLTreeView::showCustomContextMenu);
 
   connect(xmlModel(), &XMLTreeModel::gotIntersections, this,
           &XMLTreeView::showIntersected);
 
   connect(model_, &XMLTreeSortFilterProxyModel::rowsInserted, this,
-          &XMLTreeView::onRowsInserted);
-
-  connect(this, &XMLTreeView::newXMLSpatialsSignal, model_,
-          &XMLTreeModel::onNewXMLSpatials);
+          &XMLTreeView::expandChildsUntilRoot);
 
   connect(exportAction_, &QAction::triggered, this,
           &XMLTreeView::onExportAction);
 
-  connect(this, &XMLTreeView::newXMLSpatialsSignal, this,
-          &XMLTreeView::onNewXMLSpatials);
-
-  connect(model_, &XMLTreeModel::newXMLSpatialsSignal, this,
-          &XMLTreeView::onNewXMLSpatials);
-
-  connect(model_, &XMLTreeModel::startProcessingSignal, this,
-          &XMLTreeView::startProcessingXMLsSignal);
-  connect(model_, &XMLTreeModel::oneProcessedSignal, this,
-          &XMLTreeView::oneXMLProcessedSignal);
-
   connect(model_, &XMLTreeModel::endProcessingSignal, this,
-          &XMLTreeView::onEndAppendingXMLs);
+          &XMLTreeView::collapseAll);
+
+  connect(this, &XMLTreeView::exportToDXF, xmlModel(),
+          &XMLTreeModel::exportToDXF);
 }
 
 void XMLTreeView::expandUntilRoot(QModelIndex item) {
