@@ -154,7 +154,7 @@ void MainWindow::connectAll() {
   connect(mainWidget_->treeView(), &XMLTreeView::DBEndSignal, this,
           &MainWindow::onDBEndSignal);
 
-  connect(actionExit_, &QAction::triggered, this, &QApplication::quit);
+  connect(actionExit_, &QAction::triggered, this, &MainWindow::close);
 
   connect(actionOpenXmls_, &QAction::triggered, this,
           &MainWindow::onActionOpenXmls);
