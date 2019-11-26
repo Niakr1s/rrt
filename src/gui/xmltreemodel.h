@@ -36,8 +36,6 @@ class XMLTreeModel : public QAbstractItemModel {
   void startProcessingSignal(int size);
   void oneProcessedSignal(int pos, int max);
   void endProcessingSignal();
-  void DBBeginSignal();
-  void DBEndSignal();
 
  public slots:
   void onXmlTreeItemDataChanged(XMLTreeItem* item);

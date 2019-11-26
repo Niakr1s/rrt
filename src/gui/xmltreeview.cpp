@@ -23,11 +23,7 @@ XMLTreeView::XMLTreeView(QWidget* parent)
   setEditTriggers(QTreeView::NoEditTriggers);
   setMinimumHeight(400);
 
-  connect(model_, &XMLTreeModel::DBBeginSignal, this,
-          &XMLTreeView::DBBeginSignal);
-  connect(model_, &XMLTreeModel::DBEndSignal, this, &XMLTreeView::DBEndSignal);
-
-  initModel();  // should be before DBSignals relays, but before connectAll
+  initModel();  // should be after connectAll
 
   connectAll();
 }

@@ -106,10 +106,8 @@ void XMLTreeModel::connectAll() {
 }
 
 void XMLTreeModel::initFromDB() {
-  emit DBBeginSignal();
   std::thread([this] {
     auto spatials = rrt::DB::get()->getAllLastFromDB();
-    emit DBEndSignal();
     emit newXMLSpatialsSignal(spatials, true);
   }).detach();
 }
