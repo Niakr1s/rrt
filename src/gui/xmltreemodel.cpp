@@ -180,7 +180,11 @@ void XMLTreeModel::connectAll() {
   connect(this, &XMLTreeModel::newXMLs, this, &XMLTreeModel::appendXMLs);
 }
 
-void XMLTreeModel::initDirectories() const {}
+void XMLTreeModel::initDirectories() const {
+  if (!bf::exists(dataPath_)) {
+    bf::create_directory(dataPath_);
+  }
+}
 
 void XMLTreeModel::initFromDB() {
   std::thread([this] {
