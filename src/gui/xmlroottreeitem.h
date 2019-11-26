@@ -17,4 +17,6 @@ class XMLRootTreeItem {
   static XMLTreeItem* root_;
 };
 
+std::vector<std::string> preparePath(rrt::xmlSpatial_t spatial);
+
 #endif  // XMLROOTTREEITEM_H

@@ -8,7 +8,6 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/log/trivial.hpp>
 #include <thread>
-#include "util.h"
 #include "xml.h"
 
 namespace bf = boost::filesystem;
