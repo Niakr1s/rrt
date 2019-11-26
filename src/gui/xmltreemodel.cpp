@@ -43,11 +43,15 @@ void XMLTreeModel::appendSpatialsSlow(const rrt::xmlSpatials_t& spatials,
 
 void XMLTreeModel::appendSpatials(const rrt::xmlSpatials_t& spatials,
                                   bool fromDB) {
+  int len = static_cast<int>(spatials.size());
+  emit startProcessingSignal(len);
   beginResetModel();
-  for (auto& spatial : spatials) {
-    XMLRootTreeItem::appendSpatial(spatial, fromDB);
+  for (int i = 0; i != len; ++i) {
+    XMLRootTreeItem::appendSpatial(spatials[static_cast<size_t>(i)], fromDB);
+    emit oneProcessedSignal(i, len);
   }
   endResetModel();
+  emit endProcessingSignal();
 }
 
 int XMLTreeModel::size() const {
@@ -102,8 +106,10 @@ void XMLTreeModel::connectAll() {
 }
 
 void XMLTreeModel::initFromDB() {
+  emit DBBeginSignal();
   std::thread([this] {
     auto spatials = rrt::DB::get()->getAllLastFromDB();
+    emit DBEndSignal();
     emit newXMLSpatialsSignal(spatials, true);
   }).detach();
 }

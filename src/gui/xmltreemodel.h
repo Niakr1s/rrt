@@ -33,6 +33,11 @@ class XMLTreeModel : public QAbstractItemModel {
  signals:
   void appendSpatialsFinishedSignal();
   void newXMLSpatialsSignal(rrt::xmlSpatials_t spatials, bool fromDB);
+  void startProcessingSignal(int size);
+  void oneProcessedSignal(int pos, int max);
+  void endProcessingSignal();
+  void DBBeginSignal();
+  void DBEndSignal();
 
  public slots:
   void onXmlTreeItemDataChanged(XMLTreeItem* item);

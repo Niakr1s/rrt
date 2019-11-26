@@ -104,6 +104,10 @@ void XMLTreeView::onNewXMLFiles(QVector<QFileInfo> xmlFiles) {
   }).detach();
 }
 
+void XMLTreeView::onEndAppendingXMLs() {
+  collapseAll();
+}
+
 void XMLTreeView::onEndProcessingDXF(std::shared_ptr<DXFResult>) {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onEndProcessingDXF";
   proxyModel_->setFiltering(true);
@@ -173,10 +177,10 @@ void XMLTreeView::onExpandButtonToggled(bool expand) {
 }
 
 void XMLTreeView::onNewXMLSpatials(rrt::xmlSpatials_t, bool fromDB) {
-  if (!fromDB) {
-    return;
-  }
-  collapseAll();
+  //  if (!fromDB) {
+  //    return;
+  //  }
+  //  collapseAll();
 }
 
 XMLTreeModel* XMLTreeView::xmlModel() {
@@ -228,6 +232,18 @@ void XMLTreeView::connectAll() {
 
   connect(model_, &XMLTreeModel::newXMLSpatialsSignal, this,
           &XMLTreeView::onNewXMLSpatials);
+
+  connect(model_, &XMLTreeModel::startProcessingSignal, this,
+          &XMLTreeView::startProcessingXMLsSignal);
+  connect(model_, &XMLTreeModel::oneProcessedSignal, this,
+          &XMLTreeView::oneXMLProcessedSignal);
+
+  connect(model_, &XMLTreeModel::DBBeginSignal, this,
+          &XMLTreeView::DBBeginSignal);
+  connect(model_, &XMLTreeModel::DBEndSignal, this, &XMLTreeView::DBEndSignal);
+
+  connect(model_, &XMLTreeModel::endProcessingSignal, this,
+          &XMLTreeView::onEndAppendingXMLs);
 }
 
 void XMLTreeView::expandUntilRoot(QModelIndex item) {

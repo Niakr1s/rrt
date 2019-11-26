@@ -57,14 +57,15 @@ If you see any bugs, please contact author via <a href="https://github.com/Niakr
 }
 
 void MainWindow::onStartProcessing(int size) {
-  statusBarMessage_->setText(tr("Processing XMLs ..."));
+  if (size == 0) {
+    return;
+  }
+  statusBarMessage_->setText(tr("Processing ..."));
   progressBar_->setRange(0, size);
   progressBar_->show();
 }
 
 void MainWindow::onOneProcessed(int pos, int max) {
-  BOOST_LOG_TRIVIAL(debug) << "MainWindow::onOneXMLProcessed: pos = " << pos
-                           << ", max = " << max;
   if (++pos == max) {
     progressBar_->reset();
     progressBar_->hide();
@@ -80,11 +81,15 @@ void MainWindow::onEndProcessingXMLs(QStringList) {
 
 void MainWindow::onDBBeginSignal() {
   ++dbProcesses_;
+  BOOST_LOG_TRIVIAL(debug) << "MainWindow::onDBBeginSignal: dbProcesses = "
+                           << dbProcesses_;
   updateDBIcon();
 }
 
 void MainWindow::onDBEndSignal() {
   --dbProcesses_;
+  BOOST_LOG_TRIVIAL(debug) << "MainWindow::onDBEndSignal: dbProcesses = "
+                           << dbProcesses_;
   updateDBIcon();
 }
 
