@@ -35,12 +35,10 @@ class XMLTreeView : public QTreeView {
   void startProcessingXMLsSignal(int size);
   void newXMLSpatialsSignal(rrt::xmlSpatials_t, bool fromDB);
   void oneXMLProcessedSignal(int pos, int max);
-  void endProcessingDXFSignal(std::shared_ptr<DXFResult>);
 
  public slots:
-  void onNewDXFSpatial(std::shared_ptr<rrt::Spatial> spatial);
   void onEndAppendingXMLs();
-  void onEndProcessingDXF(std::shared_ptr<DXFResult>);
+  void showIntersected(std::shared_ptr<DXFResult>);
   void disableIntersectionsFiltering();
   void onRowsInserted(QModelIndex sourceParent, int first, int last);
   void onCustomContextMenuRequested(QPoint p);

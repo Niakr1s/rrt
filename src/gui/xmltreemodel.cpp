@@ -147,6 +147,35 @@ void XMLTreeModel::onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB) {
   appendSpatials(spatials, fromDB);
 }
 
+void XMLTreeModel::getIntersections(std::shared_ptr<rrt::Spatial> spatial) {
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::getIntersections: begin";
+  if (spatial->empty()) {
+    BOOST_LOG_TRIVIAL(debug)
+        << "XMLTreeModel::getIntersections: spatial is nullptr";
+    emit gotIntersections(std::make_shared<DXFResult>());
+    return;
+  }
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::getIntersections: processing...";
+  std::thread([=] {
+    auto res = std::make_shared<DXFResult>();
+    forEach([&](XMLTreeItem* item) {
+      if (item->intersects(*spatial)) {
+        auto key = item->parentItem()->qstrID();
+        (*res)[key].push_back(item->qstrID());
+      }
+    });
+    for (auto& key : res->keys()) {
+      qSort((*res)[key].begin(), (*res)[key].end(),
+            [](const QString& lhs, const QString& rhs) {
+              return lhs.split(":").back().toInt() <
+                     rhs.split(":").back().toInt();
+            });
+    }
+    emit gotIntersections(res);
+    BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::getIntersections: end";
+  }).detach();
+}
+
 void XMLTreeModel::endReset() {
   endResetModel();
 }

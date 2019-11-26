@@ -110,7 +110,7 @@ void DXFLabel::openDXF(const QFileInfo& fi) {
   }
   dxfFilePath_ = fi.filePath();
   spatial_ = dxf.spatial();
-  emit newDXFSpatialSignal(spatial_);
+  emit newDXFSpatial(spatial_);
   QString newText;
   newText = QString("<div>%1: \"%2\"</div>")
                 .arg(tr("Current file"))

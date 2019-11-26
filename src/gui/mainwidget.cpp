@@ -45,8 +45,8 @@ DXFLabel* MainWidget::dxfLabel() const {
 }
 
 void MainWidget::connectAll() {
-  connect(dxfLabel_, &DXFLabel::newDXFSpatialSignal, treeView_,
-          &XMLTreeView::onNewDXFSpatial);
+  connect(dxfLabel_, &DXFLabel::newDXFSpatial, treeView_->xmlModel(),
+          &XMLTreeModel::getIntersections);
 
   connect(dxfLabel_, &DXFLabel::dxfClosed, treeView_,
           &XMLTreeView::disableIntersectionsFiltering);
@@ -64,8 +64,8 @@ void MainWidget::connectAll() {
   connect(treeViewBtns_->btnExpand(), &QPushButton::toggled, treeView_,
           &XMLTreeView::onExpandButtonToggled);
 
-  connect(treeView_, &XMLTreeView::endProcessingDXFSignal, dxfLabel_,
+  connect(treeView_->xmlModel(), &XMLTreeModel::gotIntersections, dxfLabel_,
           &DXFLabel::onEndProcessingDXFSignal, Qt::QueuedConnection);
-  connect(treeView_, &XMLTreeView::endProcessingDXFSignal, treeViewBtns_,
-          &XMLTreeButtons::onEndProcessingDXF);
+  connect(treeView_->xmlModel(), &XMLTreeModel::gotIntersections, treeViewBtns_,
+          &XMLTreeButtons::activateCopyElements);
 }

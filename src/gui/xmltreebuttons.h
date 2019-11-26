@@ -24,10 +24,10 @@ class XMLTreeButtons : public QWidget {
 
  public slots:
   void hideCopyElements();
-  void onEndProcessingDXF(std::shared_ptr<DXFResult> res);
+  void activateCopyElements(std::shared_ptr<DXFResult> res);
 
-  void onBtnCopySemicolonClicked();
-  void onBtnCopyNewlineClicked();
+  void copyResSemicolon();
+  void copyResNewline();
 
  private:
   QPushButton* btnExpand_;

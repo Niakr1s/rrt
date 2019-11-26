@@ -29,7 +29,7 @@ class DXFLabel : public QLabel {
   void dxfClosed();
   void newDXF(QFileInfo);
   void newXMLs(QVector<QFileInfo>);
-  void newDXFSpatialSignal(std::shared_ptr<rrt::Spatial>);
+  void newDXFSpatial(std::shared_ptr<rrt::Spatial>);
 
  public slots:
   void onEndProcessingDXFSignal(std::shared_ptr<DXFResult> res);

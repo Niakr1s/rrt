@@ -8,6 +8,7 @@
 #include <QVariant>
 #include <QVector>
 #include <boost/filesystem/path.hpp>
+#include "typedefs.h"
 #include "xmlroottreeitem.h"
 #include "xmlspatial.h"
 #include "xmltreeitem.h"
@@ -46,11 +47,13 @@ class XMLTreeModel : public QAbstractItemModel {
   void DBBeginSignal();
   void DBEndSignal();
   void endProcessingXMLsSignal(QStringList err);
+  void gotIntersections(std::shared_ptr<DXFResult>);
 
  public slots:
   void onXmlTreeItemDataChanged(XMLTreeItem* item);
   void appendXMLs(QVector<QFileInfo> xmlFiles);
   void onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB);
+  void getIntersections(std::shared_ptr<rrt::Spatial> spatial);
   void endReset();
 
  private:

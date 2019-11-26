@@ -56,7 +56,7 @@ void XMLTreeButtons::hideCopyElements() {
   btnCopyNewline_->hide();
 }
 
-void XMLTreeButtons::onEndProcessingDXF(std::shared_ptr<DXFResult> res) {
+void XMLTreeButtons::activateCopyElements(std::shared_ptr<DXFResult> res) {
   result_ = res;
   propagateComboBox();
   comboBox_->show();
@@ -64,11 +64,11 @@ void XMLTreeButtons::onEndProcessingDXF(std::shared_ptr<DXFResult> res) {
   btnCopyNewline_->show();
 }
 
-void XMLTreeButtons::onBtnCopySemicolonClicked() {
+void XMLTreeButtons::copyResSemicolon() {
   resToClipboard(comboBox_->currentText(), ";");
 }
 
-void XMLTreeButtons::onBtnCopyNewlineClicked() {
+void XMLTreeButtons::copyResNewline() {
   resToClipboard(comboBox_->currentText(), "\n");
 }
 
@@ -121,7 +121,7 @@ void XMLTreeButtons::propagateComboBox() {
 
 void XMLTreeButtons::connectAll() {
   connect(btnCopySemicolon_, &QPushButton::clicked, this,
-          &XMLTreeButtons::onBtnCopySemicolonClicked);
+          &XMLTreeButtons::copyResSemicolon);
   connect(btnCopyNewline_, &QPushButton::clicked, this,
-          &XMLTreeButtons::onBtnCopyNewlineClicked);
+          &XMLTreeButtons::copyResNewline);
 }
