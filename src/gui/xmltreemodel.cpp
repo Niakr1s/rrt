@@ -60,8 +60,6 @@ void XMLTreeModel::forEach(QModelIndex idx,
   getItem(idx)->forEach(fn);
 }
 
-void XMLTreeModel::onXmlTreeItemDataChanged(XMLTreeItem* item) {}
-
 void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB) {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::onNewXMLFiles: got "
                            << xmlFiles.size() << " files";

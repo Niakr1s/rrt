@@ -42,7 +42,6 @@ class XMLTreeModel : public QAbstractItemModel {
   void gotIntersections(std::shared_ptr<DXFResult>);
 
  public slots:
-  void onXmlTreeItemDataChanged(XMLTreeItem* item);
   void appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB);
   void onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB);
   void getIntersections(std::shared_ptr<rrt::Spatial> spatial);
