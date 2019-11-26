@@ -39,7 +39,8 @@ class XMLTreeView : public QTreeView {
   void expandChildsUntilRoot(QModelIndex sourceParent, int first, int last);
   void showCustomContextMenu(QPoint p);
   void expandIf(bool expand);
-  void onExportAction();
+  void exportSelectedToDXF();
+  void showErrXMLsMessageBox(QStringList errXMLPaths);
 
  private:
   QMenu* rightClickMenu_;

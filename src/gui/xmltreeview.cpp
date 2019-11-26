@@ -1,6 +1,7 @@
 #include "xmltreeview.h"
 
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QThread>
 #include <boost/date_time.hpp>
 #include <boost/log/trivial.hpp>
@@ -56,7 +57,7 @@ void XMLTreeView::showCustomContextMenu(QPoint p) {
   rightClickMenu_->popup(mapToGlobal(p));
 }
 
-void XMLTreeView::onExportAction() {
+void XMLTreeView::exportSelectedToDXF() {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onExportAction";
   if (selectedIndexes().empty()) {
     return;
@@ -66,6 +67,20 @@ void XMLTreeView::onExportAction() {
   QString fileName = QFileDialog::getSaveFileName(this, tr("Save DXF File"), "",
                                                   "DXF (*.dxf)");
   emit exportToDXF(selected, fileName);
+}
+
+void XMLTreeView::showErrXMLsMessageBox(QStringList errXMLPaths) {
+  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::showErrXMLsMessageBox: errors = "
+                           << errXMLPaths.size();
+  if (!errXMLPaths.empty()) {
+    QMessageBox* errXmlMessageBox = new QMessageBox(this);
+    errXmlMessageBox->setMinimumWidth(600);
+    errXmlMessageBox->setWindowTitle(tr("Couldn't parse some XMLs"));
+    errXmlMessageBox->setText(tr("Invalid file names are listed below"));
+    errXmlMessageBox->setIcon(QMessageBox::Warning);
+    errXmlMessageBox->setDetailedText(errXMLPaths.join("\n"));
+    errXmlMessageBox->show();
+  }
 }
 
 void XMLTreeView::expandIf(bool expand) {
@@ -105,13 +120,16 @@ void XMLTreeView::connectAll() {
           &XMLTreeView::expandChildsUntilRoot);
 
   connect(exportAction_, &QAction::triggered, this,
-          &XMLTreeView::onExportAction);
+          &XMLTreeView::exportSelectedToDXF);
 
-  connect(model_, &XMLTreeModel::endProcessingSignal, this,
+  connect(model_, &XMLTreeModel::endProcessing, this,
           &XMLTreeView::collapseAll);
 
   connect(this, &XMLTreeView::exportToDXF, xmlModel(),
           &XMLTreeModel::exportToDXF);
+
+  connect(xmlModel(), &XMLTreeModel::endAppendingXMLs, this,
+          &XMLTreeView::showErrXMLsMessageBox);
 }
 
 void XMLTreeView::expandUntilRoot(QModelIndex item) {

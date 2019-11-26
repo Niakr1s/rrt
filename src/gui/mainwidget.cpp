@@ -22,20 +22,6 @@ MainWidget::MainWidget(QWidget* parent) : QWidget(parent) {
   connectAll();
 }
 
-void MainWidget::onEndProcessingXMLs(QStringList errXMLPaths) {
-  BOOST_LOG_TRIVIAL(debug) << "MainWidget::onEndProcessingXMLs: errors = "
-                           << errXMLPaths.size();
-  if (!errXMLPaths.empty()) {
-    QMessageBox* errXmlMessageBox = new QMessageBox(this);
-    errXmlMessageBox->setMinimumWidth(600);
-    errXmlMessageBox->setWindowTitle(tr("Couldn't parse some XMLs"));
-    errXmlMessageBox->setText(tr("Invalid file names are listed below"));
-    errXmlMessageBox->setIcon(QMessageBox::Warning);
-    errXmlMessageBox->setDetailedText(errXMLPaths.join("\n"));
-    errXmlMessageBox->show();
-  }
-}
-
 XMLTreeView* MainWidget::treeView() const {
   return treeView_;
 }
@@ -55,9 +41,6 @@ void MainWidget::connectAll() {
 
   connect(dxfLabel_, &DXFLabel::newXMLs, treeView_->xmlModel(),
           &XMLTreeModel::appendXMLs);
-
-  connect(treeView_->xmlModel(), &XMLTreeModel::endProcessingXMLsSignal, this,
-          &MainWidget::onEndProcessingXMLs, Qt::QueuedConnection);
 
   connect(treeViewBtns_->btnExpand(), &QPushButton::toggled, treeView_,
           &XMLTreeView::expandIf);

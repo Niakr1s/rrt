@@ -39,14 +39,13 @@ class XMLTreeModel : public QAbstractItemModel {
   void forEach(QModelIndex idx, std::function<void(XMLTreeItem*)> fn);
 
  signals:
-  void appendSpatialsFinishedSignal();
-  void newXMLSpatialsSignal(rrt::xmlSpatials_t spatials, bool fromDB);
-  void startProcessingSignal(int size);
-  void oneProcessedSignal(int pos, int max);
-  void endProcessingSignal();
-  void DBBeginSignal();
-  void DBEndSignal();
-  void endProcessingXMLsSignal(QStringList err);
+  void newXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB);
+  void startProcessing(int size);
+  void oneProcessed(int pos, int max);
+  void endProcessing();
+  void DBBegin();
+  void DBEnd();
+  void endAppendingXMLs(QStringList err);
   void gotIntersections(std::shared_ptr<DXFResult>);
 
  public slots:

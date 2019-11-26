@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   connectAll();
 }
 
-void MainWindow::onActionOpenXmls() {
+void MainWindow::openXMLs() {
   QVector<QString> fileName =
       QFileDialog::getOpenFileNames(this, tr("Open XMLs"), "", "XML (*.xml)")
           .toVector();
@@ -40,13 +40,13 @@ void MainWindow::onActionOpenXmls() {
   emit newXMLs(res);
 }
 
-void MainWindow::onActionOpenDxf() {
+void MainWindow::openDXF() {
   QString fileName = QFileDialog::getOpenFileName(this, tr("Open DXF"), "",
                                                   "Autocad drawing (*.dxf)");
   emit newDXF(QFileInfo(fileName));
 }
 
-void MainWindow::onActionAbout() {
+void MainWindow::showAbout() {
   QMessageBox::about(
       this, tr("About"),
       tr(R"***(<div>This program is for Cadastral Engineers.</div>
@@ -56,7 +56,7 @@ void MainWindow::onActionAbout() {
 If you see any bugs, please contact author via <a href="https://github.com/Niakr1s/rrt/issues">github</a>.<br></address>)***"));
 }
 
-void MainWindow::onStartProcessing(int size) {
+void MainWindow::resetProgressBar(int size) {
   if (size == 0) {
     return;
   }
@@ -65,7 +65,7 @@ void MainWindow::onStartProcessing(int size) {
   progressBar_->show();
 }
 
-void MainWindow::onOneProcessed(int pos, int max) {
+void MainWindow::tickProgressBar(int pos, int max) {
   if (++pos == max) {
     progressBar_->reset();
     progressBar_->hide();
@@ -75,16 +75,12 @@ void MainWindow::onOneProcessed(int pos, int max) {
   }
 }
 
-void MainWindow::onEndProcessingXMLs(QStringList) {
-  updateDBIcon();
-}
-
-void MainWindow::onDBBeginSignal() {
+void MainWindow::plusDBConnection() {
   ++dbProcesses_;
   updateDBIcon();
 }
 
-void MainWindow::onDBEndSignal() {
+void MainWindow::minusDBConnection() {
   --dbProcesses_;
   updateDBIcon();
 }
@@ -143,27 +139,21 @@ void MainWindow::connectAll() {
   connect(this, &MainWindow::newXMLs, mainWidget_->dxfLabel(),
           &DXFLabel::newXMLs);
 
-  connect(mainWidget_->treeView()->xmlModel(),
-          &XMLTreeModel::startProcessingSignal, this,
-          &MainWindow::onStartProcessing);
-  connect(mainWidget_->treeView()->xmlModel(),
-          &XMLTreeModel::oneProcessedSignal, this, &MainWindow::onOneProcessed);
-  connect(mainWidget_->treeView()->xmlModel(),
-          &XMLTreeModel::endProcessingXMLsSignal, this,
-          &MainWindow::onEndProcessingXMLs);
+  connect(mainWidget_->treeView()->xmlModel(), &XMLTreeModel::startProcessing,
+          this, &MainWindow::resetProgressBar);
+  connect(mainWidget_->treeView()->xmlModel(), &XMLTreeModel::oneProcessed,
+          this, &MainWindow::tickProgressBar);
 
-  connect(mainWidget_->treeView()->xmlModel(), &XMLTreeModel::DBBeginSignal,
-          this, &MainWindow::onDBBeginSignal);
-  connect(mainWidget_->treeView()->xmlModel(), &XMLTreeModel::DBEndSignal, this,
-          &MainWindow::onDBEndSignal);
+  connect(mainWidget_->treeView()->xmlModel(), &XMLTreeModel::DBBegin, this,
+          &MainWindow::plusDBConnection);
+  connect(mainWidget_->treeView()->xmlModel(), &XMLTreeModel::DBEnd, this,
+          &MainWindow::minusDBConnection);
 
   connect(actionExit_, &QAction::triggered, this, &MainWindow::close);
 
-  connect(actionOpenXmls_, &QAction::triggered, this,
-          &MainWindow::onActionOpenXmls);
-  connect(actionOpenDxf_, &QAction::triggered, this,
-          &MainWindow::onActionOpenDxf);
-  connect(actionAbout_, &QAction::triggered, this, &MainWindow::onActionAbout);
+  connect(actionOpenXmls_, &QAction::triggered, this, &MainWindow::openXMLs);
+  connect(actionOpenDxf_, &QAction::triggered, this, &MainWindow::openDXF);
+  connect(actionAbout_, &QAction::triggered, this, &MainWindow::showAbout);
 }
 
 void MainWindow::updateDBIcon() {

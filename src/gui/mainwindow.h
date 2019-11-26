@@ -24,15 +24,14 @@ class MainWindow : public QMainWindow {
   void newXMLs(QVector<QFileInfo>);
 
  public slots:
-  void onActionOpenXmls();
-  void onActionOpenDxf();
-  void onActionAbout();
+  void openXMLs();
+  void openDXF();
+  void showAbout();
 
-  void onStartProcessing(int size);
-  void onOneProcessed(int pos, int max);
-  void onEndProcessingXMLs(QStringList);
-  void onDBBeginSignal();
-  void onDBEndSignal();
+  void resetProgressBar(int size);
+  void tickProgressBar(int pos, int max);
+  void plusDBConnection();
+  void minusDBConnection();
 
  private:
   QAction* actionOpenXmls_;

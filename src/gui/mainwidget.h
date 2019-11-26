@@ -13,15 +13,11 @@
 #include "xmltreeview.h"
 
 class MainWidget : public QWidget {
-  Q_OBJECT
  public:
   explicit MainWidget(QWidget* parent = nullptr);
 
   DXFLabel* dxfLabel() const;
   XMLTreeView* treeView() const;
-
- public slots:
-  void onEndProcessingXMLs(QStringList errXMLPaths);
 
  private:
   XMLTreeButtons* treeViewBtns_;
