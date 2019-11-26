@@ -27,7 +27,6 @@ class DXFLabel : public QLabel {
 
  signals:
   void dxfClosed();
-  void errDXFSignal(QString);
   void newDXFFileSignal(QFileInfo);
   void newXMLFilesSignal(QVector<QFileInfo>);
   void newDXFSpatialSignal(std::shared_ptr<rrt::Spatial>);

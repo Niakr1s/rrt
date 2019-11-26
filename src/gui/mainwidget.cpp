@@ -36,18 +36,6 @@ void MainWidget::onEndProcessingXMLs(QStringList errXMLPaths) {
   }
 }
 
-void MainWidget::onErrDXF(QString errDXFPath) {
-  BOOST_LOG_TRIVIAL(debug) << "MainWidget::onErrDXF: errors = "
-                           << errDXFPath.size();
-  QMessageBox* errXmlMessageBox = new QMessageBox(this);
-  errXmlMessageBox->setMinimumWidth(600);
-  errXmlMessageBox->setWindowTitle(tr("Couldn't parse DXF"));
-  errXmlMessageBox->setText(tr("Invalid file name is listed below"));
-  errXmlMessageBox->setIcon(QMessageBox::Critical);
-  errXmlMessageBox->setDetailedText(errDXFPath);
-  errXmlMessageBox->show();
-}
-
 XMLTreeView* MainWidget::treeView() const {
   return treeView_;
 }
@@ -70,8 +58,6 @@ void MainWidget::connectAll() {
 
   connect(treeView_->xmlModel(), &XMLTreeModel::endProcessingXMLsSignal, this,
           &MainWidget::onEndProcessingXMLs, Qt::QueuedConnection);
-
-  connect(dxfLabel_, &DXFLabel::errDXFSignal, this, &MainWidget::onErrDXF);
 
   connect(treeViewBtns_->btnExpand(), &QPushButton::toggled, treeView_,
           &XMLTreeView::onExpandButtonToggled);

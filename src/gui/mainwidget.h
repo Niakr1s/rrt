@@ -20,11 +20,8 @@ class MainWidget : public QWidget {
   DXFLabel* dxfLabel() const;
   XMLTreeView* treeView() const;
 
- signals:
-
  public slots:
   void onEndProcessingXMLs(QStringList errXMLPaths);
-  void onErrDXF(QString errDXFPath);
 
  private:
   XMLTreeButtons* treeViewBtns_;
