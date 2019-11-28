@@ -75,6 +75,8 @@ Thumbs.db
 # --------
 *.dll
 *.exe
+!libs/openssl/libcrypto-1_1-x64.dll
+!libs/openssl/libssl-1_1-x64.dll
 
 !rrt.rc
 !rrt.o

@@ -28,6 +28,9 @@ find_package(Boost REQUIRED COMPONENTS
     log filesystem date_time
 )
 
+configure_file(libs/openssl/libcrypto-1_1-x64.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/libcrypto-1_1-x64.dll COPYONLY)
+configure_file(libs/openssl/libssl-1_1-x64.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/libssl-1_1-x64.dll COPYONLY)
+
 add_subdirectory(libs/pugixml)
 add_subdirectory(libs/fmt)
 add_subdirectory(libs/libdxfrw)
