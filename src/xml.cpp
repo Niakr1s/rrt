@@ -14,12 +14,12 @@ XML::XML(const std::string& path)
 
 XML::XML(const std::wstring& path) : path_(path) {
   pugi::xml_document root;
-  BOOST_LOG_TRIVIAL(info) << "XML: trying to open: " << path_;
+  BOOST_LOG_TRIVIAL(debug) << "XML: trying to open: " << path_;
   if (auto res = root.load_file(path_.c_str()); res.status != pugi::status_ok) {
     throw(std::invalid_argument(fmt::format(
         "XML: wrong input file: {}. {}", path_.string(), res.description())));
   }
-  BOOST_LOG_TRIVIAL(info) << "XML: succesfully opened: " << path_;
+  BOOST_LOG_TRIVIAL(debug) << "XML: succesfully opened: " << path_;
   parser_ = XMLParser::chooseParser(root);
   if (parser_ == nullptr) {
     throw(std::runtime_error(
@@ -32,7 +32,7 @@ XML::XML(const std::wstring& path) : path_(path) {
   }
   xmlInfo_ = std::make_shared<XMLInfo>(parser_->getXMLInfo());
   addXmlInfoToSpatials();
-  BOOST_LOG_TRIVIAL(info) << "XML: succesfully parsed: " << path_;
+  BOOST_LOG_TRIVIAL(debug) << "XML: succesfully parsed: " << path_;
 }
 
 const xmlSpatials_t& XML::xmlSpatials() const {

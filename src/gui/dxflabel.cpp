@@ -86,7 +86,6 @@ void DXFLabel::setDefaultText() {
 }
 
 void DXFLabel::closeDXF() {
-  BOOST_LOG_TRIVIAL(debug) << "DXFLabel::closeDXF";
   dxfFilePath_.clear();
   spatial_ = nullptr;
   setDefaultText();
@@ -95,10 +94,10 @@ void DXFLabel::closeDXF() {
 void DXFLabel::openDXF(QFileInfo fi) {
   setDisabled(true);
   bf::path path = bf::path(fi.filePath().toStdWString());
-  BOOST_LOG_TRIVIAL(debug) << "DXFLabel::openDXF: got " << path.filename();
   rrt::DXF dxf;
   try {
     dxf.fileImport(path);
+    BOOST_LOG_TRIVIAL(info) << "Succesfully imported " << path.filename();
   } catch (std::exception& e) {
     BOOST_LOG_TRIVIAL(error)
         << "Couldn't import " << path.filename() << ", reason: " << e.what();
@@ -122,8 +121,6 @@ void DXFLabel::onEndProcessingDXFSignal(std::shared_ptr<DXFResult> res) {
   for (auto& k : *res) {
     sz += k.size();
   }
-  BOOST_LOG_TRIVIAL(debug) << "DXFLabel::onEndProcessingDXFSignal: got " << sz
-                           << " results";
   setDisabled(false);
   setText(text() +
           QString(tr("<div>Got results:<b><font color=red>%1</font></b>. You "

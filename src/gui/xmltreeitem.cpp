@@ -110,7 +110,7 @@ bool XMLTreeItem::intersects(const rrt::Spatial& spatial) {
     return false;
   }
   intersectsFlag_ = spatial_->spatial()->intersects(spatial);
-  BOOST_LOG_TRIVIAL(debug) << strID_ << " intersects = " << intersectsFlag_;
+  BOOST_LOG_TRIVIAL(trace) << strID_ << " intersects = " << intersectsFlag_;
   return intersectsFlag_;
 }
 

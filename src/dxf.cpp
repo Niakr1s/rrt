@@ -89,7 +89,7 @@ void DXF::fileExport(const boost::filesystem::path& path,
   if (auto ok = dxIface_.fileExport(path, version, false, &dxData_); !ok) {
     throw std::invalid_argument("DXF: problem while exporting");
   }
-  BOOST_LOG_TRIVIAL(debug) << "DXF::fileExport: succesfully exported: " << path;
+  BOOST_LOG_TRIVIAL(debug) << "DXF: succesfully exported " << path;
 }
 
 void DXF::dataToSpatial() {

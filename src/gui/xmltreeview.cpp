@@ -25,13 +25,11 @@ XMLTreeView::XMLTreeView(QWidget* parent) : QTreeView(parent) {
 }
 
 void XMLTreeView::showIntersected(std::shared_ptr<DXFResult>) {
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onEndProcessingDXF";
   proxyModel_->setFiltering(true);
   expandAll();
 }
 
 void XMLTreeView::disableIntersectionsFiltering() {
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onDxfClose";
   proxyModel_->setFiltering(false);
   collapseAll();
   xmlModel()->forEach([](XMLTreeItem* item) { item->turnOffIntersectsFlag(); });
@@ -57,7 +55,6 @@ void XMLTreeView::showCustomContextMenu(QPoint p) {
 }
 
 void XMLTreeView::exportSelectedToDXF() {
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::onExportAction";
   if (selectedIndexes().empty()) {
     return;
   }
@@ -69,8 +66,6 @@ void XMLTreeView::exportSelectedToDXF() {
 }
 
 void XMLTreeView::showErrXMLsMessageBox(QStringList errXMLPaths) {
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::showErrXMLsMessageBox: errors = "
-                           << errXMLPaths.size();
   if (!errXMLPaths.empty()) {
     QMessageBox* errXmlMessageBox = new QMessageBox(this);
     errXmlMessageBox->setMinimumWidth(600);
@@ -101,7 +96,6 @@ XMLTreeModel* XMLTreeView::xmlModel() {
 }
 
 void XMLTreeView::initModel() {
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeView::initModel";
   model_ = new XMLTreeModel(this);
   proxyModel_ = new XMLTreeSortFilterProxyModel(this);
   proxyModel_->setSourceModel(model_);

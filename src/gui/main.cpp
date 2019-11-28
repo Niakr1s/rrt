@@ -18,7 +18,7 @@ void logToFile() {
   boost::log::add_file_log(boost::log::keywords::file_name = "rrt.log",
                            boost::log::keywords::auto_flush = true);
   boost::log::core::get()->set_filter(boost::log::trivial::severity >=
-                                      boost::log::trivial::debug);
+                                      boost::log::trivial::info);
 }
 
 int main(int argc, char* argv[]) {
@@ -33,8 +33,6 @@ int main(int argc, char* argv[]) {
 
   MainWindow mw;
   mw.show();
-
-  BOOST_LOG_TRIVIAL(info) << "Starting application";
 
   return app.exec();
 }

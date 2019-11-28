@@ -11,7 +11,6 @@ namespace bf = boost::filesystem;
 
 XMLTreeModel::XMLTreeModel(QObject* parent)
     : QAbstractItemModel(parent), dataPath_(L"data") {
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::XMLTreeModel";
   root_ = XMLRootTreeItem::get();
   initDirectories();
   connectAll();
@@ -68,8 +67,7 @@ void XMLTreeModel::forEach(QModelIndex idx,
 }
 
 void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB) {
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::onNewXMLFiles: got "
-                           << xmlFiles.size() << " files";
+  BOOST_LOG_TRIVIAL(info) << "Appending " << xmlFiles.size() << " files ...";
   std::thread([=] {
     int sz = xmlFiles.size();
     QStringList errPaths;
@@ -98,8 +96,9 @@ void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB) {
     }
     emit newXMLSpatials(allSpatials, fromDB);
     emit endAppendingXMLs(errPaths);
-    BOOST_LOG_TRIVIAL(debug)
-        << "XMLTreeView::onNewXMLFiles: got " << errPaths.size() << " errors";
+    BOOST_LOG_TRIVIAL(info)
+        << "Appended " << (xmlFiles.size() - errPaths.size()) << ", got "
+        << errPaths.size() << " errors";
   }).detach();
 }
 
@@ -137,8 +136,6 @@ void XMLTreeModel::getIntersections(std::shared_ptr<rrt::Spatial> spatial) {
 }
 
 void XMLTreeModel::exportToDXF(QModelIndex idx, QString fileName) {
-  BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::exportToDXF";
-
   std::thread([=] {
     rrt::DXF dxf;
     if (spatial_) {
@@ -191,8 +188,6 @@ void XMLTreeModel::initFromDB() {
         found.push_back(entry);
       }
     }
-    BOOST_LOG_TRIVIAL(debug)
-        << "XMLTreeModel::initFromDataDir: got " << found.size() << " xmls";
     emit newXMLs(found, true);
   }).detach();
 }

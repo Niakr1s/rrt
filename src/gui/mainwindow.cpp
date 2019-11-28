@@ -170,7 +170,6 @@ void MainWindow::updateDBIcon() {
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
-  BOOST_LOG_TRIVIAL(debug) << "MainWindow::closeEvent";
   if (dbProcesses_ == 0) {
     return QMainWindow::closeEvent(event);
   }

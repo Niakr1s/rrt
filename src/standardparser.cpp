@@ -127,7 +127,6 @@ xmlSpatials_t StandardParser::getXMLSpatials() {
 }
 
 XMLInfo StandardParser::getXMLInfo() {
-  BOOST_LOG_TRIVIAL(debug) << "StandardParser::getXMLInfo";
   auto firstChild = *root_.children().begin();
   std::string type(firstChild.name());
 
@@ -141,7 +140,7 @@ XMLInfo StandardParser::getXMLInfo() {
 
   if (type.empty() || certDocNode.empty() || dateNode.empty() ||
       numberNode.empty()) {
-    throw(std::runtime_error("StandardParser::getXMLInfo: bad XML file"));
+    throw(std::runtime_error("Couldn't get xmlInfo: bad XML"));
   }
 
   std::string date(dateNode.child_value());
@@ -150,8 +149,8 @@ XMLInfo StandardParser::getXMLInfo() {
   auto firstNode = getFirstCadastralNumberNode().node();
   auto firstSpatialInfo = getSpatialInfo(firstNode);
 
-  BOOST_LOG_TRIVIAL(info) << "StandardParser::getXMLInfo: got type: " << type
-                          << ", date: " << date << ", number: " << number;
+  BOOST_LOG_TRIVIAL(debug) << "Got xmlInfo: type: " << type
+                           << ", date: " << date << ", number: " << number;
 
   return XMLInfo(type, date, number, firstSpatialInfo);
 }
