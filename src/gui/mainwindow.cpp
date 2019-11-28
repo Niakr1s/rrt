@@ -10,6 +10,7 @@
 #include <QStatusBar>
 #include <QVBoxLayout>
 #include <boost/log/trivial.hpp>
+#include "version.h"
 #include "xmltreeview.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
@@ -17,7 +18,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   updater_->startUpdateQuery();
 
   setWindowIcon(QIcon(":/icons/rrt.ico"));
-  setWindowTitle("Rosreestr Tools");
+  setWindowTitle("Rosreestr Tools v" + QString(PROJECT_VER));
 
   mainWidget_ = new MainWidget();
   setCentralWidget(mainWidget_);
