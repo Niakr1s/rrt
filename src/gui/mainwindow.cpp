@@ -10,11 +10,11 @@
 #include <QStatusBar>
 #include <QVBoxLayout>
 #include <boost/log/trivial.hpp>
-#include "updater.h"
 #include "xmltreeview.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
-  Updater().startUpdateQuery();
+  updater_ = new Updater(this);
+  updater_->startUpdateQuery();
 
   setWindowIcon(QIcon(":/icons/rrt.ico"));
   setWindowTitle("Rosreestr Tools");

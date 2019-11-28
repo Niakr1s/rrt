@@ -14,10 +14,13 @@
 Updater::Updater(QObject* parent) : QObject(parent) {}
 
 void Updater::startUpdateQuery() {
-  manager_ = new QNetworkAccessManager();
+  BOOST_LOG_TRIVIAL(info) << "Updater: checking update availability...";
+  manager_ = new QNetworkAccessManager(this);
+
   QNetworkRequest request;
   QUrl url("https://api.github.com/repos/Niakr1s/rrt/releases/latest");
   request.setUrl(url);
+
   QNetworkReply* reply = manager_->get(request);
 
   connect(reply, &QNetworkReply::finished, this,
@@ -27,20 +30,21 @@ void Updater::startUpdateQuery() {
 void Updater::onUpdateQueryFinished() {
   QNetworkReply* reply = qobject_cast<QNetworkReply*>(QObject::sender());
   if (reply->error() != QNetworkReply::NoError) {
-    BOOST_LOG_TRIVIAL(error) << "MainWindow::onUpdateQueryFinished error: "
-                             << reply->errorString().toStdString();
+    BOOST_LOG_TRIVIAL(error)
+        << "Update error: " << reply->errorString().toStdString();
     return;
   }
-  reply->deleteLater();
-  manager_->deleteLater();
+  BOOST_LOG_TRIVIAL(info) << "Updater: got update response, parsing...";
   auto json = QJsonDocument::fromJson(reply->readAll());
   parseJson(json);
+  reply->deleteLater();
 }
 
 void Updater::parseJson(const QJsonDocument json) {
   auto netVer = json["tag_name"].toString();
   if (netVer.isNull()) {
-    BOOST_LOG_TRIVIAL(warning) << "Updater::parseJson: tag_name is empty";
+    BOOST_LOG_TRIVIAL(warning)
+        << "Updater: update response version tag is empty";
     return;
   }
   while (netVer[0].isLetter()) {
@@ -52,7 +56,7 @@ void Updater::parseJson(const QJsonDocument json) {
   QVersionNumber localVerNum(std::stoi(PROJECT_VER_MAJOR),
                              std::stoi(PROJECT_VER_MINOR),
                              std::stoi(PROJECT_VER_PATCH));
-  BOOST_LOG_TRIVIAL(info) << "Updater::parseJson: got versions: local = "
+  BOOST_LOG_TRIVIAL(info) << "Updater: versions: local = "
                           << localVerNum.toString().toStdString()
                           << ", net = " << netVerNum.toString().toStdString();
   if (netVerNum > localVerNum) {

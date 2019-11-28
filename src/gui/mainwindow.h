@@ -11,6 +11,7 @@
 #include <QToolBar>
 #include <atomic>
 #include "mainwidget.h"
+#include "updater.h"
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -43,6 +44,7 @@ class MainWindow : public QMainWindow {
   QProgressBar* progressBar_;
   QLabel* dbIconLabel_;
   std::atomic<int> dbProcesses_ = 0;
+  Updater* updater_;
 
  private:
   QToolBar* createTopToolBar();
