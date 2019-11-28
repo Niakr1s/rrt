@@ -22,7 +22,9 @@ void logToFile() {
 }
 
 int main(int argc, char* argv[]) {
+#ifndef COUT_LOG
   logToFile();
+#endif
   registerMetaTypes();
 
   QApplication app(argc, argv);

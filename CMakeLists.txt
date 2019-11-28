@@ -18,6 +18,10 @@ configure_file(src/version.h.in ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/version.h)
 
 add_definitions( -DBOOST_ALL_DYN_LINK )
 
+if (COUT_LOG)
+    add_definitions(-DCOUT_LOG)
+endif()
+
 if (CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)")
     set(Boost_ARCHITECTURE "-x64")
 else()
