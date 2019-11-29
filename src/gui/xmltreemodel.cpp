@@ -19,6 +19,8 @@ XMLTreeModel::XMLTreeModel(QObject* parent)
 
 void XMLTreeModel::appendSpatials(const rrt::xmlSpatials_t& spatials,
                                   bool fromDB) {
+  BOOST_LOG_TRIVIAL(info) << "Starting to append " << spatials.size()
+                          << " spatials";
   std::thread([=] {
     int len = static_cast<int>(spatials.size());
     emit startProcessing(len);
@@ -102,10 +104,6 @@ void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB) {
   }).detach();
 }
 
-void XMLTreeModel::onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB) {
-  appendSpatials(spatials, fromDB);
-}
-
 void XMLTreeModel::getIntersections(std::shared_ptr<rrt::Spatial> spatial) {
   BOOST_LOG_TRIVIAL(debug) << "XMLTreeModel::getIntersections: begin";
   if (spatial->empty()) {
@@ -168,7 +166,7 @@ void XMLTreeModel::endReset() {
 
 void XMLTreeModel::connectAll() {
   connect(this, &XMLTreeModel::newXMLSpatials, this,
-          &XMLTreeModel::onNewXMLSpatials);
+          &XMLTreeModel::appendSpatials);
   connect(this, &XMLTreeModel::newXMLs, this, &XMLTreeModel::appendXMLs);
 }
 
@@ -179,6 +177,7 @@ void XMLTreeModel::initDirectories() const {
 }
 
 void XMLTreeModel::initFromDB() {
+  BOOST_LOG_TRIVIAL(info) << "Starting init from DB ...";
   std::thread([this] {
     QVector<QFileInfo> found;
     QDir dir(QString::fromStdWString(dataPath_));

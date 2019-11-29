@@ -24,7 +24,6 @@ class XMLTreeModel : public QAbstractItemModel {
 
   void appendSpatialsSlow(const rrt::xmlSpatials_t& spatials,
                           bool fromDB = false);
-  void appendSpatials(const rrt::xmlSpatials_t& spatials, bool fromDB = false);
 
   int size() const;
 
@@ -47,8 +46,8 @@ class XMLTreeModel : public QAbstractItemModel {
   void DXFExportDone(QString title, QString msg, QMessageBox::Icon icon);
 
  public slots:
+  void appendSpatials(const rrt::xmlSpatials_t& spatials, bool fromDB = false);
   void appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB);
-  void onNewXMLSpatials(rrt::xmlSpatials_t spatials, bool fromDB);
   void getIntersections(std::shared_ptr<rrt::Spatial> spatial);
   void exportToDXF(QModelIndex idx, QString fileName);
   void endReset();
