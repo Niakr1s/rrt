@@ -11,11 +11,12 @@
 #include <boost/log/trivial.hpp>
 #include "version.h"
 
-Updater::Updater(QObject* parent) : QObject(parent) {}
+Updater::Updater(QObject* parent) : QObject(parent) {
+  manager_ = new QNetworkAccessManager(this);
+}
 
 void Updater::startUpdateQuery() {
   BOOST_LOG_TRIVIAL(info) << "Updater: checking update availability...";
-  manager_ = new QNetworkAccessManager(this);
 
   QNetworkRequest request;
   QUrl url("https://api.github.com/repos/Niakr1s/rrt/releases/latest");
