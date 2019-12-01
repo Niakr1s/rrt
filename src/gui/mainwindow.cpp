@@ -131,7 +131,7 @@ void MainWindow::initStatusBar() {
 
   statusBarMessage_ = new QLabel();
   statusBar()->addWidget(statusBarMessage_);
-  statusBarMessage_->setText(tr("Initializing..."));
+  statusBarMessage_->setText(READY);
 }
 
 void MainWindow::connectAll() {
