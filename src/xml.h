@@ -31,7 +31,6 @@ class XML {
   bf::path path() const;
 
  private:
-  bf::path path_;
   std::shared_ptr<XMLInfo> xmlInfo_;
   std::shared_ptr<XMLParser> parser_;
   xmlSpatials_t spatials_;

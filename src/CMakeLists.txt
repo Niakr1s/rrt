@@ -86,6 +86,7 @@ include_directories(cadastral_info
 target_link_libraries(cadastral_info
     fmt::fmt
     Boost::date_time
+    Boost::filesystem
 )
 
 add_subdirectory(gui)

@@ -12,27 +12,29 @@ namespace rrt {
 XML::XML(const std::string& path)
     : XML(std::wstring(path.cbegin(), path.cend())) {}
 
-XML::XML(const std::wstring& path) : path_(path) {
+XML::XML(const std::wstring& path) {
+  bf::path p(path);
   pugi::xml_document root;
-  BOOST_LOG_TRIVIAL(debug) << "XML: trying to open: " << path_;
-  if (auto res = root.load_file(path_.c_str()); res.status != pugi::status_ok) {
-    throw(std::invalid_argument(fmt::format(
-        "XML: wrong input file: {}. {}", path_.string(), res.description())));
+  BOOST_LOG_TRIVIAL(debug) << "XML: trying to open: " << p;
+  if (auto res = root.load_file(p.c_str()); res.status != pugi::status_ok) {
+    throw(std::invalid_argument(fmt::format("XML: wrong input file: {}. {}",
+                                            p.string(), res.description())));
   }
-  BOOST_LOG_TRIVIAL(debug) << "XML: succesfully opened: " << path_;
+  BOOST_LOG_TRIVIAL(debug) << "XML: succesfully opened: " << p;
   parser_ = XMLParser::chooseParser(root);
   if (parser_ == nullptr) {
     throw(std::runtime_error(
-        fmt::format("XML: couldn't choose parser for {}", path_.string())));
+        fmt::format("XML: couldn't choose parser for {}", p.string())));
   }
   spatials_ = parser_->getXMLSpatials();
   if (spatials_.empty()) {
     throw(std::runtime_error(
-        fmt::format("XML: empty spatials after parsing {}", path_.string())));
+        fmt::format("XML: empty spatials after parsing {}", p.string())));
   }
   xmlInfo_ = std::make_shared<XMLInfo>(parser_->getXMLInfo());
+  xmlInfo_->setPath(p);
   addXmlInfoToSpatials();
-  BOOST_LOG_TRIVIAL(debug) << "XML: succesfully parsed: " << path_;
+  BOOST_LOG_TRIVIAL(debug) << "XML: succesfully parsed: " << p;
 }
 
 const xmlSpatials_t& XML::xmlSpatials() const {
@@ -46,7 +48,7 @@ xmlSpatials_t& XML::xmlSpatials() {
 void XML::saveToDXF(std::string path /*= ""*/,
                     DXF::Version version /* = DXF::Version::AC1015*/) {
   if (path.empty()) {
-    auto exportPath(path_);
+    auto exportPath(this->path());
     exportPath.replace_extension("dxf");
     path = exportPath.string();
   }
@@ -61,16 +63,18 @@ void XML::saveToDXF(std::string path /*= ""*/,
 }
 
 bf::path XML::renameFile() {
+  auto p = path();
   std::string newFilenameStr =
       fmt::format("{} {} {}{}", xmlInfo_->type(),
                   xmlInfo_->rootSpatialInfo().cadastralNumber().safeString(),
-                  xmlInfo_->dateString(), path_.extension().string());
+                  xmlInfo_->dateString(), p.extension().string());
   bf::path newFilename(newFilenameStr);
-  bf::path newPath = path_.parent_path();
+  bf::path newPath = p.parent_path();
   newPath.append(newFilenameStr);
-  bf::rename(path_, newPath);
-  path_ = newPath;
-  return path_;
+  bf::rename(p, newPath);
+  p = newPath;
+  xmlInfo_->setPath(p);
+  return p;
 }
 
 const XMLInfo& XML::xmlInfo() const {
@@ -88,7 +92,7 @@ xmlSpatials_t XML::intersects(const Spatial& spatial) const {
 }
 
 bf::path XML::path() const {
-  return path_;
+  return xmlInfo_->path();
 }
 
 void XML::addXmlInfoToSpatials() {

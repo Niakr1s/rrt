@@ -31,6 +31,15 @@ const XMLSpatialInfo& XMLInfo::rootSpatialInfo() const {
   return rootSpatialInfo_;
 }
 
+bf::path XMLInfo::path() const {
+  return path_;
+}
+
+void XMLInfo::setPath(const bf::path& path) {
+  path_ = path;
+  path_ = path_.normalize();
+}
+
 std::string XMLInfo::dateString() const {
   return boost::gregorian::to_iso_extended_string(date_);
 }
