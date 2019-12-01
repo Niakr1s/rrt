@@ -1,8 +1,12 @@
 #include "xmltreeview.h"
 
+#include <QApplication>
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QFileDialog>
+#include <QList>
 #include <QMessageBox>
+#include <QMimeData>
 #include <QMouseEvent>
 #include <QThread>
 #include <QUrl>
@@ -10,6 +14,7 @@
 #include <boost/log/trivial.hpp>
 #include <exception>
 #include <thread>
+#include <unordered_set>
 #include "dxf.h"
 #include "xmltreedelegate.h"
 #include "xmltreemodel.h"
@@ -69,6 +74,36 @@ void XMLTreeView::exportSelectedToDXF() {
   emit exportToDXF(selected, fileName);
 }
 
+void XMLTreeView::copyXMLsToClipboard() {
+  if (selectedIndexes().empty()) {
+    return;
+  }
+  QModelIndex selected = selectedIndexes().first();
+  selected = proxyModel_->mapToSource(selected);
+
+  std::unordered_set<std::wstring> set;
+  xmlModel()->forEach(
+      selected,
+      [&set](XMLTreeItem* item) {
+        if (item->hasSpatial()) {
+          auto p = item->spatial()->xmlInfo().path().wstring();
+          set.insert(p);
+        }
+      },
+      xmlModel()->anyChildIntersectsFlag(selected));
+
+  QList<QUrl> urls;
+  for (auto& url : set) {
+    auto qstr = QString::fromStdWString(url);
+    urls.push_back(QUrl::fromLocalFile(qstr));
+  }
+
+  QMimeData* mime = new QMimeData();
+  mime->setUrls(urls);
+  QApplication::clipboard()->setMimeData(mime);
+  BOOST_LOG_TRIVIAL(debug) << "Copied " << urls.size() << " items to clipboard";
+}
+
 void XMLTreeView::showErrXMLsMessageBox(QStringList errXMLPaths) {
   if (!errXMLPaths.empty()) {
     QMessageBox* errXmlMessageBox = new QMessageBox(this);
@@ -113,7 +148,10 @@ void XMLTreeView::initRightClickMenu() {
 
   rightClickMenu_ = new QMenu();
   exportAction_ = new QAction(QIcon(":/icons/dxf.svg"), tr("Export to DXF"));
+  copyXMLsToClipboardAction_ = new QAction(QIcon(":/icons/clipboard.svg"),
+                                           tr("Copy XML files to clipboard"));
   rightClickMenu_->addAction(exportAction_);
+  rightClickMenu_->addAction(copyXMLsToClipboardAction_);
 }
 
 void XMLTreeView::connectAll() {
@@ -128,6 +166,8 @@ void XMLTreeView::connectAll() {
 
   connect(exportAction_, &QAction::triggered, this,
           &XMLTreeView::exportSelectedToDXF);
+  connect(copyXMLsToClipboardAction_, &QAction::triggered, this,
+          &XMLTreeView::copyXMLsToClipboard);
 
   connect(model_, &XMLTreeModel::endProcessing, this,
           &XMLTreeView::collapseAll);

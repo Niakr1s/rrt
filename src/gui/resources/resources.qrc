@@ -13,5 +13,6 @@
         <file>semicolon.png</file>
         <file>database.svg</file>
         <file>rrt.ico</file>
+        <file>clipboard.svg</file>
     </qresource>
 </RCC>

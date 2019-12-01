@@ -41,12 +41,14 @@ class XMLTreeView : public QTreeView {
   void showCustomContextMenu(QPoint p);
   void expandIf(bool expand);
   void exportSelectedToDXF();
+  void copyXMLsToClipboard();
   void showErrXMLsMessageBox(QStringList errXMLPaths);
   void showMessageBox(QString title, QString msg, QMessageBox::Icon icon);
 
  private:
   QMenu* rightClickMenu_;
   QAction* exportAction_;
+  QAction* copyXMLsToClipboardAction_;
   XMLTreeModel* model_;
   XMLTreeSortFilterProxyModel* proxyModel_;
 
