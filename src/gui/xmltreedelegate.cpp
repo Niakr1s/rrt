@@ -36,5 +36,20 @@ void XMLTreeDelegate::paint(QPainter* painter,
     rect.setBottom(rect.bottom() - 2);
     painter->drawImage(rect, newIcon);
   }
+  if (item->hasSpatial()) {
+    auto spa = item->spatial();
+    QImage icon;
+    if (spa->spatial()->empty()) {
+      icon = QImage(":/icons/empty.svg");
+    } else {
+      icon = QImage(":/icons/full.svg");
+    }
+    auto rect = optCopy.rect;
+    rect.setRight(rect.left() - 4);
+    rect.setTop(rect.top() + 4);
+    rect.setBottom(rect.bottom() - 4);
+    rect.setLeft(rect.right() - rect.height());
+    painter->drawImage(rect, icon);
+  }
   return QStyledItemDelegate::paint(painter, optCopy, index);
 }

@@ -14,5 +14,7 @@
         <file>database.svg</file>
         <file>rrt.ico</file>
         <file>clipboard.svg</file>
+        <file>empty.svg</file>
+        <file>full.svg</file>
     </qresource>
 </RCC>
