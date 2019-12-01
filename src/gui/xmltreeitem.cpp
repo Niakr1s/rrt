@@ -28,13 +28,14 @@ int XMLTreeItem::columnCount() const {
   return Column::MAX;
 }
 
-int XMLTreeItem::childCountThatHaveSpatial() const {
+int XMLTreeItem::childCountThatHaveSpatial(bool onlyIntersected) const {
   int res = 0;
   for (int i = 0; i != childs_.size(); ++i) {
-    if (childs_[i]->spatial() != nullptr) {
-      ++res;
+    if (auto child = childs_[i]; child->spatial_ != nullptr) {
+      if ((onlyIntersected && child->intersectsFlag()) || !onlyIntersected)
+        ++res;
     } else {
-      res += childs_[i]->childCountThatHaveSpatial();
+      res += child->childCountThatHaveSpatial(onlyIntersected);
     }
   }
   return res;
@@ -87,8 +88,8 @@ rrt::xmlSpatial_t XMLTreeItem::spatial() const {
 QString XMLTreeItem::tooltipData() const {
   QString res;
   if (spatial_ == nullptr) {
-    return (
-        QObject::tr("%1 spatial elements").arg(childCountThatHaveSpatial()));
+    return (QObject::tr("%1 spatial elements")
+                .arg(childCountThatHaveSpatial(anyChildIntersectsFlag())));
   }
   res =
       QString("%6\nXML: %1, %2, %3\nParent: %4: %5\n%7")
@@ -117,7 +118,7 @@ bool XMLTreeItem::intersectsFlag() const {
   return intersectsFlag_;
 }
 
-bool XMLTreeItem::anyChildIntersectsFlag() {
+bool XMLTreeItem::anyChildIntersectsFlag() const {
   bool res = false;
   forEach([&](XMLTreeItem* item) {
     res |= item->intersectsFlag();
@@ -134,6 +135,10 @@ void XMLTreeItem::forEach(std::function<void(XMLTreeItem*)> fn) {
   for (auto& child : childs_) {
     child->forEach(fn);
   }
+}
+
+void XMLTreeItem::forEach(std::function<void(XMLTreeItem*)> fn) const {
+  const_cast<XMLTreeItem*>(this)->forEach(fn);
 }
 
 bool XMLTreeItem::insertChildren(int row, int count, int columns) {

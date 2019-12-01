@@ -28,7 +28,7 @@ class XMLTreeItem {
 
   int childCount() const;
   int columnCount() const;
-  int childCountThatHaveSpatial() const;
+  int childCountThatHaveSpatial(bool onlyIntersected = false) const;
   QVariant data(int column) const;
   int row() const;
   XMLTreeItem* parentItem();
@@ -41,7 +41,7 @@ class XMLTreeItem {
   bool intersects(const rrt::Spatial& spatial);
 
   bool intersectsFlag() const;
-  bool anyChildIntersectsFlag();
+  bool anyChildIntersectsFlag() const;
   void turnOffIntersectsFlag();
   bool newFlag() const;
   void setNewFlag(bool newFlag);
@@ -68,6 +68,7 @@ class XMLTreeItem {
 
  private:
   void forEach(std::function<void(XMLTreeItem*)> fn);
+  void forEach(std::function<void(XMLTreeItem*)> fn) const;
 };
 
 #endif  // XMLTREEITEM_H
