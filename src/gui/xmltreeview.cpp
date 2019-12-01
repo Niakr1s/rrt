@@ -32,7 +32,8 @@ void XMLTreeView::showIntersected(std::shared_ptr<DXFResult>) {
 void XMLTreeView::disableIntersectionsFiltering() {
   proxyModel_->setFiltering(false);
   collapseAll();
-  xmlModel()->forEach([](XMLTreeItem* item) { item->turnOffIntersectsFlag(); });
+  xmlModel()->forEach([](XMLTreeItem* item) { item->turnOffIntersectsFlag(); },
+                      true);
 }
 
 void XMLTreeView::expandChildsUntilRoot(QModelIndex sourceParent,

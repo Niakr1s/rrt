@@ -30,8 +30,13 @@ class XMLTreeModel : public QAbstractItemModel {
   XMLTreeItem* getItem(const QModelIndex& index) const;
   XMLTreeItem* getRootItem() const;
 
-  void forEach(std::function<void(XMLTreeItem*)> fn);
-  void forEach(QModelIndex idx, std::function<void(XMLTreeItem*)> fn);
+  bool anyChildIntersectsFlag(const QModelIndex& idx = QModelIndex()) const;
+
+  void forEach(std::function<void(XMLTreeItem*)> fn,
+               bool onlyIntersected = false);
+  void forEach(QModelIndex idx,
+               std::function<void(XMLTreeItem*)> fn,
+               bool onlyIntersected = false);
 
  signals:
   void newXMLs(QVector<QFileInfo> xmlFiles, bool fromDB);

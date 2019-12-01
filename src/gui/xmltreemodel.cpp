@@ -57,15 +57,22 @@ XMLTreeItem* XMLTreeModel::getRootItem() const {
   return XMLRootTreeItem::get();
 }
 
-void XMLTreeModel::forEach(std::function<void(XMLTreeItem*)> fn) {
+bool XMLTreeModel::anyChildIntersectsFlag(const QModelIndex& idx) const {
+  auto item = getItem(idx);
+  return item->anyChildIntersectsFlag();
+}
+
+void XMLTreeModel::forEach(std::function<void(XMLTreeItem*)> fn,
+                           bool onlyIntersected) {
   for (int i = 0; i != rowCount(QModelIndex()); ++i) {
-    getItem(index(i, 0))->forEach(fn);
+    getItem(index(i, 0))->forEach(fn, onlyIntersected);
   }
 }
 
 void XMLTreeModel::forEach(QModelIndex idx,
-                           std::function<void(XMLTreeItem*)> fn) {
-  getItem(idx)->forEach(fn);
+                           std::function<void(XMLTreeItem*)> fn,
+                           bool onlyIntersected) {
+  getItem(idx)->forEach(fn, onlyIntersected);
 }
 
 void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB) {
@@ -139,14 +146,17 @@ void XMLTreeModel::exportToDXF(QModelIndex idx, QString fileName) {
     if (spatial_) {
       dxf.drawSpatial(spatial_, rrt::DXF::Color::LIGHTGREEN);
     }
-    forEach(idx, [&](XMLTreeItem* item) {
-      auto spa = item->spatial();
-      if (spa != nullptr) {
-        dxf.drawSpatial(spa->xmlSpatialInfo().cadastralNumber().string(),
-                        spa->xmlSpatialInfo().type(), spa->spatial(),
-                        spa->color());
-      }
-    });
+    forEach(
+        idx,
+        [&](XMLTreeItem* item) {
+          auto spa = item->spatial();
+          if (spa != nullptr) {
+            dxf.drawSpatial(spa->xmlSpatialInfo().cadastralNumber().string(),
+                            spa->xmlSpatialInfo().type(), spa->spatial(),
+                            spa->color());
+          }
+        },
+        anyChildIntersectsFlag(idx));
 
     auto path = boost::filesystem::path(fileName.toStdWString());
 
