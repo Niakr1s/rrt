@@ -84,6 +84,10 @@ rrt::xmlSpatial_t XMLTreeItem::spatial() const {
   return spatial_;
 }
 
+bool XMLTreeItem::hasSpatial() const {
+  return spatial_ != nullptr;
+}
+
 QString XMLTreeItem::tooltipData() const {
   QString res;
   if (spatial_ == nullptr) {

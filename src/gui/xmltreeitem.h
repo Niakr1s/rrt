@@ -37,6 +37,7 @@ class XMLTreeItem {
 
   void appendSpatial(rrt::xmlSpatial_t spatial, bool fromDB);
   rrt::xmlSpatial_t spatial() const;
+  bool hasSpatial() const;
   QString tooltipData() const;
   bool intersects(const rrt::Spatial& spatial);
 
