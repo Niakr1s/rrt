@@ -11,6 +11,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/log/trivial.hpp>
 #include "dxf.h"
+#include "rrtzip.h"
 
 namespace bf = boost::filesystem;
 
@@ -65,7 +66,15 @@ void DXFLabel::dropEvent(QDropEvent* event) {
       } else if (fi.suffix().toLower() == "xml") {
         xmlFiles.push_back(fi);
       } else if (fi.suffix().toLower() == "zip") {
-        // TODO       xmlFiles.push_back(extractFromZip(fi));
+        QString zipPathQstr = fi.filePath();
+        rrt::Zip zip(bf::path(zipPathQstr.toStdWString()));
+        rrt::Zip::paths_t paths;
+        zip.extractFromZip(".xml", paths);
+        for (auto& zipxml : paths) {
+          QString zipqstr = QString::fromStdWString(zipxml.wstring());
+          QFileInfo zipfi(zipqstr);
+          xmlFiles.push_back(zipfi);
+        }
       }
     }
   }
