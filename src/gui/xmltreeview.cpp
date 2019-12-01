@@ -1,8 +1,11 @@
 #include "xmltreeview.h"
 
+#include <QDesktopServices>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QMouseEvent>
 #include <QThread>
+#include <QUrl>
 #include <boost/date_time.hpp>
 #include <boost/log/trivial.hpp>
 #include <exception>
@@ -160,4 +163,20 @@ void XMLTreeView::expand(QModelIndex idx, int count) {
     auto childIdx = model()->index(row, 0, idx);
     expand(childIdx, count - 1);
   }
+}
+
+void XMLTreeView::mouseDoubleClickEvent(QMouseEvent* event) {
+  auto idx = indexAt(event->pos());
+  auto item = XMLTreeModel().getItem(proxyModel_->mapToSource(idx));
+  if (item == nullptr) {
+    event->ignore();
+    return;
+  }
+  if (item->hasSpatial()) {
+    auto p = item->spatial()->xmlInfo().path();
+    auto url = QUrl::fromLocalFile(QString::fromStdWString(p.wstring()));
+    QDesktopServices::openUrl(url);
+    event->accept();
+  }
+  event->ignore();
 }

@@ -54,6 +54,10 @@ class XMLTreeView : public QTreeView {
   void initModel();
   void initRightClickMenu();
   void connectAll();
+
+  // QWidget interface
+ protected:
+  void mouseDoubleClickEvent(QMouseEvent* event) override;
 };
 
 #endif  // XMLTREEVIEW_H
