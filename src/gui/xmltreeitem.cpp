@@ -30,14 +30,13 @@ int XMLTreeItem::columnCount() const {
 
 int XMLTreeItem::childCountThatHaveSpatial(bool onlyIntersected) const {
   int res = 0;
-  for (int i = 0; i != childs_.size(); ++i) {
-    if (auto child = childs_[i]; child->spatial_ != nullptr) {
-      if ((onlyIntersected && child->intersectsFlag()) || !onlyIntersected)
-        ++res;
-    } else {
-      res += child->childCountThatHaveSpatial(onlyIntersected);
-    }
-  }
+  forEach(
+      [&res](XMLTreeItem* item) {
+        if (item->spatial_ != nullptr) {
+          ++res;
+        }
+      },
+      onlyIntersected);
   return res;
 }
 
@@ -135,15 +134,18 @@ void XMLTreeItem::turnOffIntersectsFlag() {
   intersectsFlag_ = false;
 }
 
-void XMLTreeItem::forEach(std::function<void(XMLTreeItem*)> fn) {
-  fn(this);
+void XMLTreeItem::forEach(std::function<void(XMLTreeItem*)> fn,
+                          bool onlyIntersected) {
+  if ((onlyIntersected && intersectsFlag()) || !onlyIntersected)
+    fn(this);
   for (auto& child : childs_) {
-    child->forEach(fn);
+    child->forEach(fn, onlyIntersected);
   }
 }
 
-void XMLTreeItem::forEach(std::function<void(XMLTreeItem*)> fn) const {
-  const_cast<XMLTreeItem*>(this)->forEach(fn);
+void XMLTreeItem::forEach(std::function<void(XMLTreeItem*)> fn,
+                          bool onlyIntersected) const {
+  const_cast<XMLTreeItem*>(this)->forEach(fn, onlyIntersected);
 }
 
 bool XMLTreeItem::insertChildren(int row, int count, int columns) {

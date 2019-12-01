@@ -67,8 +67,10 @@ class XMLTreeItem {
   bool newFlag_ = false;
 
  private:
-  void forEach(std::function<void(XMLTreeItem*)> fn);
-  void forEach(std::function<void(XMLTreeItem*)> fn) const;
+  void forEach(std::function<void(XMLTreeItem*)> fn,
+               bool onlyIntersected = false);
+  void forEach(std::function<void(XMLTreeItem*)> fn,
+               bool onlyIntersected = false) const;
 };
 
 #endif  // XMLTREEITEM_H
