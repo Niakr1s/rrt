@@ -119,11 +119,16 @@ bool XMLTreeItem::intersectsFlag() const {
 }
 
 bool XMLTreeItem::anyChildIntersectsFlag() const {
-  bool res = false;
-  forEach([&](XMLTreeItem* item) {
-    res |= item->intersectsFlag();
-  });  // TODO not effective, impl anyOf or smth
-  return res;
+  try {
+    forEach([&](XMLTreeItem* item) {
+      if (item->intersectsFlag()) {
+        throw std::exception();
+      }
+    });
+  } catch (...) {
+    return true;
+  }
+  return false;
 }
 
 void XMLTreeItem::turnOffIntersectsFlag() {
