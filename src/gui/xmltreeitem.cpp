@@ -28,7 +28,7 @@ int XMLTreeItem::columnCount() const {
   return Column::MAX;
 }
 
-int XMLTreeItem::childCountThatHaveSpatial(bool onlyIntersected) const {
+int XMLTreeItem::spatialChildCount(bool onlyIntersected) const {
   int res = 0;
   forEach(
       [&res](XMLTreeItem* item) {
@@ -88,7 +88,7 @@ QString XMLTreeItem::tooltipData() const {
   QString res;
   if (spatial_ == nullptr) {
     return (QObject::tr("%1 spatial elements")
-                .arg(childCountThatHaveSpatial(anyChildIntersectsFlag())));
+                .arg(spatialChildCount(anyChildIntersectsFlag())));
   }
   res =
       QString("%6\nXML: %1, %2, %3\nParent: %4: %5\n%7")

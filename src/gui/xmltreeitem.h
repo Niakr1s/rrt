@@ -28,7 +28,7 @@ class XMLTreeItem {
 
   int childCount() const;
   int columnCount() const;
-  int childCountThatHaveSpatial(bool onlyIntersected = false) const;
+  int spatialChildCount(bool onlyIntersected = false) const;
   QVariant data(int column) const;
   int row() const;
   XMLTreeItem* parentItem();
