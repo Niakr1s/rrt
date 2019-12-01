@@ -55,6 +55,7 @@ add_executable(rrt
 target_link_libraries(rrt
     dxf
     xml
+    rrtzip
     Qt5::Widgets
     Boost::log
     Qt5::Network

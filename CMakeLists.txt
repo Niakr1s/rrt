@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS "-mwindows")
 
 project(rrt LANGUAGES CXX VERSION 0.1.2)
 
-set(BUILD_SHARED_LIBS TRUE)
+set(BUILD_SHARED_LIBS ON)
 
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
@@ -32,15 +32,22 @@ find_package(Boost REQUIRED COMPONENTS
     log filesystem date_time
 )
 
+set(BUILD_TOOLS OFF)
+set(BUILD_REGRESS OFF)
+set(BUILD_EXAMPLES OFF)
+set(BUILD_DOC OFF)
+set(BUILD_TESTS OFF)
+
 configure_file(libs/openssl/libcrypto-1_1-x64.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/libcrypto-1_1-x64.dll COPYONLY)
 configure_file(libs/openssl/libssl-1_1-x64.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/libssl-1_1-x64.dll COPYONLY)
 
 add_subdirectory(libs/pugixml)
 add_subdirectory(libs/fmt)
 add_subdirectory(libs/libdxfrw)
+add_subdirectory(libs/libzip)
 
 add_subdirectory(src)
 
-if (ENABLE_TESTS)
+if (BUILD_TESTS)
 add_subdirectory(tests)
 endif()

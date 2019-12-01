@@ -44,10 +44,12 @@ add_executable(tests
     cadastralnumber_tests.h
     serialize_tests.h
     intersects_tests.h
+    rrtzip_tests.h
 )
 
 include_directories(tests
     ${Boost_INCLUDE_DIRS}
+    ${libzip_SOURCE_DIR}/lib
     ../src
 )
 
@@ -56,4 +58,6 @@ target_link_libraries(tests
     xml
     dxf
     spatial
+    rrtzip
+    Boost::filesystem
 )

@@ -89,4 +89,22 @@ target_link_libraries(cadastral_info
     Boost::filesystem
 )
 
+
+# rzip
+
+add_library(rrtzip SHARED
+    rrtzip.h
+    rrtzip.cpp
+)
+
+include_directories(rrtzip
+    ${Boost_INCLUDE_DIRS}
+    ${libzip_SOURCE_DIR}/lib
+)
+
+target_link_libraries(rrtzip
+    Boost::filesystem
+    zip
+)
+
 add_subdirectory(gui)

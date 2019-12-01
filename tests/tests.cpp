@@ -10,6 +10,7 @@ static const std::string BLOCK = PATH + "KPT CadastralBlock 77 03 0009007.xml";
 #include "rect_tests.h"
 #include "serialize_tests.h"
 #include "xml_tests.h"
+#include "rrtzip_tests.h"
 
 int main(int argc, char* argv[]) {
   testing::InitGoogleTest(&argc, argv);

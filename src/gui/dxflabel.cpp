@@ -64,6 +64,8 @@ void DXFLabel::dropEvent(QDropEvent* event) {
         dxfFile = fi;
       } else if (fi.suffix().toLower() == "xml") {
         xmlFiles.push_back(fi);
+      } else if (fi.suffix().toLower() == "zip") {
+        // TODO       xmlFiles.push_back(extractFromZip(fi));
       }
     }
   }
