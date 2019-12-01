@@ -88,7 +88,7 @@ void DXFLabel::dropEvent(QDropEvent* event) {
 void DXFLabel::setDefaultText() {
   setText(
       QString("<div>%1</div><div>%2</div><div>%3</div><div>%4</div>")
-          .arg(tr("Drag your DXF or XMLs here."))
+          .arg(tr("Drag your DXF or XMLs/ZIPs here."))
           .arg(tr("DXF will be checked in all top window XMLs."))
           .arg(tr("All blocks in DXF will be ignored. Everything in %1 layer "
                   "will be ignored. Any non-english layer will be ignored.")

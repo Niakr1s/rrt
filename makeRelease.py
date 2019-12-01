@@ -19,13 +19,16 @@ BOOST_SUFFIX = "-mgw73-mt-x64-" + BOOST_VERSION + ".dll"
 BOOST_LIBS = ["date_time", "filesystem",
               "thread", "log"]  # change it to include in zip
 
+# just add search path and name to include in zip
+INCLUDED_FILES = (("c:/Program Files (x86)/zlib", "libzlib.dll"),)
+
 IGNORED_FILES = ["D3Dcompiler_47.dll",
                  "opengl32sw.dll", "libEGL.dll", "libGLESV2.dll"]  # these files will be deleted from release
 
 
 def cmake(clean=False):
     if Path(BIN_DIR).exists():
-        print("removing " + BIN_DIR + "dir")
+        print("removing " + BIN_DIR + " dir")
         shutil.rmtree(BIN_DIR)
     os.system(CMAKE_PRE_BUILD_CMD)
     os.system(CMAKE_BUILD_CMD)
@@ -56,6 +59,8 @@ def addToZip(version=""):
         for lib in BOOST_LIBS:
             fullName = BOOST_PREFIX + lib + BOOST_SUFFIX
             releaseZip.write(findFile("c:/boost/lib", fullName), fullName)
+        for toZip in INCLUDED_FILES:
+            releaseZip.write(findFile(toZip[0], toZip[1]), toZip[1])
     print('Zip created in "' + zipPath + '"')
 
 
