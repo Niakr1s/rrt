@@ -91,7 +91,7 @@ QString XMLTreeItem::tooltipData() const {
         QObject::tr("%1 spatial elements").arg(childCountThatHaveSpatial()));
   }
   res =
-      QString("%6\nXML: %1, %2, %3\nParent: %4: %5")
+      QString("%6\nXML: %1, %2, %3\nParent: %4: %5\n%7")
           .arg(QString::fromStdString(spatial_->xmlInfo().type()))
           .arg(QString::fromStdString(spatial_->xmlInfo().orderNumber()))
           .arg(QString::fromStdString(spatial_->xmlInfo().dateString()))
@@ -99,7 +99,8 @@ QString XMLTreeItem::tooltipData() const {
               spatial_->xmlInfo().rootSpatialInfo().type()))
           .arg(QString::fromStdString(
               spatial_->xmlInfo().rootSpatialInfo().cadastralNumber().string()))
-          .arg(qstrID());
+          .arg(qstrID())
+          .arg(QString::fromStdWString(spatial_->xmlInfo().path().wstring()));
   return res;
 }
 
