@@ -23,6 +23,7 @@ class XML {
   void saveToDXF(std::string path = "",
                  DXF::Version version = DXF::Version::AC1021);
   bf::path renameFile();
+  void copyFile(bf::path newPath);
 
   const XMLInfo& xmlInfo() const;
 

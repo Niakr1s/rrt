@@ -77,6 +77,13 @@ bf::path XML::renameFile() {
   return p;
 }
 
+void XML::copyFile(bf::path newPath) {
+  if (!bf::exists(newPath)) {
+    bf::copy(path(), newPath);
+  }
+  xmlInfo_->setPath(newPath);
+}
+
 const XMLInfo& XML::xmlInfo() const {
   return *xmlInfo_;
 }

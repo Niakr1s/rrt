@@ -91,9 +91,7 @@ void XMLTreeModel::appendXMLs(QVector<QFileInfo> xmlFiles, bool fromDB) {
         try {
           bf::path newPath = xml->renameFile();
           bf::path dataPath = bf::path(dataPath_) / newPath.filename();
-          if (!bf::exists(dataPath)) {
-            bf::copy(newPath, dataPath);
-          }
+          xml->copyFile(dataPath);
         } catch (std::exception& e) {
           BOOST_LOG_TRIVIAL(error) << e.what();
         }
