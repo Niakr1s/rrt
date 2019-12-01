@@ -74,7 +74,8 @@ std::ostream& XMLTreeItem::dumpInfo(std::ostream& out, std::string sep) const {
 
 void XMLTreeItem::appendSpatial(rrt::xmlSpatial_t spatial, bool fromDB) {
   if (spatial_ == nullptr ||
-      spatial->xmlInfo().date() > spatial_->xmlInfo().date()) {
+      (spatial->xmlInfo().date() > spatial_->xmlInfo().date() &&
+       (spatial_->spatial()->empty() || !spatial->spatial()->empty()))) {
     setNewFlag(!fromDB);
     spatial_ = spatial;
   }
